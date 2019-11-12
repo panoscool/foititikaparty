@@ -1,38 +1,25 @@
-import React, { Fragment } from "react";
-import { Link } from "react-router-dom";
-import {
-  Hidden,
-  Button,
-  MenuItem,
-} from "@material-ui/core";
-import DropDown from "./DropDown";
+import React, { Fragment } from 'react';
+import { Link } from 'react-router-dom';
+import { Hidden, Button } from '@material-ui/core';
 
-const subNav = [
-  { to: "/contact", label: "Contact" },
-  { to: "/market-guide", label: "Market Guide" },
-  { to: "/users-faq", label: "Users F.A.Q." }
+const navigation = [
+  { to: '/search', label: 'Search' },
+  { to: '/event/create', label: 'Create Event' },
+  { to: '/auth', label: 'Auth' }
 ];
 
-const MenuLinks: React.FC = () => {
+function MenuLinks() {
   return (
     <Fragment>
       <Hidden smDown implementation="css">
-        <Button color="inherit" component={Link} to="/bicycle/search">
-          Search
-        </Button>
-
-        <DropDown button="Informations">
-          {subNav.map(nav => (
-            <MenuItem key={nav.to} component={Link} to={nav.to}>
-              {nav.label}
-            </MenuItem>
-          ))}
-        </DropDown>
-
+        {navigation.map(nav => (
+          <Button color="inherit" component={Link} to={nav.to}>
+            {nav.label}
+          </Button>
+        ))}
       </Hidden>
-      <span>Auth</span>
     </Fragment>
   );
-};
+}
 
 export default MenuLinks;

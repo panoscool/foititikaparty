@@ -1,19 +1,12 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
-import {
-  Collapse,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText
-} from "@material-ui/core";
-import { Home, Edit, Search, Info } from "@material-ui/icons";
-import { ExpandMore, ExpandLess } from "@material-ui/icons";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
+import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
+import { Home, Edit, Search } from '@material-ui/icons';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: "100%",
+    width: '100%',
     maxWidth: 360,
     backgroundColor: theme.palette.background.paper
   },
@@ -23,30 +16,17 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const navigation = [
-  { to: "/", label: "Home", icon: <Home /> },
-  { to: "/bicycle/search", label: "Search", icon: <Search /> },
-  { to: "/bicycle/create", label: "Create", icon: <Edit /> }
-];
-
-const subNav = [
-  { to: "/contact", label: "Contact" },
-  { to: "/market-guide", label: "Market Guide" },
-  { to: "/users-faq", label: "Users F.A.Q." },
-  { to: "/sign-up", label: "Signup" },
-  { to: "/sign-in", label: "Signin" }
+  { to: '/', label: 'Home', icon: <Home /> },
+  { to: '/search', label: 'Search', icon: <Search /> },
+  { to: '/event/create', label: 'Create Event', icon: <Edit /> }
 ];
 
 interface Props {
-  handleDrawerToggle: () => void
+  handleDrawerToggle: () => void;
 }
 
-const DrawerMenu: React.FC<Props> = ({ handleDrawerToggle }) => {
+function DrawerMenu(handleDrawerToggle: Props) {
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
-
-  function handleClick() {
-    setOpen(!open);
-  }
 
   return (
     <List
@@ -66,31 +46,7 @@ const DrawerMenu: React.FC<Props> = ({ handleDrawerToggle }) => {
           <ListItemText primary={nav.label} />
         </ListItem>
       ))}
-
-      <ListItem button onClick={handleClick}>
-        <ListItemIcon>
-          <Info />
-        </ListItemIcon>
-        <ListItemText primary="Informations" />
-        {open ? <ExpandLess /> : <ExpandMore />}
-      </ListItem>
-      <Collapse in={open} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          {subNav.slice(0, 3).map(nav => (
-            <ListItem
-              button
-              component={Link}
-              to={nav.to}
-              key={nav.to}
-              onClick={handleDrawerToggle}
-              className={classes.nested}
-            >
-              <ListItemText primary={nav.label} />
-            </ListItem>
-          ))}
-        </List>
-      </Collapse>
     </List>
   );
-};
+}
 export default DrawerMenu;

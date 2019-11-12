@@ -1,8 +1,8 @@
 import React from 'react';
 import Layout from './components/Layout/Layout';
-import EventPage from './components/Event/EventDashboard/EventPage';
+import EventPage from './components/Event/EventPage';
 
-const App: React.FC = () => {
+function App() {
   return (
     <Layout>
       <EventPage />
