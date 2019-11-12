@@ -22,10 +22,10 @@ const navigation = [
 ];
 
 interface Props {
-  handleDrawerToggle: () => void;
+  handleDrawerToggle: (event?: any) => void;
 }
 
-function DrawerMenu(handleDrawerToggle: Props) {
+function DrawerMenu({ handleDrawerToggle }: Props) {
   const classes = useStyles();
 
   return (
@@ -37,9 +37,9 @@ function DrawerMenu(handleDrawerToggle: Props) {
       {navigation.map(nav => (
         <ListItem
           button
+          key={nav.to}
           component={Link}
           to={nav.to}
-          key={nav.to}
           onClick={handleDrawerToggle}
         >
           <ListItemIcon>{nav.icon}</ListItemIcon>

@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { teal, amber } from '@material-ui/core/colors';
 
 export interface Props {
-  children: JSX.Element;
+  children: ReactNode;
 }
 
 function ThemeWrapper({ children }: Props) {

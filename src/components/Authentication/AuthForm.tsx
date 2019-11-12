@@ -43,16 +43,18 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function AuthForm(props) {
+interface Props {
+  onSubmit: (e?: any) => void,
+  emailLabel: string,
+  passwordLabel: string,
+  buttonLabel: string,
+  loading?: boolean,
+  error?: string
+}
+
+function AuthForm(props: Props) {
   const classes = useStyles();
-  const {
-    onSubmit,
-    emailLabel,
-    passwordLabel,
-    buttonLabel,
-    loading,
-    error
-  } = props;
+  const { onSubmit, emailLabel, passwordLabel, buttonLabel, loading, error } = props;
 
   const [state, setState] = useState({
     email: "",
@@ -65,8 +67,7 @@ function AuthForm(props) {
 
   const handleSubmit = (event: { preventDefault: () => void; }) => {
     event.preventDefault();
-    const { email, password } = state;
-    onSubmit(email, password);
+    onSubmit(state);
   };
 
   return (
@@ -87,7 +88,7 @@ function AuthForm(props) {
                   required
                   name="email"
                   type="email"
-                  value={state.identity}
+                  value={state.email}
                   handleChange={handleInputChange}
                   label={emailLabel}
                 />

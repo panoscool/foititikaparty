@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function OutlinedTextFields(props: any) {
+function InputForm(props: any) {
   const classes = useStyles();
 
   const {
@@ -28,6 +28,7 @@ function OutlinedTextFields(props: any) {
     handleChange,
     inputProps
   } = props;
+
   return (
     <TextField
       id="outlined-dense"
@@ -49,4 +50,4 @@ function OutlinedTextFields(props: any) {
   );
 }
 
-export default OutlinedTextFields;
+export default InputForm;

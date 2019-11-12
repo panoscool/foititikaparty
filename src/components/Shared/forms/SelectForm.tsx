@@ -17,12 +17,14 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function SimpleSelect(props) {
+function SelectForm(props: any) {
   const classes = useStyles();
 
   const inputLabel = useRef(null);
   const [labelWidth, setLabelWidth] = useState(0);
+
   useEffect(() => {
+    // @ts-ignore
     setLabelWidth(inputLabel.current.offsetWidth);
   }, []);
 
@@ -41,7 +43,7 @@ function SimpleSelect(props) {
       <Select
         value={values}
         onChange={handleChange}
-        renderValue={value => value.charAt(0).toUpperCase() + value.slice(1)}
+        renderValue={(value: any) => value.charAt(0).toUpperCase() + value.slice(1)}
         input={
           <OutlinedInput
             labelWidth={labelWidth}
@@ -50,7 +52,7 @@ function SimpleSelect(props) {
           />
         }
       >
-        {optionsArray.map(obj => {
+        {optionsArray.map((obj: any) => {
           return (
             <MenuItem key={obj.key} value={obj.value}>
               {obj.value}
@@ -62,4 +64,4 @@ function SimpleSelect(props) {
   );
 }
 
-export default SimpleSelect;
+export default SelectForm;
