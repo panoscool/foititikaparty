@@ -1,9 +1,9 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import Divider from '@material-ui/core/Divider';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
@@ -36,7 +36,7 @@ function EventList({ events }: Props) {
   return (
     <List className={classes.root}>
       {events.map((event: any) => (
-        <ListItem key={event.id} alignItems="flex-start">
+        <ListItem key={event.id} divider alignItems="flex-start">
           <ListItemAvatar>
             <Avatar alt="avatar" src={event.hostPhotoURL} />
           </ListItemAvatar>
@@ -52,7 +52,7 @@ function EventList({ events }: Props) {
                 >
                   {event.hostedBy}
                 </Typography>
-                — Mon 01 Dec 2019 at 22:00
+                {' — Mon 01 Dec 2019 at 22:00'}
                 <Typography
                   component='span'
                   variant="body2"
@@ -66,14 +66,12 @@ function EventList({ events }: Props) {
             }
           />
           <ListItemSecondaryAction>
-            <Button variant="outlined" color="primary">
+            <Button component={Link} to={`/event/${event.id}`} variant="outlined" color="primary">
               View
-          </Button>
+            </Button>
           </ListItemSecondaryAction>
         </ListItem>
       ))}
-
-      <Divider variant="inset" component="li" />
     </List>
   );
 }

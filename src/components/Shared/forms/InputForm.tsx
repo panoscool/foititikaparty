@@ -16,33 +16,15 @@ const useStyles = makeStyles(theme => ({
 function InputForm(props: any) {
   const classes = useStyles();
 
-  const {
-    name,
-    label,
-    values,
-    placeholder,
-    type,
-    required,
-    multiline,
-    rows,
-    handleChange,
-    inputProps
-  } = props;
+  const { handleChange, inputProps, ...rest } = props;
 
   return (
     <TextField
       id="outlined-dense"
       margin="dense"
       variant="outlined"
-      required={required}
-      name={name}
-      value={values}
-      label={label}
-      type={type}
-      placeholder={placeholder}
-      multiline={multiline}
-      rows={rows}
       fullWidth
+      {...rest}
       inputProps={inputProps}
       onChange={handleChange}
       className={clsx(classes.textField, classes.dense)}

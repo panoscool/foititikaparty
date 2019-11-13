@@ -28,7 +28,7 @@ function SelectForm(props: any) {
     setLabelWidth(inputLabel.current.offsetWidth);
   }, []);
 
-  const { name, values, optionsArray, label, required, handleChange } = props;
+  const { name, value, optionsArray, label, required, handleChange } = props;
 
   return (
     <FormControl
@@ -41,7 +41,7 @@ function SelectForm(props: any) {
         {label}
       </InputLabel>
       <Select
-        value={values}
+        value={value}
         onChange={handleChange}
         renderValue={(value: any) => value.charAt(0).toUpperCase() + value.slice(1)}
         input={
@@ -52,10 +52,10 @@ function SelectForm(props: any) {
           />
         }
       >
-        {optionsArray.map((obj: any) => {
+        {optionsArray.map((option: any) => {
           return (
-            <MenuItem key={obj.key} value={obj.value}>
-              {obj.value}
+            <MenuItem key={option.key} value={option.value}>
+              {option.value}
             </MenuItem>
           );
         })}

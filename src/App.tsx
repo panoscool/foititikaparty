@@ -2,13 +2,17 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Layout from './components/Layout/Layout';
 import EventPage from './components/Event/EventPage';
-import EventForm from './components/Event/EventForm';
+import EventCreate from './components/Event/EventCreate';
+import EventEdit from './components/Event/EventEdit';
+import EventDetailsPage from './components/Event/EventDetails/EventDetailsPage';
 
 function App() {
   return (
     <Layout>
       <Switch>
-        <Route path="/event/create" component={EventForm} />
+        <Route path="/event/:id" component={EventDetailsPage} />
+        <Route path="/event/create" component={EventCreate} />
+        <Route path="/event/:id/edit" component={EventEdit} />
         <Route path="/" component={EventPage} />
       </Switch>
     </Layout>

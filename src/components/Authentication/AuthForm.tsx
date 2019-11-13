@@ -61,7 +61,7 @@ function AuthForm(props: Props) {
     password: ""
   });
 
-  const handleInputChange = (event: { target: { name: any; value: any; }; }) => {
+  const handleInputChange = (event: any) => {
     setState({ ...state, [event.target.name]: event.target.value });
   };
 

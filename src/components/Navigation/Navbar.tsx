@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Navbar: React.FC = () => {
+function Navbar() {
   const classes = useStyles();
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -65,7 +65,7 @@ const Navbar: React.FC = () => {
             noWrap
           >
             <Link to='/' className={classes.link}>
-              <img src='assets/logo.png' className={classes.logo} alt='logo' />
+              <img src='/assets/logo.png' className={classes.logo} alt='logo' />
             </Link>
           </Typography>
           <MenuLinks />
