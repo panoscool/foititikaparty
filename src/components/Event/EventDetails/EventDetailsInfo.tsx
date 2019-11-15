@@ -49,7 +49,7 @@ function EventDetailsInfo() {
             <ListItemText primary="Empire State Building, New York" />
             <ListItemSecondaryAction>
               <Button
-                color="secondary"
+                color={open ? 'secondary' : 'primary'}
                 variant="contained"
                 onClick={handleOpenMap}
               >

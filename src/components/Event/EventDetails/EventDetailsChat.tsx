@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
   },
   chatLabel: {
     color: 'white',
-    backgroundColor: '#009688',
+    backgroundColor: '#212121',
     padding: 8,
     borderRadius: 4,
   }
@@ -27,7 +27,7 @@ function EventDetailsChat() {
         <InputForm rows="3" multiline />
         <Button
           variant="contained"
-          color="secondary"
+          color="primary"
           className={classes.button}
           startIcon={<EditOutlined />}>Add Reply</Button>
       </form>

@@ -14,7 +14,8 @@ const useStyles = makeStyles(theme => ({
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
-    boxShadow: 'none'
+    boxShadow: 'none',
+    background: '#212121'
   },
   navIconHide: {
     [theme.breakpoints.up('md')]: {
