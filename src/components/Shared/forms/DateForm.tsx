@@ -4,18 +4,19 @@ import React from 'react';
 import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 
 interface Props {
+  label: string;
   selectedDate: object;
   handleDateChange: (e?: any) => void;
 }
 
-function DateForm({ selectedDate, handleDateChange }: Props) {
+function DateForm({ label, selectedDate, handleDateChange }: Props) {
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils} locale={elLocale}>
       <DateTimePicker
         fullWidth
         margin="dense"
         inputVariant="outlined"
-        label="Date"
+        label={label}
         value={selectedDate}
         onChange={handleDateChange}
       />

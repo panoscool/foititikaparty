@@ -9,6 +9,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import Page from '../../Layout/Page';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -26,37 +27,39 @@ function EventDetailsInfo() {
   }
 
   return (
-    <div className={classes.root}>
-      <List>
-        <ListItem divider>
-          <ListItemIcon>
-            <InfoOutlined color="primary" />
-          </ListItemIcon>
-          <ListItemText primary="Brunch this weekend." />
-        </ListItem>
-        <ListItem divider>
-          <ListItemIcon>
-            <CalendarTodayOutlined color="primary" />
-          </ListItemIcon>
-          <ListItemText primary="20 Nov 2019 at 7:00 pm" />
-        </ListItem>
-        <ListItem>
-          <ListItemIcon>
-            <RoomOutlined color="primary" />
-          </ListItemIcon>
-          <ListItemText primary="Empire State Building, New York" />
-          <ListItemSecondaryAction>
-            <Button
-              color="secondary"
-              variant="contained"
-              onClick={handleOpenMap}
-            >
-              {open ? 'Hide map' : 'Show map'}
-            </Button>
-          </ListItemSecondaryAction>
-        </ListItem>
-      </List>
-    </div>
+    <Page>
+      <div className={classes.root}>
+        <List>
+          <ListItem divider>
+            <ListItemIcon>
+              <InfoOutlined color="primary" />
+            </ListItemIcon>
+            <ListItemText primary="Brunch this weekend." />
+          </ListItem>
+          <ListItem divider>
+            <ListItemIcon>
+              <CalendarTodayOutlined color="primary" />
+            </ListItemIcon>
+            <ListItemText primary="20 Nov 2019 at 7:00 pm" />
+          </ListItem>
+          <ListItem>
+            <ListItemIcon>
+              <RoomOutlined color="primary" />
+            </ListItemIcon>
+            <ListItemText primary="Empire State Building, New York" />
+            <ListItemSecondaryAction>
+              <Button
+                color="secondary"
+                variant="contained"
+                onClick={handleOpenMap}
+              >
+                {open ? 'Hide map' : 'Show map'}
+              </Button>
+            </ListItemSecondaryAction>
+          </ListItem>
+        </List>
+      </div>
+    </Page>
   );
 }
 

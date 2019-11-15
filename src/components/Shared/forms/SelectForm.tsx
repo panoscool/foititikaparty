@@ -44,18 +44,11 @@ function SelectForm(props: any) {
         value={value}
         onChange={handleChange}
         renderValue={(value: any) => value.charAt(0).toUpperCase() + value.slice(1)}
-        input={
-          <OutlinedInput
-            labelWidth={labelWidth}
-            name={name}
-            id="outlined-select"
-          />
-        }
-      >
+        input={<OutlinedInput labelWidth={labelWidth} name={name} />}>
         {optionsArray.map((option: any) => {
           return (
             <MenuItem key={option.key} value={option.value}>
-              {option.value}
+              {option.label}
             </MenuItem>
           );
         })}

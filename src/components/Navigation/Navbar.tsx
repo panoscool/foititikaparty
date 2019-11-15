@@ -65,7 +65,7 @@ function Navbar() {
             noWrap
           >
             <Link to='/' className={classes.link}>
-              <img src='/assets/logo.png' className={classes.logo} alt='logo' />
+              <img src='/assets/images/logo.png' className={classes.logo} alt='logo' />
             </Link>
           </Typography>
           <MenuLinks />
