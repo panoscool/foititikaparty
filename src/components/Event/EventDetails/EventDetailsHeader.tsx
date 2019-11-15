@@ -32,7 +32,7 @@ function EventDetailsHeader() {
   return (
     <Page>
       <div className={classes.imageStyle}>
-        <img src='/assets/categories/culture.jpg' className={classes.iamgeResponsive} />
+        <img src='/assets/categories/culture.jpg' alt='Category' className={classes.iamgeResponsive} />
         <div className={classes.imageTextStyle}>
           <Typography color='inherit'>Pizza night</Typography>
           <Typography color='inherit'>Wednesday 1st January 2020</Typography>
