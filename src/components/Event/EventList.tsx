@@ -9,6 +9,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -27,52 +28,59 @@ const useStyles = makeStyles(theme => ({
 }));
 
 interface Props {
-  events: Record<string, any>
+  events: Record<string, any>;
 }
 
 function EventList({ events }: Props) {
   const classes = useStyles();
 
   return (
-    <List className={classes.root}>
-      {events.map((event: any) => (
-        <ListItem key={event.id} divider alignItems="flex-start">
-          <ListItemAvatar>
-            <Avatar alt="avatar" src={event.hostPhotoURL} />
-          </ListItemAvatar>
-          <ListItemText
-            primary={<Typography variant="h6">{event.title}</Typography>}
-            secondary={
-              <React.Fragment>
-                <Typography
-                  component="span"
-                  variant="body2"
-                  className={classes.inline}
-                  color="textPrimary"
-                >
-                  {event.hostedBy}
-                </Typography>
-                {' — Mon 01 Dec 2019 at 22:00'}
-                <Typography
-                  component='span'
-                  variant="body2"
-                  className={classes.spacing}
-                  color="textPrimary"
-                >
-                  {event.description}
-                </Typography>
-                {`Attendees: ${event.attendees.length}`}
-              </React.Fragment>
-            }
-          />
-          <ListItemSecondaryAction>
-            <Button component={Link} to={`/event/${event.id}`} variant="outlined" color="primary">
-              View
-            </Button>
-          </ListItemSecondaryAction>
-        </ListItem>
-      ))}
-    </List>
+    <Paper>
+      <List className={classes.root}>
+        {events.map((event: any) => (
+          <ListItem key={event.id} divider alignItems="flex-start">
+            <ListItemAvatar>
+              <Avatar alt="avatar" src={event.hostPhotoURL} />
+            </ListItemAvatar>
+            <ListItemText
+              primary={<Typography variant="h6">{event.title}</Typography>}
+              secondary={
+                <React.Fragment>
+                  <Typography
+                    component="span"
+                    variant="body2"
+                    className={classes.inline}
+                    color="textPrimary"
+                  >
+                    {event.hostedBy}
+                  </Typography>
+                  {' — Mon 01 Dec 2019 at 22:00'}
+                  <Typography
+                    component="span"
+                    variant="body2"
+                    className={classes.spacing}
+                    color="textPrimary"
+                  >
+                    {event.description}
+                  </Typography>
+                  {`Attendees: ${event.attendees.length}`}
+                </React.Fragment>
+              }
+            />
+            <ListItemSecondaryAction>
+              <Button
+                component={Link}
+                to={`/event/${event.id}`}
+                variant="outlined"
+                color="primary"
+              >
+                View
+              </Button>
+            </ListItemSecondaryAction>
+          </ListItem>
+        ))}
+      </List>
+    </Paper>
   );
 }
 

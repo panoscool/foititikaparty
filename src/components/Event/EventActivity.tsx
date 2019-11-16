@@ -7,35 +7,54 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Divider from '@material-ui/core/Divider';
+import Paper from '@material-ui/core/Paper';
 
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: theme.palette.background.paper
   }
 }));
+
+const activity = [
+  {
+    userImg: '/assets/images/user.png',
+    primary: 'New Event!',
+    secondary: 'about 10 hours ago'
+  },
+  {
+    userImg: '/assets/images/user.png',
+    primary: 'New Event!',
+    secondary: 'about 5 hours ago'
+  },
+  {
+    userImg: '/assets/images/user.png',
+    primary: 'Canceled Event.',
+    secondary: 'about 15 hours ago'
+  }
+];
 
 export default function NestedList() {
   const classes = useStyles();
 
   return (
-    <List
-      className={classes.root}
-      subheader={
-        <ListSubheader>
-          Recent Activity
-        </ListSubheader>
-      }
-    >
-      <Divider variant='fullWidth' />
-      <ListItem>
-        <ListItemAvatar>
-          <Avatar>
-            <img src='/assets/images/user.png' width='45px' height='auto' alt='user' />
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="New Event!" secondary="about 15 hours ago" />
-      </ListItem>
-    </List>
+    <Paper>
+      <List
+        className={classes.root}
+        subheader={<ListSubheader>Recent Activity</ListSubheader>}
+      >
+        <Divider variant="fullWidth" />
+        {activity.map((a, index) => (
+          <ListItem key={index}>
+            <ListItemAvatar>
+              <Avatar>
+                <img src={a.userImg} width="45px" height="auto" alt="user" />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText primary={a.primary} secondary={a.secondary} />
+          </ListItem>
+        ))}
+      </List>
+    </Paper>
   );
 }

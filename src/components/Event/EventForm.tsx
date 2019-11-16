@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, Typography } from '@material-ui/core';
 import Page from '../Layout/Page';
@@ -51,12 +52,12 @@ function EventForm({ handleFormSubmit }: Props) {
     { label: 'Music', value: 'music' },
     { label: 'Culture', value: 'culture' },
     { label: 'Travel', value: 'travel' }
-  ]
+  ];
 
   return (
     <Page>
       <form onSubmit={handleSubmit} autoComplete="off">
-        <Typography color='secondary'>EVENT DETAILS</Typography>
+        <Typography color="secondary">EVENT DETAILS</Typography>
         <InputForm
           name="title"
           label="Event Title"
@@ -64,6 +65,7 @@ function EventForm({ handleFormSubmit }: Props) {
           handleChange={handleChange}
         />
         <SelectForm
+          name="category"
           label="Category"
           optionsArray={categories}
           value={state.category}
@@ -73,11 +75,13 @@ function EventForm({ handleFormSubmit }: Props) {
           rows="5"
           multiline
           name="description"
-          label='Description'
+          label="Description"
           value={state.description}
           handleChange={handleChange}
         />
-        <Typography color='secondary' className={classes.sectionLabel}>EVENT LOCATION DETAILS</Typography>
+        <Typography color="secondary" className={classes.sectionLabel}>
+          EVENT LOCATION DETAILS
+        </Typography>
         <InputForm
           name="city"
           label="City"
@@ -103,6 +107,8 @@ function EventForm({ handleFormSubmit }: Props) {
         />
         <div className={classes.btnAlignment}>
           <Button
+            component={Link}
+            to="/"
             color="default"
             variant="contained"
             className={classes.button}

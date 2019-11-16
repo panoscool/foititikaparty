@@ -1,10 +1,19 @@
 import React, { Fragment, useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { AppBar, Toolbar, IconButton, Typography, Hidden, Drawer, CssBaseline } from '@material-ui/core';
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Typography,
+  Hidden,
+  Drawer,
+  CssBaseline
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Menu } from '@material-ui/icons';
 import MenuLinks from './Parts/MenuLinks';
 import DrawerMenu from './Parts/DrawerMenu';
+import AuthMenu from './Parts/AuthMenu';
 
 const drawerWidth = 240;
 
@@ -49,32 +58,37 @@ function Navbar() {
     <Fragment>
       <CssBaseline />
 
-      <AppBar position='fixed' className={classes.appBar}>
+      <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
           <IconButton
-            color='inherit'
-            aria-label='open-drawer'
+            color="inherit"
+            aria-label="open-drawer"
             onClick={handleDrawerToggle}
             className={classes.navIconHide}
           >
             <Menu />
           </IconButton>
           <Typography
-            variant='h6'
-            color='inherit'
+            variant="h6"
+            color="inherit"
             className={classes.grow}
             noWrap
           >
-            <Link to='/' className={classes.link}>
-              <img src='/assets/images/logo.png' className={classes.logo} alt='logo' />
+            <Link to="/" className={classes.link}>
+              <img
+                src="/assets/images/logo.png"
+                className={classes.logo}
+                alt="logo"
+              />
             </Link>
           </Typography>
           <MenuLinks />
+          <AuthMenu />
         </Toolbar>
       </AppBar>
       <Hidden mdUp>
         <Drawer
-          variant='temporary'
+          variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
           classes={{ paper: classes.drawerPaper }}

@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 import { Hidden, Button } from '@material-ui/core';
 
 const navigation = [
-  { to: '/search', label: 'Search' },
-  { to: '/event/create', label: 'Create Event' },
-  { to: '/auth', label: 'Auth' }
+  { to: '/events', label: 'Events' },
+  { to: '/people', label: 'People' },
+  { to: '/event/create', label: 'Create Event' }
 ];
 
 function MenuLinks() {

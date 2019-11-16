@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
-import { Home, Edit, Search } from '@material-ui/icons';
+import { Home, Edit, Event, People } from '@material-ui/icons';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -17,7 +17,8 @@ const useStyles = makeStyles(theme => ({
 
 const navigation = [
   { to: '/', label: 'Home', icon: <Home /> },
-  { to: '/search', label: 'Search', icon: <Search /> },
+  { to: '/events', label: 'Events', icon: <Event /> },
+  { to: '/people', label: 'People', icon: <People /> },
   { to: '/event/create', label: 'Create Event', icon: <Edit /> }
 ];
 
