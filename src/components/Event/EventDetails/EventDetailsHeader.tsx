@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Button } from '@material-ui/core';
-import Page from '../../Layout/Page';
+import { Page } from '../../Layout/Page';
 
 const useStyles = makeStyles(theme => ({
   button: {

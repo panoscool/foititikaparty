@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Paper } from "@material-ui/core";
 
@@ -7,13 +7,26 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(2),
     padding: theme.spacing(2),
     color: theme.palette.text.secondary
+  },
+  pageInner: {
+    padding: theme.spacing(2),
+    margin: theme.spacing(0),
+    color: theme.palette.text.secondary
   }
 }));
 
-function Page(props) {
+interface Props {
+  children: ReactNode;
+}
+
+export function Page(props: Props) {
   const classes = useStyles();
 
   return <Paper className={classes.paper}>{props.children}</Paper>;
 }
 
-export default Page;
+export function PageInner(props: Props) {
+  const classes = useStyles();
+
+  return <Paper className={classes.pageInner}>{props.children}</Paper>;
+}

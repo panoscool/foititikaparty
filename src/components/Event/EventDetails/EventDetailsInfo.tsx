@@ -9,7 +9,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import Page from '../../Layout/Page';
+import { Page } from '../../Layout/Page';
 
 const useStyles = makeStyles(theme => ({
   root: {

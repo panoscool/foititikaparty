@@ -1,7 +1,8 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Navbar from "../Navigation/Navbar";
 
+// @ts-ignore
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -14,12 +15,15 @@ const useStyles = makeStyles(theme => ({
   toolbar: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.default,
-    padding: `theme.spacing(y) * 3`
+    backgroundColor: theme.palette.background.default
   }
 }));
 
-function Layout(props) {
+export interface Props {
+  children: ReactNode;
+}
+
+function Layout(props: Props) {
   const classes = useStyles();
 
   return (

@@ -8,7 +8,7 @@ function AuthMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
-  const handleMenu = event => {
+  const handleMenu = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
 

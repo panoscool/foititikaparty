@@ -10,7 +10,6 @@ const useStyles = makeStyles(theme => ({
     padding: '2px 4px',
     display: 'flex',
     alignItems: 'center',
-    marginTop: theme.spacing(1)
   },
   input: {
     marginLeft: theme.spacing(1),
@@ -29,15 +28,17 @@ export default function CustomizedInputBase() {
   const classes = useStyles();
 
   return (
-    <Paper component="form" className={classes.root}>
-      <InputBase
-        className={classes.input}
-        placeholder="Search for event"
-        inputProps={{ 'aria-label': 'search for event' }}
-      />
-      <IconButton className={classes.iconButton} aria-label="search">
-        <SearchIcon />
-      </IconButton>
-    </Paper>
+    <form>
+      <Paper className={classes.root}>
+        <InputBase
+          className={classes.input}
+          placeholder="Search for event"
+          inputProps={{ 'aria-label': 'search for event' }}
+        />
+        <IconButton type='submit' className={classes.iconButton} aria-label="search">
+          <SearchIcon />
+        </IconButton>
+      </Paper>
+    </form>
   );
 }

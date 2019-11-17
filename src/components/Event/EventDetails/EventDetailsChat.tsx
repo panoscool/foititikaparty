@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Button } from '@material-ui/core';
 import { EditOutlined } from '@material-ui/icons';
-import Page from '../../Layout/Page';
+import { Page } from '../../Layout/Page';
 import InputForm from '../../Shared/forms/InputForm';
 
 const useStyles = makeStyles(theme => ({
@@ -12,8 +12,9 @@ const useStyles = makeStyles(theme => ({
   chatLabel: {
     color: 'white',
     backgroundColor: '#212121',
-    padding: 8,
+    padding: 4,
     borderRadius: 4,
+    margin: theme.spacing(-2, -2, 0, -2)
   }
 }));
 
@@ -22,7 +23,7 @@ function EventDetailsChat() {
 
   return (
     <Page>
-      <div className={classes.chatLabel}><Typography variant='h5' align='center'>Chat about this event</Typography></div>
+      <div className={classes.chatLabel}><Typography variant='h6' align='center'>Chat about this event</Typography></div>
       <form>
         <InputForm rows="3" multiline />
         <Button
