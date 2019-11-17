@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import { Button, Typography, Paper } from '@material-ui/core';
+import { Button, Typography } from '@material-ui/core';
 import { Page } from '../Layout/Page';
 import InputForm from '../Shared/forms/InputForm';
 import DateForm from '../Shared/forms/DateForm';

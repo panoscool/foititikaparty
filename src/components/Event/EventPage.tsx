@@ -5,7 +5,6 @@ import EventList from './EventList';
 import sampleData from './sampleData';
 import EventActivity from './EventActivity';
 import SearchField from '../Shared/SearchField';
-import { Page } from '../Layout/Page';
 
 const useStyles = makeStyles(theme => ({
   root: {
