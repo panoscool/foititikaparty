@@ -1,14 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import InfoOutlined from '@material-ui/icons/InfoOutlined';
 import CalendarTodayOutlined from '@material-ui/icons/CalendarTodayOutlined';
-import RoomOutlined from '@material-ui/icons/RoomOutlined';
 import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import { Page } from '../../Layout/Page';
 
 const useStyles = makeStyles(theme => ({
@@ -20,11 +18,6 @@ const useStyles = makeStyles(theme => ({
 
 function EventDetailsInfo() {
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
-
-  function handleOpenMap() {
-    setOpen(!open);
-  }
 
   return (
     <Page>
@@ -42,22 +35,10 @@ function EventDetailsInfo() {
             </ListItemIcon>
             <ListItemText primary="20 Nov 2019 at 7:00 pm" />
           </ListItem>
-          <ListItem>
-            <ListItemIcon>
-              <RoomOutlined color="primary" />
-            </ListItemIcon>
-            <ListItemText primary="Empire State Building, New York" />
-            <ListItemSecondaryAction>
-              <Button
-                color={open ? 'secondary' : 'primary'}
-                variant="contained"
-                onClick={handleOpenMap}
-              >
-                {open ? 'Hide map' : 'Show map'}
-              </Button>
-            </ListItemSecondaryAction>
-          </ListItem>
         </List>
+        <Button color="secondary" variant="contained">
+          Join this event
+        </Button>
       </div>
     </Page>
   );
