@@ -9,7 +9,7 @@ import {
   Drawer,
   CssBaseline
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { Menu } from '@material-ui/icons';
 import MenuLinks from './Parts/MenuLinks';
 import DrawerMenu from './Parts/DrawerMenu';
@@ -17,34 +17,36 @@ import AuthMenu from './Parts/AuthMenu';
 
 const drawerWidth = 240;
 
-const useStyles = makeStyles(theme => ({
-  grow: {
-    flexGrow: 1
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    boxShadow: 'none',
-    background: '#212121'
-  },
-  navIconHide: {
-    [theme.breakpoints.up('md')]: {
-      display: 'none'
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    grow: {
+      flexGrow: 1
+    },
+    appBar: {
+      zIndex: theme.zIndex.drawer + 1,
+      boxShadow: 'none',
+      background: '#212121'
+    },
+    navIconHide: {
+      [theme.breakpoints.up('md')]: {
+        display: 'none'
+      }
+    },
+    drawerPaper: {
+      width: drawerWidth,
+      [theme.breakpoints.up('md')]: {
+        position: 'relative'
+      }
+    },
+    link: {
+      textDecoration: 'inherit',
+      color: 'inherit'
+    },
+    logo: {
+      height: 50
     }
-  },
-  drawerPaper: {
-    width: drawerWidth,
-    [theme.breakpoints.up('md')]: {
-      position: 'relative'
-    }
-  },
-  link: {
-    textDecoration: 'inherit',
-    color: 'inherit'
-  },
-  logo: {
-    height: 50
-  }
-}));
+  })
+);
 
 function Navbar() {
   const classes = useStyles();

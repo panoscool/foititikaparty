@@ -1,19 +1,21 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import { Home, Edit, Event, People } from '@material-ui/icons';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    width: '100%',
-    maxWidth: 360,
-    backgroundColor: theme.palette.background.paper
-  },
-  nested: {
-    paddingLeft: theme.spacing(4)
-  }
-}));
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      width: '100%',
+      maxWidth: 360,
+      backgroundColor: theme.palette.background.paper
+    },
+    nested: {
+      paddingLeft: theme.spacing(4)
+    }
+  })
+);
 
 const navigation = [
   { to: '/', label: 'Home', icon: <Home /> },
@@ -23,7 +25,7 @@ const navigation = [
 ];
 
 interface Props {
-  handleDrawerToggle: (event?: any) => void;
+  handleDrawerToggle: () => void;
 }
 
 function DrawerMenu({ handleDrawerToggle }: Props) {

@@ -9,7 +9,7 @@ interface Props {
   handleDateChange: (e?: any) => void;
 }
 
-function DateForm({ label, selectedDate, handleDateChange }: Props) {
+function DateInput({ label, selectedDate, handleDateChange }: Props) {
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils} locale={elLocale}>
       <DateTimePicker
@@ -24,4 +24,4 @@ function DateForm({ label, selectedDate, handleDateChange }: Props) {
   );
 }
 
-export default DateForm;
+export default DateInput;
