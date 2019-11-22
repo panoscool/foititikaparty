@@ -1,19 +1,21 @@
 import React, { ReactNode } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import { Paper } from "@material-ui/core";
 
-const useStyles = makeStyles(theme => ({
-  paper: {
-    margin: theme.spacing(2),
-    padding: theme.spacing(2),
-    color: theme.palette.text.secondary
-  },
-  pageInner: {
-    padding: theme.spacing(2),
-    margin: theme.spacing(0),
-    color: theme.palette.text.secondary
-  }
-}));
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    paper: {
+      margin: theme.spacing(2),
+      padding: theme.spacing(2),
+      color: theme.palette.text.secondary
+    },
+    pageInner: {
+      padding: theme.spacing(2),
+      margin: theme.spacing(0),
+      color: theme.palette.text.secondary
+    }
+  })
+);
 
 interface Props {
   children: ReactNode;
