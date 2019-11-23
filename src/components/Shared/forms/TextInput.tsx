@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-function InputInput(props: any) {
+function TextInput(props: any) {
   const classes = useStyles();
 
   const { handleChange, inputProps, ...rest } = props;
@@ -34,4 +34,4 @@ function InputInput(props: any) {
   );
 }
 
-export default InputInput;
+export default TextInput;

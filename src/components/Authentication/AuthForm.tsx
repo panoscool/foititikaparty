@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Paper, Typography } from "@material-ui/core";
-import InputForm from "../Shared/forms/InputForm";
+import TextInput from "../Shared/forms/TextInput";
 import Spinner from "../Shared/Spinner";
 
 const useStyles = makeStyles(theme => ({
@@ -84,7 +84,7 @@ function AuthForm(props: Props) {
         ) : (
             <form onSubmit={handleSubmit}>
               <div className={classes.inputField}>
-                <InputForm
+                <TextInput
                   required
                   name="email"
                   type="email"
@@ -94,7 +94,7 @@ function AuthForm(props: Props) {
                 />
               </div>
               <div className={classes.inputField}>
-                <InputForm
+                <TextInput
                   required
                   name="password"
                   type="password"
