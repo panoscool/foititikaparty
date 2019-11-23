@@ -1,12 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
@@ -38,7 +36,14 @@ function EventList({ events }: Props) {
     <Paper>
       <List className={classes.root}>
         {events.map((event: any) => (
-          <ListItem key={event.id} divider alignItems="flex-start">
+          <ListItem
+            key={event.id}
+            button
+            divider
+            component={Link}
+            to={`/event/${event.id}`}
+            alignItems="flex-start"
+          >
             <ListItemAvatar>
               <Avatar alt="avatar" src={event.hostPhotoURL} />
             </ListItemAvatar>
@@ -54,7 +59,7 @@ function EventList({ events }: Props) {
                   >
                     {event.hostedBy}
                   </Typography>
-                  {' — Mon 01 Dec 2019 at 22:00'}
+                  {` — ${event.date}`}
                   <Typography
                     component="span"
                     variant="body2"
@@ -67,16 +72,6 @@ function EventList({ events }: Props) {
                 </React.Fragment>
               }
             />
-            <ListItemSecondaryAction>
-              <Button
-                component={Link}
-                to={`/event/${event.id}`}
-                variant="outlined"
-                color="primary"
-              >
-                View
-              </Button>
-            </ListItemSecondaryAction>
           </ListItem>
         ))}
       </List>

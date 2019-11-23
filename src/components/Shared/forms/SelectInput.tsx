@@ -1,23 +1,25 @@
-import React, { useState, useEffect, useRef } from "react";
-import clsx from "clsx";
-import { makeStyles } from "@material-ui/core/styles";
-import OutlinedInput from "@material-ui/core/OutlinedInput";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
+import React, { useState, useEffect, useRef } from 'react';
+import clsx from 'clsx';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
-const useStyles = makeStyles(theme => ({
-  formControl: {
-    minWidth: 120,
-    width: "100%"
-  },
-  dense: {
-    marginTop: theme.spacing(2)
-  }
-}));
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    formControl: {
+      minWidth: 120,
+      width: '100%'
+    },
+    dense: {
+      marginTop: theme.spacing(2)
+    }
+  })
+);
 
-function SelectForm(props: any) {
+function SelectInput(props: any) {
   const classes = useStyles();
 
   const inputLabel = useRef(null);
@@ -43,8 +45,11 @@ function SelectForm(props: any) {
       <Select
         value={value}
         onChange={handleChange}
-        renderValue={(value: any) => value.charAt(0).toUpperCase() + value.slice(1)}
-        input={<OutlinedInput labelWidth={labelWidth} name={name} />}>
+        renderValue={(value: any) =>
+          value.charAt(0).toUpperCase() + value.slice(1)
+        }
+        input={<OutlinedInput labelWidth={labelWidth} name={name} />}
+      >
         {optionsArray.map((option: any) => {
           return (
             <MenuItem key={option.key} value={option.value}>
@@ -57,4 +62,4 @@ function SelectForm(props: any) {
   );
 }
 
-export default SelectForm;
+export default SelectInput;

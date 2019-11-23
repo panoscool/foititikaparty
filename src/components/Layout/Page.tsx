@@ -1,6 +1,6 @@
-import React, { ReactNode } from "react";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
-import { Paper } from "@material-ui/core";
+import React, { ReactNode } from 'react';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import { Paper } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

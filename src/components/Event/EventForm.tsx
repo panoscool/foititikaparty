@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, Typography } from '@material-ui/core';
 import { Page } from '../Layout/Page';
-import InputForm from '../Shared/forms/InputForm';
-import DateForm from '../Shared/forms/DateForm';
-import SelectForm from '../Shared/forms/SelectForm';
+import TextInput from '../Shared/forms/TextInput';
+import DateInput from '../Shared/forms/DateInput';
+import SelectInput from '../Shared/forms/SelectInput';
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -58,20 +58,20 @@ function EventForm({ handleFormSubmit }: Props) {
     <Page>
       <form onSubmit={handleSubmit} autoComplete="off">
         <Typography color="secondary">EVENT DETAILS</Typography>
-        <InputForm
+        <TextInput
           name="title"
           label="Event Title"
           value={state.title}
           handleChange={handleChange}
         />
-        <SelectForm
+        <SelectInput
           name="category"
           label="Category"
           optionsArray={categories}
           value={state.category}
           handleChange={handleChange}
         />
-        <InputForm
+        <TextInput
           rows="5"
           multiline
           name="description"
@@ -82,25 +82,25 @@ function EventForm({ handleFormSubmit }: Props) {
         <Typography color="secondary" className={classes.sectionLabel}>
           EVENT LOCATION DETAILS
         </Typography>
-        <InputForm
+        <TextInput
           name="city"
           label="City"
           value={state.city}
           handleChange={handleChange}
         />
-        <InputForm
+        <TextInput
           name="venue"
           label="Venue"
           value={state.venue}
           handleChange={handleChange}
         />
-        <InputForm
+        <TextInput
           name="hostedBy"
           label="Hosted By"
           value={state.hostedBy}
           handleChange={handleChange}
         />
-        <DateForm
+        <DateInput
           label="Date"
           selectedDate={selectedDate}
           handleDateChange={handleDateChange}
