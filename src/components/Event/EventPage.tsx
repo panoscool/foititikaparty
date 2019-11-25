@@ -5,6 +5,7 @@ import EventList from './EventList';
 import sampleData from './sampleData';
 import EventActivity from './EventActivity';
 import SearchField from '../Shared/SearchField';
+import PlaceInput from '../Shared/forms/PlaceInput';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -34,6 +35,7 @@ function EventPage() {
           <EventActivity />
         </Grid>
       </Grid>
+      <PlaceInput />
     </div>
   );
 }
