@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -13,23 +13,25 @@ function Wrapper({ width, height, id }: PropsStyle) {
 }
 
 function PlaceInput() {
+  const mapRef = useRef({});
+
   useEffect(() => {
-    const map = L.map('map', {
-      center: [37.7833, -122.4167],
-      zoom: 10,
-      zoomControl: false
+    const map = L.map("map", {
+      center: [51.5074, 0.1278],
+      zoom: 16,
+      layers: [
+        L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
+          attribution:
+            '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        })
+      ]
     });
 
-    L.marker([37.7833, -122.4167]).addTo(map);
+    L.marker([51.5074, 0.1278]).addTo(map);
+  }, []);
 
-    L.control.scale().addTo(map);
 
-    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-  }, [])
-
-  return <Wrapper id='map' width='720px' height='520px' />
+  return <Wrapper id='map' width='100%' height='320px' />
 }
 
 export default PlaceInput;
