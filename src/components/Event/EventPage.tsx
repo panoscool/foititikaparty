@@ -5,7 +5,7 @@ import EventList from './EventList';
 import EventActivity from './EventActivity';
 import SearchField from '../Shared/SearchField';
 import PlaceInput from '../Shared/forms/PlaceInput';
-import sampleData from './sampleData';
+import sampleData from './sampleData.json';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

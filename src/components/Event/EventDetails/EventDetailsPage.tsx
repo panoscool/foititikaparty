@@ -5,11 +5,12 @@ import EventDetailsHeader from './EventDetailsHeader';
 import EventDetailsInfo from './EventDetailsInfo';
 import EventDetailsChat from './EventDetailsChat';
 import EventDetailsSidebar from './EventDetailsSidebar';
-import sampleData from '../sampleData';
+import sampleData from '../sampleData.json';
 
 function EventDetailsPage() {
   const { id } = useParams();
 
+  // @ts-ignore
   const data = sampleData[id - 1];
 
   return (
