@@ -4,8 +4,8 @@ import { Grid } from '@material-ui/core';
 import EventDetailsHeader from './EventDetailsHeader';
 import EventDetailsInfo from './EventDetailsInfo';
 import EventDetailsChat from './EventDetailsChat';
-import sampleData from '../sampleData';
 import EventDetailsSidebar from './EventDetailsSidebar';
+import sampleData from '../sampleData';
 
 function EventDetailsPage() {
   const { id } = useParams();
