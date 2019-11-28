@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import InfoOutlined from '@material-ui/icons/InfoOutlined';
 import CalendarTodayOutlined from '@material-ui/icons/CalendarTodayOutlined';
 import Button from '@material-ui/core/Button';
@@ -7,40 +7,63 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import { Page } from '../../Layout/Page';
+import Paper from '@material-ui/core/Paper';
+import { format, parseISO } from 'date-fns';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    width: '100%',
-    backgroundColor: theme.palette.background.paper
-  }
-}));
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    paper: {
+      margin: theme.spacing(2, 0, 2, 2)
+    },
+    button: {
+      margin: theme.spacing(0, 1, 1, 1)
+    },
+    btnPosition: {
+      textAlign: 'right'
+    }
+  })
+);
 
-function EventDetailsInfo() {
+interface DataObject {
+  description: string;
+  date: string;
+}
+
+interface Props {
+  data: DataObject;
+}
+
+function EventDetailsInfo({ data }: Props) {
   const classes = useStyles();
 
+  const formatedDate = format(parseISO(data.date), 'dd MMMM yyyy');
+
   return (
-    <Page>
-      <div className={classes.root}>
-        <List>
-          <ListItem divider>
-            <ListItemIcon>
-              <InfoOutlined color="primary" />
-            </ListItemIcon>
-            <ListItemText primary="Brunch this weekend." />
-          </ListItem>
-          <ListItem divider>
-            <ListItemIcon>
-              <CalendarTodayOutlined color="primary" />
-            </ListItemIcon>
-            <ListItemText primary="20 Nov 2019 at 7:00 pm" />
-          </ListItem>
-        </List>
-        <Button color="secondary" variant="contained">
+    <Paper className={classes.paper}>
+      <List>
+        <ListItem divider>
+          <ListItemIcon>
+            <CalendarTodayOutlined color="primary" />
+          </ListItemIcon>
+          <ListItemText primary={formatedDate} />
+        </ListItem>
+        <ListItem divider>
+          <ListItemIcon>
+            <InfoOutlined color="primary" />
+          </ListItemIcon>
+          <ListItemText primary={data.description} />
+        </ListItem>
+      </List>
+      <div className={classes.btnPosition}>
+        <Button
+          color="secondary"
+          variant="contained"
+          className={classes.button}
+        >
           Join this event
         </Button>
       </div>
-    </Page>
+    </Paper>
   );
 }
 

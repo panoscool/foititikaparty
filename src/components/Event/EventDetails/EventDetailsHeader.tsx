@@ -7,15 +7,18 @@ import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Collapse from '@material-ui/core/Collapse';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import MoreVert from '@material-ui/icons/MoreVert';
+import ExpandMore from '@material-ui/icons/ExpandMore';
 import RoomOutlined from '@material-ui/icons/RoomOutlined';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     card: {
-      margin: theme.spacing(2)
+      margin: theme.spacing(2, 0, 2, 2)
     },
     media: {
       height: 0,
@@ -37,9 +40,32 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function RecipeReviewCard() {
+interface DataObject {
+  title: string;
+  description: string;
+  venue: string;
+  date: string;
+  category: string;
+  hostedBy: string;
+  hostPhotoURL: string;
+}
+
+interface Props {
+  data: DataObject;
+}
+
+function EventDetailsHeader({ data }: Props) {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -48,17 +74,36 @@ export default function RecipeReviewCard() {
   return (
     <Card className={classes.card}>
       <CardHeader
-        avatar={<Avatar aria-label="recipe">R</Avatar>}
-        title="Shrimp and Chorizo Paella"
-        subheader="September 14, 2016"
+        avatar={<Avatar alt="avatar" src={data.hostPhotoURL} />}
+        action={
+          <IconButton
+            aria-label="settings"
+            aria-haspopup="true"
+            onClick={handleClick}
+          >
+            <MoreVert />
+          </IconButton>
+        }
+        title={data.title}
+        subheader={data.hostedBy}
       />
+      <Menu
+        id="settings"
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={handleClose}>Edit</MenuItem>
+        <MenuItem onClick={handleClose}>Delete</MenuItem>
+        <MenuItem onClick={handleClose}>Cancel event</MenuItem>
+      </Menu>
       <CardMedia
         className={classes.media}
-        image="/assets/categories/culture.jpg"
+        image={`/assets/categories/${data.category}.jpg`}
       />
       <CardActions disableSpacing>
         <RoomOutlined className={classes.icon} color="primary" />
-        Empire State Building, New York
+        {data.venue}
         <IconButton
           className={clsx(classes.expand, {
             [classes.expandOpen]: expanded
@@ -67,7 +112,7 @@ export default function RecipeReviewCard() {
           aria-expanded={expanded}
           aria-label="show more"
         >
-          <ExpandMoreIcon />
+          <ExpandMore />
         </IconButton>
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
@@ -76,3 +121,5 @@ export default function RecipeReviewCard() {
     </Card>
   );
 }
+
+export default EventDetailsHeader;

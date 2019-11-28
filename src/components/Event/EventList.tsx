@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -9,21 +9,23 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    width: '100%',
-    backgroundColor: theme.palette.background.paper
-  },
-  inline: {
-    display: 'inline'
-  },
-  spacing: {
-    display: 'block',
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
-    paddingRight: theme.spacing(3)
-  }
-}));
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      width: '100%',
+      backgroundColor: theme.palette.background.paper
+    },
+    inline: {
+      display: 'inline'
+    },
+    spacing: {
+      display: 'block',
+      paddingTop: theme.spacing(2),
+      paddingBottom: theme.spacing(2),
+      paddingRight: theme.spacing(3)
+    }
+  })
+);
 
 interface Props {
   events: Record<string, any>;

@@ -1,23 +1,25 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { Button, Typography } from '@material-ui/core';
-import { Page } from '../Layout/Page';
+import Paper from '@material-ui/core/Paper';
 import TextInput from '../Shared/forms/TextInput';
 import DateInput from '../Shared/forms/DateInput';
 import SelectInput from '../Shared/forms/SelectInput';
 
-const useStyles = makeStyles(theme => ({
-  button: {
-    margin: theme.spacing(1, 0, 1, 1)
-  },
-  btnAlignment: {
-    textAlign: 'right'
-  },
-  sectionLabel: {
-    paddingTop: 16
-  }
-}));
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    button: {
+      margin: theme.spacing(1, 0, 1, 1)
+    },
+    btnAlignment: {
+      textAlign: 'right'
+    },
+    sectionLabel: {
+      paddingTop: 16
+    }
+  })
+);
 
 interface Props {
   handleFormSubmit: (event: any) => void;
@@ -25,7 +27,7 @@ interface Props {
 
 function EventForm({ handleFormSubmit }: Props) {
   const classes = useStyles();
-  const [selectedDate, handleDateChange] = useState(new Date());
+  const [selectedDate, handleDateChange] = useState(Date.now());
   const [state, setState] = useState({
     title: '',
     category: 'drinks',
@@ -55,7 +57,7 @@ function EventForm({ handleFormSubmit }: Props) {
   ];
 
   return (
-    <Page>
+    <Paper>
       <form onSubmit={handleSubmit} autoComplete="off">
         <Typography color="secondary">EVENT DETAILS</Typography>
         <TextInput
@@ -125,7 +127,7 @@ function EventForm({ handleFormSubmit }: Props) {
           </Button>
         </div>
       </form>
-    </Page>
+    </Paper>
   );
 }
 

@@ -52,7 +52,7 @@ function SelectInput(props: any) {
       >
         {optionsArray.map((option: any) => {
           return (
-            <MenuItem key={option.key} value={option.value}>
+            <MenuItem key={option.value} value={option.value}>
               {option.label}
             </MenuItem>
           );

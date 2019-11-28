@@ -5,7 +5,7 @@ import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 
 interface Props {
   label: string;
-  selectedDate: object;
+  selectedDate: number;
   handleDateChange: (e?: any) => void;
 }
 
