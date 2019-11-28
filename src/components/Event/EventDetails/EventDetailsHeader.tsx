@@ -19,7 +19,10 @@ import RoomOutlined from '@material-ui/icons/RoomOutlined';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     card: {
-      margin: theme.spacing(2, 0, 2, 2)
+      margin: theme.spacing(2, 0, 2, 2),
+      [theme.breakpoints.down('md')]: {
+        margin: theme.spacing(2)
+      }
     },
     media: {
       height: 0,

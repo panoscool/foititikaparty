@@ -13,7 +13,10 @@ import { format, parseISO } from 'date-fns';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     paper: {
-      margin: theme.spacing(2, 0, 2, 2)
+      margin: theme.spacing(2, 0, 2, 2),
+      [theme.breakpoints.down('md')]: {
+        margin: theme.spacing(2)
+      }
     },
     button: {
       margin: theme.spacing(0, 1, 1, 1)

@@ -11,7 +11,10 @@ import Paper from '@material-ui/core/Paper';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     paper: {
-      margin: theme.spacing(2, 2, 2, 0)
+      margin: theme.spacing(2, 2, 2, 0),
+      [theme.breakpoints.down('md')]: {
+        margin: theme.spacing(2)
+      }
     },
     listLabel: {
       color: 'white',

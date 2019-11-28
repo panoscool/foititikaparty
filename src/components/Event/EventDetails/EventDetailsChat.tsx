@@ -13,7 +13,10 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     paper: {
       margin: theme.spacing(2, 0, 2, 2),
-      padding: theme.spacing(2)
+      padding: theme.spacing(2),
+      [theme.breakpoints.down('md')]: {
+        margin: theme.spacing(2)
+      }
     },
     chatLabel: {
       color: 'white',
