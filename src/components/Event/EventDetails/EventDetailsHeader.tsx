@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
+import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -103,7 +104,7 @@ function EventDetailsHeader({ data }: Props) {
       />
       <CardActions disableSpacing>
         <RoomOutlined className={classes.icon} color="primary" />
-        {data.venue}
+        <Typography variant="body1">{data.venue}</Typography>
         <IconButton
           className={clsx(classes.expand, {
             [classes.expandOpen]: expanded
