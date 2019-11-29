@@ -7,6 +7,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import { Divider, CardActionArea } from '@material-ui/core';
 import AccessTime from '@material-ui/icons/AccessTime';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -17,13 +18,14 @@ const useStyles = makeStyles((theme: Theme) =>
       width: 60,
       height: 60,
     },
-  }),
+  })
 );
 
 function EventList(props: any) {
   const classes = useStyles();
+  let history = useHistory();
 
-  const { title, description, hostedBy, date, attendees, hostPhotoURL } = props
+  const { id, title, description, hostedBy, date, attendees, hostPhotoURL } = props
 
   return (
     <Card className={classes.card}>
@@ -32,6 +34,7 @@ function EventList(props: any) {
           avatar={<Avatar className={classes.avatar} alt="avatar" src={hostPhotoURL} />}
           title={title}
           subheader={hostedBy}
+          onClick={() => history.push(`/event/${id}`)}
         />
       </CardActionArea>
       <Divider />
