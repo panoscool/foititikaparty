@@ -6,9 +6,19 @@ import Paper from '@material-ui/core/Paper';
 import TextInput from '../Shared/forms/TextInput';
 import DateInput from '../Shared/forms/DateInput';
 import SelectInput from '../Shared/forms/SelectInput';
+import PlaceInput from '../Shared/forms/PlaceInput';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    paper: {
+      width: '60%',
+      padding: theme.spacing(2),
+      margin: '0 auto',
+      [theme.breakpoints.down('md')]: {
+        width: 'auto',
+        margin: theme.spacing(2)
+      }
+    },
     button: {
       margin: theme.spacing(1, 0, 1, 1)
     },
@@ -57,7 +67,7 @@ function EventForm({ handleFormSubmit }: Props) {
   ];
 
   return (
-    <Paper>
+    <Paper className={classes.paper}>
       <form onSubmit={handleSubmit} autoComplete="off">
         <Typography color="secondary">EVENT DETAILS</Typography>
         <TextInput
@@ -84,6 +94,7 @@ function EventForm({ handleFormSubmit }: Props) {
         <Typography color="secondary" className={classes.sectionLabel}>
           EVENT LOCATION DETAILS
         </Typography>
+        <PlaceInput />
         <TextInput
           name="city"
           label="City"

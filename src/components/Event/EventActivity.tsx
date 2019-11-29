@@ -9,14 +9,6 @@ import Avatar from '@material-ui/core/Avatar';
 import Divider from '@material-ui/core/Divider';
 import Paper from '@material-ui/core/Paper';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      width: '100%',
-      backgroundColor: theme.palette.background.paper
-    }
-  })
-);
 
 const activity = [
   {
@@ -37,14 +29,9 @@ const activity = [
 ];
 
 export default function NestedList() {
-  const classes = useStyles();
-
   return (
     <Paper>
-      <List
-        className={classes.root}
-        subheader={<ListSubheader>Recent Activity</ListSubheader>}
-      >
+      <List subheader={<ListSubheader>Recent Activity</ListSubheader>}>
         <Divider variant="fullWidth" />
         {activity.map((a, index) => (
           <ListItem key={index}>
