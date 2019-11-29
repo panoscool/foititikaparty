@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function CustomizedInputBase() {
+function SearchField() {
   const classes = useStyles();
 
   return (
@@ -48,3 +48,5 @@ export default function CustomizedInputBase() {
     </form>
   );
 }
+
+export default SearchField;

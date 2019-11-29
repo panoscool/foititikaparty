@@ -37,18 +37,12 @@ function DrawerMenu({ handleDrawerToggle }: Props) {
       aria-labelledby="nested-list"
       className={classes.root}
     >
-      {navigation.map(nav => (
-        <ListItem
-          button
-          key={nav.to}
-          component={Link}
-          to={nav.to}
-          onClick={handleDrawerToggle}
-        >
+      {navigation.map(nav => {
+        return (<ListItem button key={nav.to} component={Link} to={nav.to} onClick={handleDrawerToggle}>
           <ListItemIcon>{nav.icon}</ListItemIcon>
           <ListItemText primary={nav.label} />
-        </ListItem>
-      ))}
+        </ListItem>);
+      })}
     </List>
   );
 }

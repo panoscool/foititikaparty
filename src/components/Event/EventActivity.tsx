@@ -1,5 +1,4 @@
 import React from 'react';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -8,7 +7,6 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Divider from '@material-ui/core/Divider';
 import Paper from '@material-ui/core/Paper';
-
 
 const activity = [
   {
@@ -28,7 +26,7 @@ const activity = [
   }
 ];
 
-export default function NestedList() {
+function EventActivity() {
   return (
     <Paper>
       <List subheader={<ListSubheader>Recent Activity</ListSubheader>}>
@@ -47,3 +45,5 @@ export default function NestedList() {
     </Paper>
   );
 }
+
+export default EventActivity;
