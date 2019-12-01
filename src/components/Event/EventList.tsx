@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
@@ -7,7 +8,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import { Divider, CardActionArea } from '@material-ui/core';
 import AccessTime from '@material-ui/icons/AccessTime';
-import { useHistory } from 'react-router-dom';
+import RoomOutlined from '@material-ui/icons/RoomOutlined';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -18,6 +19,9 @@ const useStyles = makeStyles((theme: Theme) =>
       width: 60,
       height: 60,
     },
+    icon: {
+      verticalAlign: 'middle'
+    }
   })
 );
 
@@ -25,7 +29,7 @@ function EventList(props: any) {
   const classes = useStyles();
   let history = useHistory();
 
-  const { id, title, description, hostedBy, date, attendees, hostPhotoURL } = props
+  const { id, title, description, hostedBy, date, venue, attendees, hostPhotoURL } = props
 
   return (
     <Card className={classes.card}>
@@ -39,7 +43,9 @@ function EventList(props: any) {
       </CardActionArea>
       <Divider />
       <CardContent>
-        <AccessTime /> {date}
+        <Typography gutterBottom variant="body2" color="textPrimary">
+          <AccessTime className={classes.icon} /> {date}<RoomOutlined className={classes.icon} /> {venue}
+        </Typography>
         <Typography variant="body2" color="textSecondary" component="p">
           {description}
           {attendees.length}
