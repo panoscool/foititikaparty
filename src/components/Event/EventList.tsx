@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) =>
       height: 60,
     },
     icon: {
-      verticalAlign: 'middle'
+      verticalAlign: 'text-bottom'
     }
   })
 );
@@ -44,12 +44,10 @@ function EventList(props: any) {
       <Divider />
       <CardContent>
         <Typography gutterBottom variant="body2" color="textPrimary">
-          <AccessTime className={classes.icon} /> {date}<RoomOutlined className={classes.icon} /> {venue}
+          <AccessTime className={classes.icon} /> {date} <RoomOutlined className={classes.icon} /> {venue}
         </Typography>
-        <Typography variant="body2" color="textSecondary" component="p">
-          {description}
-          {attendees.length}
-        </Typography>
+        <Typography gutterBottom variant="body2" color="textSecondary">{description}</Typography>
+        <Typography variant="body2" color="textSecondary">Attendees: {attendees.length}</Typography>
       </CardContent>
     </Card>
   );
