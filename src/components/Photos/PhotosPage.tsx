@@ -51,35 +51,29 @@ function PhotosPage() {
       <Grid item xs={12} sm={4}>
         <Typography variant="caption" color='primary'>STEP 2 - RESIZE IMAGE</Typography>
         {files.length > 0 ? (
+          // @ts-ignore
           <CropperInput setImage={setImage} imagePreview={files[0].preview} />
         ) : (
-          <div className={classes.icon}>
-            <CropOriginal fontSize="large" />
-          </div>
-        )}
+            <div className={classes.icon}>
+              <CropOriginal fontSize="large" />
+            </div>
+          )}
       </Grid>
       <Grid item xs={12} sm={4}>
         <Typography variant="caption" color='primary'>STEP 3 - PREVIEW & UPLOAD</Typography>
         {files.length > 0 ? (
           <Fragment>
-          <div
-            className="img-preview"
-            style={{
-              minHeight: '200px',
-              minWidth: '200px',
-              overflow: 'hidden'
-            }}
-          />
+            <div className="img-preview" style={{ minHeight: '200px', minWidth: '200px', overflow: 'hidden' }} />
             <ButtonGroup variant="contained" size="small">
               <Button className={classes.button} color='primary' onClick={handleUploadImage}><Check /></Button>
               <Button className={classes.button} color='default' onClick={handleCancelCrop}><Close /></Button>
             </ButtonGroup>
           </Fragment>
         ) : (
-          <div className={classes.icon}>
-            <Photo fontSize="large" />
-          </div>
-        )}
+            <div className={classes.icon}>
+              <Photo fontSize="large" />
+            </div>
+          )}
       </Grid>
     </Grid>
   );

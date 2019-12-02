@@ -6,14 +6,17 @@ function CropperInput({ imagePreview, setImage }: any) {
   const cropper = useRef(null);
 
   function cropImage() {
-    if (typeof cropper.current.getCropperCanvas() === 'undefined') return;
-    cropper.current.getCropperCanvas().toBlob(blob => {
+    // @ts-ignore
+    if (typeof cropper.current.getCroppedCanvas() === 'undefined') return;
+    // @ts-ignore
+    cropper.current.getCroppedCanvas().toBlob(blob => {
       setImage(blob);
     }, 'image/jpeg');
   }
 
   return (
     <Cropper
+      // @ts-ignore
       ref={cropper}
       src={imagePreview}
       style={{ height: 200, width: '100%' }}
@@ -23,6 +26,7 @@ function CropperInput({ imagePreview, setImage }: any) {
       dragMode="move"
       guides={false}
       scalable={true}
+      center={true}
       cropBoxMovable={true}
       cropBoxResizable={true}
       crop={cropImage}
