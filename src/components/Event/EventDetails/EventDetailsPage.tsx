@@ -5,7 +5,6 @@ import EventDetailsHeader from './EventDetailsHeader';
 import EventDetailsInfo from './EventDetailsInfo';
 import EventDetailsSidebar from './EventDetailsSidebar';
 import sampleData from '../sampleData.json';
-import ImageInput from '../../Shared/ImageInput';
 
 function EventDetailsPage() {
   const { id } = useParams();
@@ -16,7 +15,6 @@ function EventDetailsPage() {
   return (
     <Grid container spacing={1}>
       <Grid item xs={12} sm={8}>
-        <ImageInput />
         <EventDetailsHeader data={data} />
         <EventDetailsInfo data={data} />
       </Grid>
