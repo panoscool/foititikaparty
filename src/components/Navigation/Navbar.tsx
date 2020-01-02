@@ -1,14 +1,6 @@
 import React, { Fragment, useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import {
-  AppBar,
-  Toolbar,
-  IconButton,
-  Typography,
-  Hidden,
-  Drawer,
-  CssBaseline
-} from '@material-ui/core';
+import { AppBar, Toolbar, IconButton, Typography, Hidden, Drawer } from '@material-ui/core';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { Menu } from '@material-ui/icons';
 import MenuLinks from './Parts/MenuLinks';
@@ -58,10 +50,8 @@ function Navbar() {
 
   return (
     <Fragment>
-      <CssBaseline />
-
       <AppBar position="fixed" className={classes.appBar}>
-        <Toolbar>
+        <Toolbar variant="dense">
           <IconButton
             color="inherit"
             aria-label="open-drawer"

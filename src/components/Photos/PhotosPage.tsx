@@ -25,7 +25,6 @@ const useStyles = makeStyles((theme: Theme) =>
 function PhotosPage() {
   const classes = useStyles();
   const [files, setFiles] = useState([]);
-  const [image, setImage] = useState(null);
 
   useEffect(() => {
     return () => {
@@ -35,7 +34,6 @@ function PhotosPage() {
 
   function handleCancelCrop() {
     setFiles([])
-    setImage(null)
   }
 
   function handleUploadImage() {

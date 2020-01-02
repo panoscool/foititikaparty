@@ -15,7 +15,6 @@ import IconButton from '@material-ui/core/IconButton';
 import MoreVert from '@material-ui/icons/MoreVert';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import RoomOutlined from '@material-ui/icons/RoomOutlined';
-import MapField from '../../Shared/MapField';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -122,7 +121,7 @@ function EventDetailsHeader({ data }: Props) {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <MapField />
+          The place for map!
         </CardContent>
       </Collapse>
     </Card>

@@ -6,7 +6,6 @@ import Paper from '@material-ui/core/Paper';
 import TextInput from '../Shared/forms/TextInput';
 import DateInput from '../Shared/forms/DateInput';
 import SelectInput from '../Shared/forms/SelectInput';
-import PlaceInput from '../Shared/forms/PlaceInput';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -94,7 +93,6 @@ function EventForm({ handleFormSubmit }: Props) {
         <Typography color="secondary" className={classes.sectionLabel}>
           EVENT LOCATION DETAILS
         </Typography>
-        <PlaceInput />
         <TextInput
           name="city"
           label="City"

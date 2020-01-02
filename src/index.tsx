@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-import 'leaflet/dist/leaflet.css'
-import './index.css';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import ThemeProvider from './Theme';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
@@ -10,6 +9,7 @@ import * as serviceWorker from './serviceWorker';
 const app = (
   <BrowserRouter>
     <ThemeProvider>
+      <CssBaseline />
       <App />
     </ThemeProvider>
   </BrowserRouter>
