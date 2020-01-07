@@ -1,10 +1,10 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import EventList from './EventList';
 import EventActivity from './EventActivity';
 import SearchField from '../Shared/SearchField';
-import sampleData from './sampleData.json';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 function EventPage() {
   const classes = useStyles();
+  const event = useSelector((state: any) => state.eventReducer);
 
   return (
     <div className={classes.spacing}>
@@ -30,7 +31,7 @@ function EventPage() {
           <div className={classes.search}>
             <SearchField />
           </div>
-          {sampleData.map(event => (
+          {event.map((event: any) => (
             <EventList key={event.id} {...event} />
           ))}
         </Grid>

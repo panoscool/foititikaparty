@@ -26,11 +26,11 @@ function AuthMenu() {
 
   const navigation = [
     { to: '/event/create', icon: <Add />, label: 'Create Event' },
-    { to: '/people', icon: <Event />, label: 'My Events' },
-    { to: '/event/create', icon: <People />, label: 'My Network' },
-    { to: '/event/create', icon: <Person />, label: 'My Profile' },
+    { to: '/profile/events', icon: <Event />, label: 'My Events' },
+    { to: '/profile/network', icon: <People />, label: 'My Network' },
+    { to: '/profile', icon: <Person />, label: 'My Profile' },
     { to: '/settings', icon: <Settings />, label: 'Settings' },
-    { to: '/event/create', icon: <ExitToApp />, label: 'Sign out' }
+    { to: '/signout', icon: <ExitToApp />, label: 'Sign out' }
   ];
 
   return (
@@ -60,7 +60,12 @@ function AuthMenu() {
         onClose={handleClose}
       >
         {navigation.map(nav => (
-          <MenuItem key={nav.to} component={Link} to={nav.to} onClick={handleClose}>
+          <MenuItem
+            key={nav.to}
+            component={Link}
+            to={nav.to}
+            onClick={handleClose}
+          >
             <ListItemIcon>{nav.icon}</ListItemIcon>
             {nav.label}
           </MenuItem>
