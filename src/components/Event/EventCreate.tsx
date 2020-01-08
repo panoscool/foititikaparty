@@ -1,9 +1,13 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import EventForm from './EventForm';
+import { createEvent } from '../../store/actions/eventActions';
 
 function EventCreate() {
+  const dispatch = useDispatch();
+
   function handleFormSubmit(data: object) {
-    console.log(data)
+    dispatch(createEvent(data))
   }
 
   return (

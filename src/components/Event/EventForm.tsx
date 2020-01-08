@@ -7,6 +7,7 @@ import TextInput from '../Shared/forms/TextInput';
 import DateInput from '../Shared/forms/DateInput';
 import SelectInput from '../Shared/forms/SelectInput';
 
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     paper: {
@@ -36,7 +37,7 @@ interface Props {
 
 function EventForm({ handleFormSubmit }: Props) {
   const classes = useStyles();
-  const [selectedDate, handleDateChange] = useState(Date.now());
+  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [state, setState] = useState({
     title: '',
     category: 'drinks',
@@ -45,6 +46,10 @@ function EventForm({ handleFormSubmit }: Props) {
     venue: '',
     hostedBy: ''
   });
+
+  const handleDateChange = (date: Date | null) => {
+    setSelectedDate(date);
+  };
 
   function handleChange(event?: any) {
     setState({ ...state, [event.target.name]: event.target.value });

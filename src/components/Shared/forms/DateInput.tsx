@@ -5,21 +5,26 @@ import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 
 interface Props {
   label: string;
-  selectedDate: number;
+  selectedDate: any;
   handleDateChange: (e?: any) => void;
 }
 
 function DateInput({ label, selectedDate, handleDateChange }: Props) {
+
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils} locale={elLocale}>
       <DateTimePicker
+        disableToolbar
         fullWidth
         margin="dense"
         inputVariant="outlined"
+        variant="inline"
+        format="dd/MM/yyyy hh:mm"
         label={label}
         value={selectedDate}
         onChange={handleDateChange}
       />
+
     </MuiPickersUtilsProvider>
   );
 }
