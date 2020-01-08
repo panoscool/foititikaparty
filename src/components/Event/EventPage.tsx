@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 function EventPage() {
   const classes = useStyles();
+
   const event = useSelector((state: any) => state.eventReducer);
 
   return (

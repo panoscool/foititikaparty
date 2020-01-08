@@ -2,7 +2,7 @@ import { THEME_MODE } from '../actionTypes';
 
 const initialState = { type: 'light' };
 
-const reducer = (state = initialState, action) => {
+const reducer = (state = initialState, action: any) => {
   switch (action.type) {
     case THEME_MODE:
       return { ...state, type: action.payload };
