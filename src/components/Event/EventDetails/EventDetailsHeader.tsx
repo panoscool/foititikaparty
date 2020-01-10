@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Typography from '@material-ui/core/Typography';
@@ -45,6 +46,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface DataObject {
+  id: string;
   title: string;
   description: string;
   venue: string;
@@ -60,6 +62,7 @@ interface Props {
 
 function EventDetailsHeader({ data }: Props) {
   const classes = useStyles();
+  let history = useHistory();
   const [expanded, setExpanded] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -97,7 +100,9 @@ function EventDetailsHeader({ data }: Props) {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>Edit</MenuItem>
+        <MenuItem onClick={() => history.push(`/event/${data.id}/edit`)}>
+          Edit
+        </MenuItem>
         <MenuItem onClick={handleClose}>Delete</MenuItem>
         <MenuItem onClick={handleClose}>Cancel event</MenuItem>
       </Menu>
@@ -120,9 +125,7 @@ function EventDetailsHeader({ data }: Props) {
         </IconButton>
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-          The place for map!
-        </CardContent>
+        <CardContent>The place for map!</CardContent>
       </Collapse>
     </Card>
   );

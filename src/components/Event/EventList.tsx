@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     avatar: {
       width: 60,
-      height: 60,
+      height: 60
     },
     icon: {
       verticalAlign: 'text-bottom'
@@ -29,13 +29,19 @@ function EventList(props: any) {
   const classes = useStyles();
   let history = useHistory();
 
-  const { id, title, description, hostedBy, date, venue, attendees, hostPhotoURL } = props
+  const { id, title, description, hostedBy, date, venue, hostPhotoURL } = props;
 
   return (
     <Card className={classes.card}>
       <CardActionArea>
         <CardHeader
-          avatar={<Avatar className={classes.avatar} alt="avatar" src={hostPhotoURL} />}
+          avatar={
+            <Avatar
+              className={classes.avatar}
+              alt="avatar"
+              src={hostPhotoURL}
+            />
+          }
           title={title}
           subheader={hostedBy}
           onClick={() => history.push(`/event/${id}`)}
@@ -44,10 +50,15 @@ function EventList(props: any) {
       <Divider />
       <CardContent>
         <Typography gutterBottom variant="body2" color="textPrimary">
-          <AccessTime className={classes.icon} /> {date} <RoomOutlined className={classes.icon} /> {venue}
+          <AccessTime className={classes.icon} /> {date}{' '}
+          <RoomOutlined className={classes.icon} /> {venue}
         </Typography>
-        <Typography gutterBottom variant="body2" color="textSecondary">{description}</Typography>
-        <Typography variant="body2" color="textSecondary">Attendees: {attendees.length}</Typography>
+        <Typography gutterBottom variant="body2" color="textSecondary">
+          {description}
+        </Typography>
+        <Typography variant="body2" color="textSecondary">
+          Attendees: 10
+        </Typography>
       </CardContent>
     </Card>
   );

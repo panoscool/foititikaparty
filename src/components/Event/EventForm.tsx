@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import cuid from 'cuid';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { Button, Typography } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import TextInput from '../Shared/forms/TextInput';
 import DateInput from '../Shared/forms/DateInput';
 import SelectInput from '../Shared/forms/SelectInput';
-
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -57,7 +57,10 @@ function EventForm({ handleFormSubmit }: Props) {
 
   function handleSubmit(event?: any) {
     event.preventDefault();
-
+    //@ts-ignore
+    state.id = cuid();
+    //@ts-ignore
+    state.hostPhotoURL = 'https://randomuser.me/api/portraits/women/18.jpg';
     handleFormSubmit({ ...state, selectedDate });
   }
 
