@@ -7,12 +7,10 @@ function EventCreate() {
   const dispatch = useDispatch();
 
   function handleFormSubmit(data: object) {
-    dispatch(createEvent(data))
+    dispatch(createEvent(data));
   }
 
-  return (
-    <EventForm handleFormSubmit={handleFormSubmit} />
-  )
+  return <EventForm handleFormSubmit={handleFormSubmit} />;
 }
 
 export default EventCreate;

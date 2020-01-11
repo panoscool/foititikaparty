@@ -1,18 +1,25 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import EventForm from './EventForm';
 import { updateEvent } from '../../store/actions/eventActions';
 
 function EventEdit() {
   const dispatch = useDispatch();
+  let { id } = useParams();
+  const events = useSelector((state: any) => state.eventReducer);
 
-  function handleFormSubmit(data: object) {
-    dispatch(updateEvent(data))
+  let data = {};
+  if (id && events.length > 0) {
+    //@ts-ignore
+    data = events[id - 1] || {};
   }
 
-  return (
-    <EventForm handleFormSubmit={handleFormSubmit} />
-  )
+  function handleFormSubmit(data: object) {
+    dispatch(updateEvent(data));
+  }
+
+  return <EventForm data={data} handleFormSubmit={handleFormSubmit} />;
 }
 
 export default EventEdit;

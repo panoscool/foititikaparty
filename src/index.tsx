@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import ThemeProvider from './Theme';
 import App from './App';
+import ScrollToTop from './ScrollToTop';
 import store from './store/configureStore';
 import * as serviceWorker from './serviceWorker';
 
@@ -13,6 +14,7 @@ const app = (
     <BrowserRouter>
       <ThemeProvider>
         <CssBaseline />
+        <ScrollToTop />
         <App />
       </ThemeProvider>
     </BrowserRouter>

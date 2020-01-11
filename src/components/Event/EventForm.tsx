@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import cuid from 'cuid';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { Button, Typography } from '@material-ui/core';
@@ -32,20 +32,28 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface Props {
+  data: any;
   handleFormSubmit: (event: any) => void;
 }
 
-function EventForm({ handleFormSubmit }: Props) {
+function EventForm({ data, handleFormSubmit }: Props) {
   const classes = useStyles();
+  let { id } = useParams();
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [state, setState] = useState({
     title: '',
-    category: 'drinks',
+    category: '',
     description: '',
     city: '',
     venue: '',
     hostedBy: ''
   });
+
+  useEffect(() => {
+    if (id) {
+      setState(data);
+    }
+  }, [id, data]);
 
   const handleDateChange = (date: Date | null) => {
     setSelectedDate(date);
@@ -80,14 +88,14 @@ function EventForm({ handleFormSubmit }: Props) {
         <TextInput
           name="title"
           label="Event Title"
-          value={state.title}
+          value={state.title || ''}
           handleChange={handleChange}
         />
         <SelectInput
           name="category"
           label="Category"
           optionsArray={categories}
-          value={state.category}
+          value={state.category || ''}
           handleChange={handleChange}
         />
         <TextInput
@@ -95,7 +103,7 @@ function EventForm({ handleFormSubmit }: Props) {
           multiline
           name="description"
           label="Description"
-          value={state.description}
+          value={state.description || ''}
           handleChange={handleChange}
         />
         <Typography color="secondary" className={classes.sectionLabel}>
@@ -104,19 +112,19 @@ function EventForm({ handleFormSubmit }: Props) {
         <TextInput
           name="city"
           label="City"
-          value={state.city}
+          value={state.city || ''}
           handleChange={handleChange}
         />
         <TextInput
           name="venue"
           label="Venue"
-          value={state.venue}
+          value={state.venue || ''}
           handleChange={handleChange}
         />
         <TextInput
           name="hostedBy"
           label="Hosted By"
-          value={state.hostedBy}
+          value={state.hostedBy || ''}
           handleChange={handleChange}
         />
         <DateInput
