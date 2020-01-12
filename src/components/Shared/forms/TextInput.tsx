@@ -22,7 +22,6 @@ function TextInput(props: any) {
 
   return (
     <TextField
-      id="outlined-dense"
       margin="dense"
       variant="outlined"
       fullWidth

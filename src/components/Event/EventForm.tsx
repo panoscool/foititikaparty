@@ -7,6 +7,7 @@ import Paper from '@material-ui/core/Paper';
 import TextInput from '../Shared/forms/TextInput';
 import DateInput from '../Shared/forms/DateInput';
 import SelectInput from '../Shared/forms/SelectInput';
+import PlaceInput from '../Shared/forms/PlaceInput'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -32,14 +33,23 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface Props {
-  data: any;
+  data?: any;
   handleFormSubmit: (event: any) => void;
 }
+
+const categories = [
+  { label: 'Drinks', value: 'drinks' },
+  { label: 'Food', value: 'food' },
+  { label: 'Film', value: 'film' },
+  { label: 'Music', value: 'music' },
+  { label: 'Culture', value: 'culture' },
+  { label: 'Travel', value: 'travel' }
+];
 
 function EventForm({ data, handleFormSubmit }: Props) {
   const classes = useStyles();
   let { id } = useParams();
-  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+  const [date, setDate] = useState<number | null>(Date.now());
   const [state, setState] = useState({
     title: '',
     category: '',
@@ -55,8 +65,8 @@ function EventForm({ data, handleFormSubmit }: Props) {
     }
   }, [id, data]);
 
-  const handleDateChange = (date: Date | null) => {
-    setSelectedDate(date);
+  const handleDateChange = (date: number | null) => {
+    setDate(date);
   };
 
   function handleChange(event?: any) {
@@ -65,21 +75,13 @@ function EventForm({ data, handleFormSubmit }: Props) {
 
   function handleSubmit(event?: any) {
     event.preventDefault();
-    //@ts-ignore
-    state.id = cuid();
-    //@ts-ignore
-    state.hostPhotoURL = 'https://randomuser.me/api/portraits/women/18.jpg';
-    handleFormSubmit({ ...state, selectedDate });
+    const newEvent = {
+      ...state,
+      id: cuid(),
+      hostPhotoURL: 'https://randomuser.me/api/portraits/women/18.jpg'
+    }
+    handleFormSubmit({ ...newEvent, date });
   }
-
-  const categories = [
-    { label: 'Drinks', value: 'drinks' },
-    { label: 'Food', value: 'food' },
-    { label: 'Film', value: 'film' },
-    { label: 'Music', value: 'music' },
-    { label: 'Culture', value: 'culture' },
-    { label: 'Travel', value: 'travel' }
-  ];
 
   return (
     <Paper className={classes.paper}>
@@ -109,12 +111,7 @@ function EventForm({ data, handleFormSubmit }: Props) {
         <Typography color="secondary" className={classes.sectionLabel}>
           EVENT LOCATION DETAILS
         </Typography>
-        <TextInput
-          name="city"
-          label="City"
-          value={state.city || ''}
-          handleChange={handleChange}
-        />
+        <PlaceInput />
         <TextInput
           name="venue"
           label="Venue"
@@ -129,7 +126,7 @@ function EventForm({ data, handleFormSubmit }: Props) {
         />
         <DateInput
           label="Date"
-          selectedDate={selectedDate}
+          selectedDate={date}
           handleDateChange={handleDateChange}
         />
         <div className={classes.btnAlignment}>
