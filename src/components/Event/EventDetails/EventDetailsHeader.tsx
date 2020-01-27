@@ -16,6 +16,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MoreVert from '@material-ui/icons/MoreVert';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import RoomOutlined from '@material-ui/icons/RoomOutlined';
+import GoogleMap from '../../Shared/GoogleMap';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -54,6 +55,7 @@ interface DataObject {
   category: string;
   hostedBy: string;
   hostPhotoURL: string;
+  venueLatLng: any
 }
 
 interface Props {
@@ -125,7 +127,7 @@ function EventDetailsHeader({ data }: Props) {
         </IconButton>
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>The place for map!</CardContent>
+        <CardContent><GoogleMap lat={data.venueLatLng.lat} lng={data.venueLatLng.lng} /></CardContent>
       </Collapse>
     </Card>
   );

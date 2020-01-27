@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { ReactNode } from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Navbar from './Navigation/Navbar';

@@ -14,7 +14,7 @@ function DateInput({ label, selectedDate, handleDateChange }: Props) {
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils} locale={elLocale}>
       <DateTimePicker
-        disableToolbar
+        // disableToolbar
         fullWidth
         margin="dense"
         inputVariant="outlined"

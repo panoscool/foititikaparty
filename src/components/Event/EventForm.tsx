@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import cuid from 'cuid';
+import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { Button, Typography } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
@@ -50,12 +51,14 @@ function EventForm({ data, handleFormSubmit }: Props) {
   const classes = useStyles();
   let { id } = useParams();
   const [date, setDate] = useState<number | null>(Date.now());
+  const [cityLatLng, setCityLatLng] = useState({});
+  const [venueLatLng, setVenueLatLng] = useState({});
+  const [city, setCity] = useState('');
+  const [venue, setVenue] = useState('');
   const [state, setState] = useState({
     title: '',
     category: '',
     description: '',
-    city: '',
-    venue: '',
     hostedBy: ''
   });
 
@@ -69,8 +72,30 @@ function EventForm({ data, handleFormSubmit }: Props) {
     setDate(date);
   };
 
+  function handleCityChange(city: string) {
+    setCity(city);
+  }
+
+  function handleVenueChange(venue: string) {
+    setVenue(venue);
+  }
+
   function handleChange(event?: any) {
     setState({ ...state, [event.target.name]: event.target.value });
+  }
+
+  function handleCitySelect(selectedCity: any) {
+    geocodeByAddress(selectedCity)
+      .then(results => getLatLng(results[0]))
+      .then(latlng => setCityLatLng(latlng))
+      .then(() => setCity(selectedCity))
+  }
+
+  function handleVenueSelect(selectedVenue: any) {
+    geocodeByAddress(selectedVenue)
+      .then(results => getLatLng(results[0]))
+      .then(latlng => setVenueLatLng(latlng))
+      .then(() => setVenue(selectedVenue))
   }
 
   function handleSubmit(event?: any) {
@@ -78,9 +103,13 @@ function EventForm({ data, handleFormSubmit }: Props) {
     const newEvent = {
       ...state,
       id: cuid(),
+      city: city,
+      venue: venue,
+      date: date,
+      venueLatLng: venueLatLng,
       hostPhotoURL: 'https://randomuser.me/api/portraits/women/18.jpg'
     }
-    handleFormSubmit({ ...newEvent, date });
+    handleFormSubmit(newEvent);
   }
 
   return (
@@ -111,12 +140,24 @@ function EventForm({ data, handleFormSubmit }: Props) {
         <Typography color="secondary" className={classes.sectionLabel}>
           EVENT LOCATION DETAILS
         </Typography>
-        <PlaceInput />
-        <TextInput
-          name="venue"
+        <PlaceInput
+          label="City"
+          value={city}
+          options={{ typs: ['(cities)'] }}
+          handleChange={handleCityChange}
+          handleSelect={handleCitySelect}
+        />
+        <PlaceInput
           label="Venue"
-          value={state.venue || ''}
-          handleChange={handleChange}
+          value={venue}
+          options={{
+            // @ts-ignore
+            location: new google.maps.LatLng(cityLatLng),
+            radius: 1000,
+            types: ['establishment']
+          }}
+          handleChange={handleVenueChange}
+          handleSelect={handleVenueSelect}
         />
         <TextInput
           name="hostedBy"
