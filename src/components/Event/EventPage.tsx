@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import EventList from './EventList';
 import EventActivity from './EventActivity';
 import SearchField from '../Shared/SearchField';
+import Spinner from '../Shared/Spinner';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -22,6 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 function EventPage() {
   const classes = useStyles();
+  const { loading } = useSelector((state: any) => state.asyncReducer);
 
   const event = useSelector((state: any) => state.eventReducer);
 
@@ -32,7 +34,7 @@ function EventPage() {
           <div className={classes.search}>
             <SearchField />
           </div>
-          {event.map((event: any) => (
+          {loading ? <Spinner /> : event.map((event: any) => (
             <EventList key={event.id} {...event} />
           ))}
         </Grid>

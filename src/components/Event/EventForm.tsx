@@ -5,10 +5,10 @@ import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { Button, Typography } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
-import TextInput from '../Shared/forms/TextInput';
-import DateInput from '../Shared/forms/DateInput';
-import SelectInput from '../Shared/forms/SelectInput';
-import PlaceInput from '../Shared/forms/PlaceInput'
+import TextInput from '../Shared/TextInput';
+import DateInput from '../Shared/DateInput';
+import SelectInput from '../Shared/SelectInput';
+import PlaceInput from '../Shared/PlaceInput'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -65,6 +65,8 @@ function EventForm({ data, handleFormSubmit }: Props) {
   useEffect(() => {
     if (id) {
       setState(data);
+      setCity(data.city);
+      setVenue(data.venue);
     }
   }, [id, data]);
 

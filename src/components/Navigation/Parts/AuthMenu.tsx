@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Menu from '@material-ui/core/Menu';
@@ -10,21 +12,33 @@ import People from '@material-ui/icons/People';
 import Person from '@material-ui/icons/Person';
 import Settings from '@material-ui/icons/Settings';
 import ExitToApp from '@material-ui/icons/ExitToApp';
-import { Link } from 'react-router-dom';
+import { openModal } from '../../../store/actions/modalActions';
 
 function AuthMenu() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const dispatch = useDispatch();
+  const { authenticated } = useSelector((state: any) => state.authReducer);
 
   const handleMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  function handleClose() {
     setAnchorEl(null);
   };
 
-  const navigation = [
+  function onClose(modal: any) {
+    setAnchorEl(null);
+    dispatch(openModal(modal));
+  }
+
+  const navigationGuest = [
+    { click: 'LoginModal', label: 'Login' },
+    { click: 'RegisterModal', label: 'Register' }
+  ]
+
+  const navigationAuth = [
     { to: '/event/create', icon: <Add />, label: 'Create Event' },
     { to: '/profile/events', icon: <Event />, label: 'My Events' },
     { to: '/profile/network', icon: <People />, label: 'My Network' },
@@ -59,7 +73,7 @@ function AuthMenu() {
         open={open}
         onClose={handleClose}
       >
-        {navigation.map(nav => (
+        {authenticated ? navigationAuth.map((nav: any) => (
           <MenuItem
             key={nav.to}
             component={Link}
@@ -67,6 +81,10 @@ function AuthMenu() {
             onClick={handleClose}
           >
             <ListItemIcon>{nav.icon}</ListItemIcon>
+            {nav.label}
+          </MenuItem>
+        )) : navigationGuest.map((nav: any) => (
+          <MenuItem key={nav.label} onClick={() => onClose(nav.click)}>
             {nav.label}
           </MenuItem>
         ))}

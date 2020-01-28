@@ -5,9 +5,12 @@ import { BrowserRouter } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import ThemeProvider from './Theme';
 import App from './App';
-import ScrollToTop from './ScrollToTop';
+import ScrollToTop from './utils/ScrollToTop';
 import store from './store/configureStore';
 import * as serviceWorker from './serviceWorker';
+import { fetchEvents } from './store/actions/eventActions';
+
+store.dispatch(fetchEvents());
 
 const app = (
   <Provider store={store}>
