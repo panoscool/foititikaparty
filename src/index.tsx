@@ -10,6 +10,7 @@ import store from './store/configureStore';
 import * as serviceWorker from './serviceWorker';
 import { fetchEvents } from './store/actions/eventActions';
 
+// @ts-ignore
 store.dispatch(fetchEvents());
 
 const app = (
