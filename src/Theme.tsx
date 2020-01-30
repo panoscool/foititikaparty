@@ -1,4 +1,5 @@
 import React, { ReactNode } from 'react';
+import { useSelector } from 'react-redux';
 import { ThemeProvider } from '@material-ui/styles';
 import { SnackbarProvider } from 'notistack';
 import { createMuiTheme } from '@material-ui/core/styles';
@@ -10,23 +11,32 @@ export interface Props {
 }
 
 function ThemeWrapper({ children }: Props) {
+  const { type } = useSelector((state: any) => state.themeReducer);
   const muiTheme = createMuiTheme({
     palette: {
       primary: teal,
       secondary: amber,
-      type: 'light'
+      type: type
     },
     typography: {
       fontFamily: 'Helvetica Neue, sans-serif'
     }
   });
 
-  return <ThemeProvider theme={muiTheme}>
-    <SnackbarProvider autoHideDuration={2500} disableWindowBlurListener maxSnack={2} preventDuplicate anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
-      <Notifier />
-      {children}
-    </SnackbarProvider>
-  </ThemeProvider>;
+  return (
+    <ThemeProvider theme={muiTheme}>
+      <SnackbarProvider
+        maxSnack={2}
+        preventDuplicate
+        autoHideDuration={2500}
+        disableWindowBlurListener
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+      >
+        <Notifier />
+        {children}
+      </SnackbarProvider>
+    </ThemeProvider>
+  );
 }
 
 export default ThemeWrapper;

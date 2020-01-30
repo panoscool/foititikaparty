@@ -1,33 +1,33 @@
-import { ENQUEUE_SNACKBAR, REMOVE_SNACKBAR } from '../actionTypes'
+import { ENQUEUE_SNACKBAR, REMOVE_SNACKBAR } from '../actionTypes';
+import { createReducer } from '../../utils/createReducer';
 
 const initialState = {
-  notifications: [],
-}
+  notifications: []
+};
 
-const reducer = (state = initialState, action: any) => {
-  switch (action.type) {
-    case ENQUEUE_SNACKBAR:
-      return {
-        ...state,
-        notifications: [
-          ...state.notifications,
-          {
-            ...action.payload,
-          },
-        ]
+function enqueueSnackbar(state: any, payload: any) {
+  return {
+    ...state,
+    notifications: [
+      ...state.notifications,
+      {
+        ...payload
       }
-
-    case REMOVE_SNACKBAR:
-      return {
-        ...state,
-        notifications: state.notifications.filter(
-          // @ts-ignore
-          (notification) => notification.key !== action.key,
-        ),
-      };
-    default:
-      return state;
-  }
+    ]
+  };
 }
 
-export default reducer;
+function removeSnackbar(state: any, payload: any) {
+  return {
+    ...state,
+    notifications: state.notifications.filter(
+      // @ts-ignore
+      notification => notification.key !== payload.key
+    )
+  };
+}
+
+export default createReducer(initialState, {
+  [ENQUEUE_SNACKBAR]: enqueueSnackbar,
+  [REMOVE_SNACKBAR]: removeSnackbar
+});

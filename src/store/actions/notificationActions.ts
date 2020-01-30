@@ -10,5 +10,5 @@ export const enqueueSnackbar = (message: string, variant = 'default') => ({
 
 export const removeSnackbar = (key: string) => ({
   type: REMOVE_SNACKBAR,
-  key
+  payload: { key }
 });
