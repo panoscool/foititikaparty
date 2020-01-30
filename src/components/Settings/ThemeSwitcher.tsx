@@ -5,7 +5,7 @@ import { setThemeMode } from '../../store/actions/themeActions';
 
 function ThemeSwitcher() {
   const dispatch = useDispatch();
-  const { type } = useSelector(state => state.themeReducer);
+  const { type } = useSelector((state: any) => state.themeReducer);
 
   function toggleThemeMode() {
     dispatch(setThemeMode(type === 'light' ? 'dark' : 'light'));
