@@ -3,15 +3,23 @@ import { createReducer } from '../../utils/createReducer';
 
 const initialState = {
   authenticated: false,
-  user: null
+  displayName: null,
+  userId: null,
+  photoURL: null
 }
 
 function loginUser(state: any, payload: any) {
-  return { authenticated: true, user: payload.creds.email }
+  return {
+    ...state,
+    authenticated: true,
+    userId: payload.uid,
+    displayName: payload.displayName,
+    photoURL: payload.photoURL
+  }
 }
 
 function logoutUser() {
-  return { authenticated: false, user: null }
+  return { initialState }
 }
 
 export default createReducer(initialState, {

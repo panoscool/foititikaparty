@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Typography from '@material-ui/core/Typography';
@@ -20,12 +20,6 @@ import GoogleMap from '../../Shared/GoogleMap';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    card: {
-      margin: theme.spacing(2, 0, 2, 2),
-      [theme.breakpoints.down('md')]: {
-        margin: theme.spacing(2)
-      }
-    },
     media: {
       height: 0,
       paddingTop: '56.25%' // 16:9
@@ -47,11 +41,9 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface DataObject {
-  id: string;
   title: string;
   description: string;
   venue: string;
-  date: string;
   category: string;
   hostedBy: string;
   hostPhotoURL: string;
@@ -64,7 +56,8 @@ interface Props {
 
 function EventDetailsHeader({ data }: Props) {
   const classes = useStyles();
-  let history = useHistory();
+  const history = useHistory();
+  const { id } = useParams();
   const [expanded, setExpanded] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -81,15 +74,11 @@ function EventDetailsHeader({ data }: Props) {
   };
 
   return (
-    <Card className={classes.card}>
+    <Card>
       <CardHeader
         avatar={<Avatar alt="avatar" src={data.hostPhotoURL} />}
         action={
-          <IconButton
-            aria-label="settings"
-            aria-haspopup="true"
-            onClick={handleClick}
-          >
+          <IconButton aria-label="settings" aria-haspopup="true" onClick={handleClick}>
             <MoreVert />
           </IconButton>
         }
@@ -102,10 +91,10 @@ function EventDetailsHeader({ data }: Props) {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => history.push(`/event/${data.id}/edit`)}>
-          Edit
+        <MenuItem onClick={() => history.push(`/event/${id}/edit`)}>
+          Edit event
         </MenuItem>
-        <MenuItem onClick={handleClose}>Delete</MenuItem>
+        <MenuItem onClick={handleClose}>Delete event</MenuItem>
         <MenuItem onClick={handleClose}>Cancel event</MenuItem>
       </Menu>
       <CardMedia

@@ -13,6 +13,7 @@ import Person from '@material-ui/icons/Person';
 import Settings from '@material-ui/icons/Settings';
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import { openModal } from '../../../store/actions/modalActions';
+import { logoutUser } from '../../../store/actions/authActions';
 
 function AuthMenu() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -24,8 +25,13 @@ function AuthMenu() {
     setAnchorEl(event.currentTarget);
   };
 
-  function handleClose() {
-    setAnchorEl(null);
+  function handleClose(loc: string) {
+    if (loc === '/') {
+      setAnchorEl(null);
+      dispatch(logoutUser())
+    } else {
+      setAnchorEl(null);
+    }
   };
 
   function onClose(modal: any) {
@@ -34,8 +40,8 @@ function AuthMenu() {
   }
 
   const navigationGuest = [
-    { click: 'LoginModal', label: 'Login' },
-    { click: 'RegisterModal', label: 'Register' }
+    { modal: 'LoginModal', label: 'Login' },
+    { modal: 'RegisterModal', label: 'Register' }
   ]
 
   const navigationAuth = [
@@ -44,7 +50,7 @@ function AuthMenu() {
     { to: '/profile/network', icon: <People />, label: 'My Network' },
     { to: '/profile', icon: <Person />, label: 'My Profile' },
     { to: '/settings', icon: <Settings />, label: 'Settings' },
-    { to: '/signout', icon: <ExitToApp />, label: 'Sign out' }
+    { to: '/', icon: <ExitToApp />, label: 'Sign out' }
   ];
 
   return (
@@ -78,13 +84,13 @@ function AuthMenu() {
             key={nav.to}
             component={Link}
             to={nav.to}
-            onClick={handleClose}
+            onClick={() => handleClose(nav.to)}
           >
             <ListItemIcon>{nav.icon}</ListItemIcon>
             {nav.label}
           </MenuItem>
         )) : navigationGuest.map((nav: any) => (
-          <MenuItem key={nav.label} onClick={() => onClose(nav.click)}>
+          <MenuItem key={nav.label} onClick={() => onClose(nav.modal)}>
             {nav.label}
           </MenuItem>
         ))}

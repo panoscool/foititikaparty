@@ -1,12 +1,13 @@
 import { asyncActionStart, asyncActionFinish, asyncActionError } from '../store/actions/asyncActions';
 
-export async function asyncAction(dispatch: any, actionCallback: () => void) {
+export function asyncAction(dispatch: any, actionCallback: () => void) {
   dispatch(asyncActionStart());
 
   try {
-    await actionCallback();
+    actionCallback();
     dispatch(asyncActionFinish());
   } catch (err) {
-    dispatch(asyncActionError(err));
+    console.error(err.message);
+    dispatch(asyncActionError(err.message));
   }
 }

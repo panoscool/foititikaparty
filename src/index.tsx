@@ -1,27 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
+import { Router } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import ThemeProvider from './Theme';
 import App from './App';
-import ScrollToTop from './utils/ScrollToTop';
+import history from './history';
 import store from './store/configureStore';
+import ScrollToTop from './utils/ScrollToTop';
 import * as serviceWorker from './serviceWorker';
-import { fetchEvents } from './store/actions/eventActions';
-
-// @ts-ignore
-store.dispatch(fetchEvents());
 
 const app = (
   <Provider store={store}>
-    <BrowserRouter>
+    <Router history={history}>
       <ThemeProvider>
         <CssBaseline />
         <ScrollToTop />
         <App />
       </ThemeProvider>
-    </BrowserRouter>
+    </Router>
   </Provider>
 );
 

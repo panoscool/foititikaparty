@@ -35,7 +35,8 @@ const useStyles = makeStyles((theme: Theme) =>
       color: 'inherit'
     },
     logo: {
-      height: 50
+      height: 50,
+      verticalAlign: 'text-top',
     }
   })
 );

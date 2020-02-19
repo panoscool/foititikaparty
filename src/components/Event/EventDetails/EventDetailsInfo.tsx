@@ -1,4 +1,5 @@
 import React from 'react';
+import format from 'date-fns/format';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import InfoOutlined from '@material-ui/icons/InfoOutlined';
 import CalendarTodayOutlined from '@material-ui/icons/CalendarTodayOutlined';
@@ -8,15 +9,11 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Paper from '@material-ui/core/Paper';
-import { format, parseISO } from 'date-fns';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     paper: {
-      margin: theme.spacing(2, 0, 2, 2),
-      [theme.breakpoints.down('md')]: {
-        margin: theme.spacing(2)
-      }
+      margin: theme.spacing(2, 0),
     },
     button: {
       margin: theme.spacing(0, 1, 1, 1)
@@ -29,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface DataObject {
   description: string;
-  date: string;
+  date: any;
 }
 
 interface Props {
@@ -39,8 +36,6 @@ interface Props {
 function EventDetailsInfo({ data }: Props) {
   const classes = useStyles();
 
-  const formatedDate = format(parseISO(data.date), 'dd MMMM yyyy');
-
   return (
     <Paper className={classes.paper}>
       <List>
@@ -48,7 +43,7 @@ function EventDetailsInfo({ data }: Props) {
           <ListItemIcon>
             <CalendarTodayOutlined color="primary" />
           </ListItemIcon>
-          <ListItemText primary={formatedDate} />
+          <ListItemText primary={format(data.date.toDate(), 'dd MMMM yyyy')} />
         </ListItem>
         <ListItem divider>
           <ListItemIcon>

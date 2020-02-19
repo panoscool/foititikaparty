@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
-import cuid from 'cuid';
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { Button, Typography } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
+import firebase from '../../config/firebase';
 import TextInput from '../Shared/TextInput';
 import DateInput from '../Shared/DateInput';
 import SelectInput from '../Shared/SelectInput';
 import PlaceInput from '../Shared/PlaceInput'
+import Spinner from '../Shared/Spinner';
+import { createEvent, updateEvent } from '../../store/actions/eventActions';
+import { asyncActionStart, asyncActionFinish, asyncActionError } from '../../store/actions/asyncActions';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -49,8 +53,10 @@ const categories = [
 
 function EventForm({ data, handleFormSubmit }: Props) {
   const classes = useStyles();
-  let { id } = useParams();
-  const [date, setDate] = useState<number | null>(Date.now());
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const { loading } = useSelector((state: any) => state.asyncReducer);
+  const [date, setDate] = useState<Date | null>(new Date());
   const [cityLatLng, setCityLatLng] = useState({});
   const [venueLatLng, setVenueLatLng] = useState({});
   const [city, setCity] = useState('');
@@ -63,14 +69,32 @@ function EventForm({ data, handleFormSubmit }: Props) {
   });
 
   useEffect(() => {
-    if (id) {
-      setState(data);
-      setCity(data.city);
-      setVenue(data.venue);
-    }
-  }, [id, data]);
+    async function fetchEvent() {
+      if (!id) return;
 
-  const handleDateChange = (date: number | null) => {
+      dispatch(asyncActionStart());
+      try {
+        const doc = await firebase.firestore().collection('events').doc(id).get();
+
+        if (doc.exists) {
+          const d: firebase.firestore.DocumentData | undefined = doc.data();
+          setCity(d?.city);
+          setVenue(d?.venue);
+          setState({ title: d?.title, category: d?.category, description: d?.description, hostedBy: d?.hostedBy })
+          dispatch(asyncActionFinish());
+        } else {
+          // doc.data() will be undefined in this case
+          dispatch(asyncActionError("No such document!"));
+        }
+      } catch (err) {
+        console.error("Error getting document:", err);
+        dispatch(asyncActionError(err.message))
+      }
+    }
+    fetchEvent();
+  }, [dispatch, id]);
+
+  const handleDateChange = (date: Date | null) => {
     setDate(date);
   };
 
@@ -104,15 +128,20 @@ function EventForm({ data, handleFormSubmit }: Props) {
     event.preventDefault();
     const newEvent = {
       ...state,
-      id: cuid(),
       city: city,
       venue: venue,
       date: date,
       venueLatLng: venueLatLng,
       hostPhotoURL: 'https://randomuser.me/api/portraits/women/18.jpg'
     }
-    handleFormSubmit(newEvent);
+    if (id) {
+      dispatch(updateEvent(newEvent));
+    } else {
+      dispatch(createEvent(newEvent));
+    }
   }
+
+  if (loading) return <Spinner />
 
   return (
     <Paper className={classes.paper}>
@@ -144,14 +173,14 @@ function EventForm({ data, handleFormSubmit }: Props) {
         </Typography>
         <PlaceInput
           label="City"
-          value={city}
+          value={city || ''}
           options={{ typs: ['(cities)'] }}
           handleChange={handleCityChange}
           handleSelect={handleCitySelect}
         />
         <PlaceInput
           label="Venue"
-          value={venue}
+          value={venue || ''}
           options={{
             // @ts-ignore
             location: new google.maps.LatLng(cityLatLng),

@@ -1,13 +1,10 @@
-import {
-  CREATE_EVENT,
-  UPDATE_EVENT,
-  DELETE_EVENT,
-  FETCH_EVENTS
-} from '../actionTypes';
+import { CREATE_EVENT, UPDATE_EVENT, DELETE_EVENT, FETCH_EVENTS } from '../actionTypes';
 import { createReducer } from '../../utils/createReducer';
 
-// @ts-ignore
-const initialState = [];
+const initialState = {
+  event: {},
+  events: []
+}
 
 function createEvent(state: any, payload: any) {
   return [...state, payload.event];
@@ -25,7 +22,7 @@ function deleteEvent(state: any, payload: any) {
 }
 
 function fetchEvents(state: any, payload: any) {
-  return payload.events;
+  return { ...state, events: payload }
 }
 
 // @ts-ignore

@@ -10,12 +10,6 @@ import Paper from '@material-ui/core/Paper';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    paper: {
-      margin: theme.spacing(2, 2, 2, 0),
-      [theme.breakpoints.down('md')]: {
-        margin: theme.spacing(2)
-      }
-    },
     listLabel: {
       color: 'white',
       backgroundColor: '#212121',
@@ -43,7 +37,7 @@ function EventDetailsSidebar({ data }: Props) {
   const classes = useStyles();
 
   return (
-    <Paper className={classes.paper}>
+    <Paper>
       <div className={classes.listLabel}>
         <Typography variant="h6" align="center">
           People Going
