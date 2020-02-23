@@ -37,11 +37,6 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-interface Props {
-  data?: any;
-  handleFormSubmit: (event: any) => void;
-}
-
 const categories = [
   { label: 'Drinks', value: 'drinks' },
   { label: 'Food', value: 'food' },
@@ -51,7 +46,7 @@ const categories = [
   { label: 'Travel', value: 'travel' }
 ];
 
-function EventForm({ data, handleFormSubmit }: Props) {
+function EventForm() {
   const classes = useStyles();
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -135,7 +130,7 @@ function EventForm({ data, handleFormSubmit }: Props) {
       hostPhotoURL: 'https://randomuser.me/api/portraits/women/18.jpg'
     }
     if (id) {
-      dispatch(updateEvent(newEvent));
+      dispatch(updateEvent(id, newEvent));
     } else {
       dispatch(createEvent(newEvent));
     }

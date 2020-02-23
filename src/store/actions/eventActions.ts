@@ -1,21 +1,31 @@
-import { CREATE_EVENT, UPDATE_EVENT, DELETE_EVENT } from '../actionTypes';
+import history from '../../history';
 import firebase from '../../config/firebase';
 import { asyncAction } from '../../utils/asyncAction';
+import { enqueueSnackbar } from './notificationActions';
 
 export const createEvent = (event: object) => (dispatch: any) => {
   asyncAction(dispatch, async () => {
     const response = await firebase.firestore().collection('events').add(event);
-    console.log(response)
-    dispatch({ type: CREATE_EVENT, payload: response })
+
+    history.push(`/event/${response.id}`);
+    dispatch(enqueueSnackbar('Event has been created', 'success'))
   })
 }
 
-export const updateEvent = (event: object) => ({
-  type: UPDATE_EVENT,
-  payload: { event }
-});
+export const updateEvent = (eventId: string, event: object) => (dispatch: any) => {
+  asyncAction(dispatch, async () => {
+    await firebase.firestore().collection('events').doc(eventId).update(event);
 
-export const deleteEvent = (eventId: string) => ({
-  type: DELETE_EVENT,
-  payload: { eventId }
-});
+    history.push(`/event/${eventId}`);
+    dispatch(enqueueSnackbar('Event has been updated', 'success'))
+  })
+};
+
+export const deleteEvent = (eventId: string | undefined) => (dispatch: any) => {
+  asyncAction(dispatch, async () => {
+    await firebase.firestore().collection('events').doc(eventId).delete();
+
+    history.push('/');
+    dispatch(enqueueSnackbar('Event has been deleted', 'success'))
+  })
+};

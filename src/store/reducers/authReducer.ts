@@ -5,7 +5,8 @@ const initialState = {
   authenticated: false,
   displayName: null,
   userId: null,
-  photoURL: null
+  photoURL: null,
+  providerId: null
 }
 
 function loginUser(state: any, payload: any) {
@@ -14,7 +15,8 @@ function loginUser(state: any, payload: any) {
     authenticated: true,
     userId: payload.uid,
     displayName: payload.displayName,
-    photoURL: payload.photoURL
+    photoURL: payload.photoURL,
+    providerId: payload.providerData[0].providerId
   }
 }
 

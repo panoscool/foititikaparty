@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
@@ -17,6 +18,7 @@ import MoreVert from '@material-ui/icons/MoreVert';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import RoomOutlined from '@material-ui/icons/RoomOutlined';
 import GoogleMap from '../../Shared/GoogleMap';
+import { deleteEvent } from '../../../store/actions/eventActions';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -57,6 +59,7 @@ interface Props {
 function EventDetailsHeader({ data }: Props) {
   const classes = useStyles();
   const history = useHistory();
+  const dispatch = useDispatch();
   const { id } = useParams();
   const [expanded, setExpanded] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -94,7 +97,7 @@ function EventDetailsHeader({ data }: Props) {
         <MenuItem onClick={() => history.push(`/event/${id}/edit`)}>
           Edit event
         </MenuItem>
-        <MenuItem onClick={handleClose}>Delete event</MenuItem>
+        <MenuItem onClick={() => dispatch(deleteEvent(id))}>Delete event</MenuItem>
         <MenuItem onClick={handleClose}>Cancel event</MenuItem>
       </Menu>
       <CardMedia
