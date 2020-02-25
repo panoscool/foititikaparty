@@ -37,7 +37,7 @@ function SettingsNav() {
           Profile
         </Typography>
         <List>
-          <ListItem button component={Link} to="/settings/basics">
+          <ListItem button component={Link} to="/settings/basic">
             <ListItemText primary="Basics" />
           </ListItem>
           <ListItem button component={Link} to="/settings/about">

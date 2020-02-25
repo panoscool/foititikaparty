@@ -19,24 +19,34 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-function SelectInput(props: any) {
+interface Props {
+  name: string;
+  label: string;
+  value?: string;
+  optionsArray: any;
+  required?: boolean;
+  disabled?: boolean;
+  handleChange: (e?: any) => void;
+}
+
+function SelectInput(props: Props) {
   const classes = useStyles();
 
-  const inputLabel = useRef(null);
+  const inputLabel = useRef<HTMLLabelElement>(null);
   const [labelWidth, setLabelWidth] = useState(0);
 
   useEffect(() => {
-    // @ts-ignore
-    setLabelWidth(inputLabel.current.offsetWidth);
+    setLabelWidth(inputLabel.current!.offsetWidth);
   }, []);
 
-  const { name, value, optionsArray, label, required, handleChange } = props;
+  const { name, label, value, optionsArray, required, disabled, handleChange } = props;
 
   return (
     <FormControl
-      required={required}
       margin="dense"
       variant="outlined"
+      required={required}
+      disabled={disabled}
       className={clsx(classes.formControl, classes.dense)}
     >
       <InputLabel ref={inputLabel} htmlFor="outlined-select">

@@ -22,10 +22,10 @@ function TextInput(props: any) {
 
   return (
     <TextField
-      margin="dense"
-      variant="outlined"
       fullWidth
       {...rest}
+      margin="dense"
+      variant="outlined"
       inputProps={inputProps}
       onChange={handleChange}
       className={clsx(classes.textField, classes.dense)}

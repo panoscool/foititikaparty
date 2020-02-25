@@ -17,8 +17,8 @@ function DateInput({ label, selectedDate, handleDateChange }: Props) {
         // disableToolbar
         fullWidth
         margin="dense"
-        inputVariant="outlined"
         variant="inline"
+        inputVariant="outlined"
         format="dd/MM/yyyy hh:mm"
         label={label}
         value={selectedDate}
