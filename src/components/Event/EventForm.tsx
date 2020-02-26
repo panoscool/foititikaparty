@@ -75,6 +75,7 @@ function EventForm() {
           const d: firebase.firestore.DocumentData | undefined = doc.data();
           setCity(d?.city);
           setVenue(d?.venue);
+          setDate(d?.date.toDate());
           setState({ title: d?.title, category: d?.category, description: d?.description, hostedBy: d?.hostedBy })
           dispatch(asyncActionFinish());
         } else {

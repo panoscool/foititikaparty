@@ -16,9 +16,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 interface Props {
+  label: string;
   value: string;
   options: object;
-  label: string;
   handleChange: (event: any) => void;
   handleSelect?: (event: any) => void;
 }
