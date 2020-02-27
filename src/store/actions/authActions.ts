@@ -7,8 +7,13 @@ import firebase from '../../config/firebase';
 export const registerUser = (creds) => async (dispatch) => {
   asyncAction(dispatch, async () => {
     const createdUser = await firebase.auth().createUserWithEmailAndPassword(creds.email, creds.password);
-    await createdUser.user.updateProfile({ displayName: creds.displayName });
 
+    const newUser = {
+      displayName: creds.displayName,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    }
+
+    await firebase.firestore().collection('users').doc(createdUser.user?.uid).set(newUser)
     dispatch(closeModal());
   })
 }

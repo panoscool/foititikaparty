@@ -53,7 +53,7 @@ function RegisterModal({ ...other }) {
           <TextInput
             required
             type="text"
-            name="name"
+            name="displayName"
             label="Display Name"
             value={state.displayName}
             handleChange={handleInputChange}

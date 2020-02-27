@@ -12,8 +12,8 @@ import People from '@material-ui/icons/People';
 import Person from '@material-ui/icons/Person';
 import Settings from '@material-ui/icons/Settings';
 import ExitToApp from '@material-ui/icons/ExitToApp';
-import { openModal } from '../../../store/actions/modalActions';
-import { logoutUser } from '../../../store/actions/authActions';
+import { openModal } from '../../store/actions/modalActions';
+import { logoutUser } from '../../store/actions/authActions';
 
 function AuthMenu() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -28,11 +28,11 @@ function AuthMenu() {
   function handleClose(loc: string) {
     if (loc === '/') {
       setAnchorEl(null);
-      dispatch(logoutUser())
+      dispatch(logoutUser());
     } else {
       setAnchorEl(null);
     }
-  };
+  }
 
   function onClose(modal: any) {
     setAnchorEl(null);
@@ -42,7 +42,7 @@ function AuthMenu() {
   const navigationGuest = [
     { modal: 'LoginModal', label: 'Login' },
     { modal: 'RegisterModal', label: 'Register' }
-  ]
+  ];
 
   const navigationAuth = [
     { to: '/event/create', icon: <Add />, label: 'Create Event' },
@@ -79,21 +79,23 @@ function AuthMenu() {
         open={open}
         onClose={handleClose}
       >
-        {authenticated ? navigationAuth.map((nav: any) => (
-          <MenuItem
-            key={nav.to}
-            component={Link}
-            to={nav.to}
-            onClick={() => handleClose(nav.to)}
-          >
-            <ListItemIcon>{nav.icon}</ListItemIcon>
-            {nav.label}
-          </MenuItem>
-        )) : navigationGuest.map((nav: any) => (
-          <MenuItem key={nav.label} onClick={() => onClose(nav.modal)}>
-            {nav.label}
-          </MenuItem>
-        ))}
+        {authenticated
+          ? navigationAuth.map((nav: any) => (
+            <MenuItem
+              key={nav.to}
+              component={Link}
+              to={nav.to}
+              onClick={() => handleClose(nav.to)}
+            >
+              <ListItemIcon>{nav.icon}</ListItemIcon>
+              {nav.label}
+            </MenuItem>
+          ))
+          : navigationGuest.map((nav: any) => (
+            <MenuItem key={nav.label} onClick={() => onClose(nav.modal)}>
+              {nav.label}
+            </MenuItem>
+          ))}
       </Menu>
     </div>
   );
