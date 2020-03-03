@@ -22,7 +22,7 @@ function SettingsPage() {
       <Grid container spacing={2}>
         <Grid item xs={12} sm={9}>
           <Switch>
-            <Redirect exact from='/settings' to='/settings/basics' />
+            <Redirect exact from='/settings' to='/settings/basic' />
             <Route path='/settings/basic' component={BasicPage} />
             <Route path='/settings/about' />
             <Route path='/settings/photos' />

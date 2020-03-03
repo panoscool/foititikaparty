@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import cuid from 'cuid';
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
@@ -7,6 +8,7 @@ import TextInput from '../../Shared/TextInput';
 import RadioInput from '../../Shared/RadioInput';
 import DateInput from '../../Shared/DateInput';
 import PlaceInput from '../../Shared/PlaceInput';
+import { updateProfile } from '../../../store/actions/userActions';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -21,6 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 function BasicPage() {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const [date, setDate] = useState<Date | null>(new Date());
   const [city, setCity] = useState('');
   const [state, setState] = useState({
@@ -48,8 +51,12 @@ function BasicPage() {
 
   function handleSubmit(event?: any) {
     event.preventDefault();
-
-    console.log(state, city, date);
+    const updatedProfile = {
+      ...state,
+      date,
+      city
+    }
+    dispatch(updateProfile(updatedProfile));
   }
 
   return (
