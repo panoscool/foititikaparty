@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import format from 'date-fns/format';
 import firebase from '../../config/firebase';
@@ -17,7 +16,7 @@ import RoomOutlined from '@material-ui/icons/RoomOutlined';
 import EventActivity from './EventActivity';
 import SearchField from '../Shared/SearchField';
 import Spinner from '../Shared/Spinner';
-import { asyncActionStart, asyncActionFinish, asyncActionError } from '../../store/actions/asyncActions';
+import useFeedback from '../../hooks/useFeedback';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -40,25 +39,23 @@ const useStyles = makeStyles((theme: Theme) =>
 function EventPage() {
   const classes = useStyles();
   const history = useHistory();
-  const dispatch = useDispatch();
-  const { loading } = useSelector((state: any) => state.asyncReducer)
-  const [snapshot, setSnapshot] = useState();
+  const [snapshot, setSnapshot] = useState([] || null);
+  const { state, handleFeedback } = useFeedback({ loading: true, error: null })
 
   useEffect(() => {
-    dispatch(asyncActionStart());
-
     let unsubscribe = firebase.firestore().collection('events').onSnapshot(snapshot => {
+      // @ts-ignore
       setSnapshot(snapshot);
-      dispatch(asyncActionFinish());
+      handleFeedback(false)
     }, (err) => {
       console.error(err.message);
-      dispatch(asyncActionError(err.message));
+      handleFeedback(false, err.message)
     });
 
     return () => {
       unsubscribe();
     };
-  }, [dispatch]);
+  }, [handleFeedback]);
 
   function renderList(doc: any) {
     const d = doc.data();
@@ -87,16 +84,18 @@ function EventPage() {
     );
   }
 
-  if (!snapshot || loading) return <Spinner />;
+  if (!snapshot || state.loading) return <Spinner />;
 
   return (
     <div className={classes.root}>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={8}>
           <SearchField />
-          {snapshot.docs.map((doc: any) => {
-            return renderList(doc);
-          })}
+          {
+            // @ts-ignore
+            snapshot.docs.map((doc: any) => {
+              return renderList(doc);
+            })}
         </Grid>
         <Grid item xs={12} sm={4}>
           <EventActivity />

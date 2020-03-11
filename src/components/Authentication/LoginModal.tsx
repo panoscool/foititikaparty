@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from "@material-ui/core/Button";
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -9,8 +8,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Close from '@material-ui/icons/Close';
 import TextInput from "../Shared/TextInput";
 import SocialAuthPage from "./SocialAuthPage";
-import { closeModal } from '../../store/actions/modalActions';
-import { loginUser } from '../../store/actions/authActions';
+import firebase from '../../config/firebase';
+import { ThemeContext } from '../../context/ThemeContext';
 
 const useStyles = makeStyles((theme) => ({
   closeButton: {
@@ -23,28 +22,30 @@ const useStyles = makeStyles((theme) => ({
 
 function LoginModal({ ...other }) {
   const classes = useStyles();
-  const dispatch = useDispatch();
-  const [state, setState] = useState({
+  const { handleModal } = useContext(ThemeContext)
+  const [values, setValues] = useState({
     email: "",
     password: ""
   });
 
   const handleInputChange = (event: any) => {
-    setState({ ...state, [event.target.name]: event.target.value });
+    setValues({ ...values, [event.target.name]: event.target.value });
   };
 
-  const handleSubmit = (event: { preventDefault: () => void; }) => {
+  async function handleSubmit(event: { preventDefault: () => void; }) {
     event.preventDefault();
 
-    dispatch(loginUser(state));
+    await firebase.auth().signInWithEmailAndPassword(values.email, values.password);
+
+    handleModal()
   };
 
   return (
     <div>
-      <Dialog onClose={() => dispatch(closeModal())} open={true}>
+      <Dialog onClose={handleModal} open={true}>
         <DialogTitle>
           Login
-        <IconButton aria-label="close" className={classes.closeButton} onClick={() => dispatch(closeModal())}>
+        <IconButton aria-label="close" className={classes.closeButton} onClick={handleModal}>
             <Close />
           </IconButton>
         </DialogTitle>
@@ -55,7 +56,7 @@ function LoginModal({ ...other }) {
               type="email"
               name="email"
               label="Email"
-              value={state.email}
+              value={values.email}
               handleChange={handleInputChange}
             />
             <TextInput
@@ -63,7 +64,7 @@ function LoginModal({ ...other }) {
               type="password"
               name="password"
               label="Password"
-              value={state.password}
+              value={values.password}
               handleChange={handleInputChange}
             />
 

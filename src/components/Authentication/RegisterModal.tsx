@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from "@material-ui/core/Button";
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -9,8 +8,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Close from '@material-ui/icons/Close';
 import TextInput from "../Shared/TextInput";
 import SocialAuthPage from "./SocialAuthPage";
-import { closeModal } from '../../store/actions/modalActions';
-import { registerUser } from "../../store/actions/authActions";
+import { ThemeContext } from '../../context/ThemeContext';
+import firebase from '../../config/firebase';
 
 const useStyles = makeStyles((theme) => ({
   closeButton: {
@@ -21,30 +20,43 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function RegisterModal({ ...other }) {
+function RegisterModal() {
   const classes = useStyles();
-  const dispatch = useDispatch();
-  const [state, setState] = useState({
+  const { handleModal } = useContext(ThemeContext);
+  const [values, setValues] = useState({
     displayName: "",
     email: "",
     password: ""
   });
 
   const handleInputChange = (event: any) => {
-    setState({ ...state, [event.target.name]: event.target.value });
+    setValues({ ...values, [event.target.name]: event.target.value });
   };
 
-  const handleSubmit = (event: { preventDefault: () => void; }) => {
+  async function handleSubmit(event: { preventDefault: () => void; }) {
     event.preventDefault();
+    const { displayName, email, password } = values;
 
-    dispatch(registerUser(state));
+    try {
+      const createdUser = await firebase.auth().createUserWithEmailAndPassword(email, password);
+
+      const newUser = {
+        displayName: displayName,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      }
+
+      await firebase.firestore().collection('users').doc(createdUser.user?.uid).set(newUser)
+      handleModal()
+    } catch (err) {
+      console.error(err.message)
+    }
   };
 
   return (
-    <Dialog onClose={() => dispatch(closeModal())} open={true}>
+    <Dialog onClose={handleModal} open={true}>
       <DialogTitle>
         Register
-        <IconButton aria-label="close" className={classes.closeButton} onClick={() => dispatch(closeModal())}>
+        <IconButton aria-label="close" className={classes.closeButton} onClick={handleModal}>
           <Close />
         </IconButton>
       </DialogTitle>
@@ -55,7 +67,7 @@ function RegisterModal({ ...other }) {
             type="text"
             name="displayName"
             label="Display Name"
-            value={state.displayName}
+            value={values.displayName}
             handleChange={handleInputChange}
           />
           <TextInput
@@ -63,7 +75,7 @@ function RegisterModal({ ...other }) {
             type="email"
             name="email"
             label="Email"
-            value={state.email}
+            value={values.email}
             handleChange={handleInputChange}
           />
           <TextInput
@@ -71,7 +83,7 @@ function RegisterModal({ ...other }) {
             type="password"
             name="password"
             label="Password"
-            value={state.password}
+            value={values.password}
             handleChange={handleInputChange}
           />
 

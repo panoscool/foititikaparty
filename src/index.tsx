@@ -1,25 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { Router } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import ThemeProvider from './Theme';
+import AuthProvider from './context/AuthContext';
+import ThemeProvider from './context/ThemeContext';
 import App from './App';
-import history from './history';
-import store from './store/configureStore';
-import ScrollToTop from './utils/ScrollToTop';
 import * as serviceWorker from './serviceWorker';
 
 const app = (
-  <Provider store={store}>
-    <Router history={history}>
+  <BrowserRouter>
+    <AuthProvider>
       <ThemeProvider>
         <CssBaseline />
-        <ScrollToTop />
         <App />
       </ThemeProvider>
-    </Router>
-  </Provider>
+    </AuthProvider>
+  </BrowserRouter>
 );
 
 ReactDOM.render(app, document.getElementById('root'));

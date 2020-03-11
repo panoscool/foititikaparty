@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState, useEffect, useContext } from 'react';
 import cuid from 'cuid';
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
@@ -8,7 +7,8 @@ import TextInput from '../../Shared/TextInput';
 import RadioInput from '../../Shared/RadioInput';
 import DateInput from '../../Shared/DateInput';
 import PlaceInput from '../../Shared/PlaceInput';
-import { updateProfile } from '../../../store/actions/userActions';
+import { AuthContext } from '../../../context/AuthContext';
+import firebase from '../../../config/firebase';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -23,13 +23,32 @@ const useStyles = makeStyles((theme: Theme) =>
 
 function BasicPage() {
   const classes = useStyles();
-  const dispatch = useDispatch();
+  const { userId } = useContext(AuthContext)
   const [date, setDate] = useState<Date | null>(new Date());
   const [city, setCity] = useState('');
   const [state, setState] = useState({
     displayName: '',
     gender: ''
   });
+
+  useEffect(() => {
+    async function fetchProfile() {
+      try {
+        // @ts-ignore
+        const doc = await firebase.firestore().collection('users').doc(userId).get();
+        const d = doc.data();
+
+        setDate(d?.date.toDate());
+        setCity(d?.city);
+        setState({ displayName: d?.displayName, gender: d?.gender });
+      } catch (err) {
+        console.error(err.message)
+      }
+    }
+
+    fetchProfile();
+
+  }, [userId])
 
   const handleDateChange = (date: Date | null) => {
     setDate(date);
@@ -49,14 +68,20 @@ function BasicPage() {
       .then(() => setCity(selectedCity))
   }
 
-  function handleSubmit(event?: any) {
+  async function handleSubmit(event?: any) {
     event.preventDefault();
     const updatedProfile = {
       ...state,
       date,
       city
     }
-    dispatch(updateProfile(updatedProfile));
+
+    try {
+      // @ts-ignore
+      await firebase.firestore().collection('users').doc(userId).update(updatedProfile);
+    } catch (err) {
+      console.error(err.message)
+    }
   }
 
   return (

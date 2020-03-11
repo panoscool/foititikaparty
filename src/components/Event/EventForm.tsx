@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { Link, useParams } from 'react-router-dom';
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
@@ -11,8 +11,7 @@ import DateInput from '../Shared/DateInput';
 import SelectInput from '../Shared/SelectInput';
 import PlaceInput from '../Shared/PlaceInput'
 import Spinner from '../Shared/Spinner';
-import { createEvent, updateEvent } from '../../store/actions/eventActions';
-import { asyncActionStart, asyncActionFinish, asyncActionError } from '../../store/actions/asyncActions';
+import useFeedback from '../../hooks/useFeedback';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -49,14 +48,14 @@ const categories = [
 function EventForm() {
   const classes = useStyles();
   const { id } = useParams();
-  const dispatch = useDispatch();
-  const { loading } = useSelector((state: any) => state.asyncReducer);
+  const history = useHistory();
+  const { state, handleFeedback } = useFeedback({ loading: true, error: null })
   const [date, setDate] = useState<Date | null>(new Date());
   const [cityLatLng, setCityLatLng] = useState({});
   const [venueLatLng, setVenueLatLng] = useState({});
   const [city, setCity] = useState('');
   const [venue, setVenue] = useState('');
-  const [state, setState] = useState({
+  const [values, setValues] = useState({
     title: '',
     category: '',
     description: '',
@@ -67,7 +66,6 @@ function EventForm() {
     async function fetchEvent() {
       if (!id) return;
 
-      dispatch(asyncActionStart());
       try {
         const doc = await firebase.firestore().collection('events').doc(id).get();
 
@@ -76,19 +74,19 @@ function EventForm() {
           setCity(d?.city);
           setVenue(d?.venue);
           setDate(d?.date.toDate());
-          setState({ title: d?.title, category: d?.category, description: d?.description, hostedBy: d?.hostedBy })
-          dispatch(asyncActionFinish());
+          setValues({ title: d?.title, category: d?.category, description: d?.description, hostedBy: d?.hostedBy })
+          handleFeedback(false);
         } else {
           // doc.data() will be undefined in this case
-          dispatch(asyncActionError("No such document!"));
+          handleFeedback(false, "No such document!")
         }
       } catch (err) {
         console.error("Error getting document:", err);
-        dispatch(asyncActionError(err.message))
+        handleFeedback(false, err.message);
       }
     }
     fetchEvent();
-  }, [dispatch, id]);
+  }, [handleFeedback, id]);
 
   const handleDateChange = (date: Date | null) => {
     setDate(date);
@@ -103,7 +101,7 @@ function EventForm() {
   }
 
   function handleChange(event?: any) {
-    setState({ ...state, [event.target.name]: event.target.value });
+    setValues({ ...values, [event.target.name]: event.target.value });
   }
 
   function handleCitySelect(selectedCity: any) {
@@ -120,10 +118,11 @@ function EventForm() {
       .then(() => setVenue(selectedVenue))
   }
 
-  function handleSubmit(event?: any) {
+  async function handleSubmit(event?: any) {
     event.preventDefault();
+
     const newEvent = {
-      ...state,
+      ...values,
       city: city,
       venue: venue,
       date: date,
@@ -131,13 +130,21 @@ function EventForm() {
       hostPhotoURL: 'https://randomuser.me/api/portraits/women/18.jpg'
     }
     if (id) {
-      dispatch(updateEvent(id, newEvent));
+      try {
+        await firebase.firestore().collection('events').doc(id).update(newEvent);
+        history.push(`/event/${id}`);
+      } catch (err) {
+
+      }
     } else {
-      dispatch(createEvent(newEvent));
+      const response = await firebase.firestore().collection('events').add(newEvent);
+
+      history.push(`/event/${response.id}`);
+
     }
   }
 
-  if (loading) return <Spinner />
+  if (state.loading) return <Spinner />
 
   return (
     <Paper className={classes.paper}>
@@ -146,14 +153,14 @@ function EventForm() {
         <TextInput
           name="title"
           label="Event Title"
-          value={state.title || ''}
+          value={values.title || ''}
           handleChange={handleChange}
         />
         <SelectInput
           name="category"
           label="Category"
           optionsArray={categories}
-          value={state.category || ''}
+          value={values.category || ''}
           handleChange={handleChange}
         />
         <TextInput
@@ -161,7 +168,7 @@ function EventForm() {
           multiline
           name="description"
           label="Description"
-          value={state.description || ''}
+          value={values.description || ''}
           handleChange={handleChange}
         />
         <Typography color="secondary" className={classes.sectionLabel}>
@@ -189,7 +196,7 @@ function EventForm() {
         <TextInput
           name="hostedBy"
           label="Hosted By"
-          value={state.hostedBy || ''}
+          value={values.hostedBy || ''}
           handleChange={handleChange}
         />
         <DateInput

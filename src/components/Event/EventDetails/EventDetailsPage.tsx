@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
@@ -5,10 +6,9 @@ import { Grid } from '@material-ui/core';
 import EventDetailsHeader from './EventDetailsHeader';
 import EventDetailsInfo from './EventDetailsInfo';
 import EventDetailsSidebar from './EventDetailsSidebar';
-import firebase from '../../../config/firebase';
-import { useDispatch, useSelector } from 'react-redux';
-import { asyncActionError, asyncActionStart, asyncActionFinish } from '../../../store/actions/asyncActions';
 import Spinner from '../../Shared/Spinner';
+import firebase from '../../../config/firebase';
+import useFeedback from '../../../hooks/useFeedback';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -20,35 +20,34 @@ const useStyles = makeStyles((theme: Theme) =>
 
 function EventDetailsPage() {
   const classes = useStyles();
-  const dispatch = useDispatch();
   const { id } = useParams();
   const [data, setData] = useState();
-  const { loading } = useSelector((state: any) => state.asyncReducer);
+  const { state, handleFeedback } = useFeedback({ loading: true, error: null })
 
   useEffect(() => {
     async function fetchEvent() {
       if (!id) return;
 
-      dispatch(asyncActionStart());
       try {
         const doc = await firebase.firestore().collection('events').doc(id).get();
 
         if (doc.exists) {
           setData(doc.data());
-          dispatch(asyncActionFinish());
+          handleFeedback(false);
         } else {
           // doc.data() will be undefined in this case
-          dispatch(asyncActionError("No such document!"));
+          handleFeedback(false, "No such document!");
         }
       } catch (err) {
-        console.error("Error getting document:", err);
-        dispatch(asyncActionError(err.message))
+        console.error("Error getting document:", err.message);
+        handleFeedback(false, err.message);
       }
     }
     fetchEvent();
-  }, [dispatch, id]);
 
-  if (!data || loading) return <Spinner />
+  }, [handleFeedback, id]);
+
+  if (!data || state.loading) return <Spinner />
 
   return (
     <div className={classes.root}>

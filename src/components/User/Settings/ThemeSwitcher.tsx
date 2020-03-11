@@ -1,19 +1,18 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Switch } from '@material-ui/core';
-import { setThemeMode } from '../../../store/actions/themeActions';
+import React, { useContext } from 'react';
+import Switch from '@material-ui/core/Switch';
+import { ThemeContext } from '../../../context/ThemeContext';
 
-function ThemeSwitcher() {
-  const dispatch = useDispatch();
-  const { type } = useSelector((state: any) => state.themeReducer);
+function ThemeToggle() {
+  const { theme, setTheme } = useContext(ThemeContext);
 
   function toggleThemeMode() {
-    dispatch(setThemeMode(type === 'light' ? 'dark' : 'light'));
+    const themeMode = theme === 'light' ? 'dark' : 'light';
+    // @ts-ignore
+    setTheme(themeMode);
+    localStorage.setItem('tord_theme', themeMode);
   }
 
-  return (
-    <Switch edge="end" onClick={toggleThemeMode} checked={type === 'dark'} />
-  );
+  return <Switch edge="end" onClick={toggleThemeMode} checked={theme === 'dark'} />;
 }
 
-export default ThemeSwitcher;
+export default ThemeToggle;

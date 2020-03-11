@@ -1,8 +1,8 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, Typography } from '@material-ui/core';
-import { socialAuth } from '../../store/actions/authActions';
+import firebase from '../../config/firebase';
+import { ThemeContext } from '../../context/ThemeContext';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -16,10 +16,17 @@ const useStyles = makeStyles(theme => ({
 
 function SocialAuthPage() {
   const classes = useStyles();
-  const dispatch = useDispatch();
+  const { handleModal } = useContext(ThemeContext);
 
-  function handleSocialAuth(selectedProvider: string) {
-    dispatch(socialAuth(selectedProvider));
+  async function handleSocialAuth(selectedProvider: string) {
+    const provider = {
+      facebook: new firebase.auth.FacebookAuthProvider(),
+      google: new firebase.auth.GoogleAuthProvider()
+    };
+
+    handleModal();
+    // @ts-ignore
+    await firebase.auth().signInWithPopup(provider[selectedProvider]);
   }
 
   return (

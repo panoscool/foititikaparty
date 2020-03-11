@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -12,23 +11,24 @@ import People from '@material-ui/icons/People';
 import Person from '@material-ui/icons/Person';
 import Settings from '@material-ui/icons/Settings';
 import ExitToApp from '@material-ui/icons/ExitToApp';
-import { openModal } from '../../store/actions/modalActions';
-import { logoutUser } from '../../store/actions/authActions';
+import { ThemeContext } from '../../context/ThemeContext';
+import { AuthContext } from '../../context/AuthContext';
+import firebase from '../../config/firebase';
 
 function AuthMenu() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const dispatch = useDispatch();
-  const { authenticated } = useSelector((state: any) => state.authReducer);
+  const { handleModal } = useContext(ThemeContext);
+  const { authenticated } = useContext(AuthContext);
 
   const handleMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
-  function handleClose(loc: string) {
+  async function handleClose(loc: string) {
     if (loc === '/') {
       setAnchorEl(null);
-      dispatch(logoutUser());
+      await firebase.auth().signOut();
     } else {
       setAnchorEl(null);
     }
@@ -36,7 +36,8 @@ function AuthMenu() {
 
   function onClose(modal: any) {
     setAnchorEl(null);
-    dispatch(openModal(modal));
+    // @ts-ignore
+    handleModal(modal);
   }
 
   const navigationGuest = [
