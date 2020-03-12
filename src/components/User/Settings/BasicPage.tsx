@@ -7,6 +7,7 @@ import TextInput from '../../Shared/TextInput';
 import RadioInput from '../../Shared/RadioInput';
 import DateInput from '../../Shared/DateInput';
 import PlaceInput from '../../Shared/PlaceInput';
+import Spinner from '../../Shared/Spinner';
 import { AuthContext } from '../../../context/AuthContext';
 import firebase from '../../../config/firebase';
 
@@ -23,26 +24,33 @@ const useStyles = makeStyles((theme: Theme) =>
 
 function BasicPage() {
   const classes = useStyles();
-  const { userId } = useContext(AuthContext)
+  const { userId } = useContext(AuthContext);
   const [date, setDate] = useState<Date | null>(new Date());
   const [city, setCity] = useState('');
-  const [state, setState] = useState({
+  const [values, setValues] = useState({
     displayName: '',
     gender: ''
+  });
+  const [state, setState] = useState({
+    loading: true,
+    error: ''
   });
 
   useEffect(() => {
     async function fetchProfile() {
       try {
-        // @ts-ignore
+        if (!userId) return;
+
         const doc = await firebase.firestore().collection('users').doc(userId).get();
         const d = doc.data();
 
         setDate(d?.date.toDate());
         setCity(d?.city);
-        setState({ displayName: d?.displayName, gender: d?.gender });
+        setValues({ displayName: d?.displayName, gender: d?.gender });
+        setState({ loading: false, error: '' })
       } catch (err) {
         console.error(err.message)
+        setState({ loading: false, error: err.message })
       }
     }
 
@@ -59,7 +67,7 @@ function BasicPage() {
   }
 
   function handleChange(event?: any) {
-    setState({ ...state, [event.target.name]: event.target.value });
+    setValues({ ...values, [event.target.name]: event.target.value });
   }
 
   function handleCitySelect(selectedCity: any) {
@@ -71,13 +79,12 @@ function BasicPage() {
   async function handleSubmit(event?: any) {
     event.preventDefault();
     const updatedProfile = {
-      ...state,
+      ...values,
       date,
       city
     }
 
     try {
-      // @ts-ignore
       await firebase.firestore().collection('users').doc(userId).update(updatedProfile);
     } catch (err) {
       console.error(err.message)
@@ -88,29 +95,30 @@ function BasicPage() {
     <Paper className={classes.paper}>
       <Typography variant="h5">Basic</Typography>
       <Divider />
-      <form onSubmit={handleSubmit}>
-        <TextInput name="displayName" label="Display Name" value={state.displayName || ''} handleChange={handleChange} />
-        <DateInput dateType="date" label="Date of birth" selectedDate={date} handleDateChange={handleDateChange} />
-        <RadioInput
-          name="gender"
-          label="Gender"
-          value={state.gender || ''}
-          handleChange={handleChange}
-          optionsArray={[
-            { id: cuid(), label: "Female", value: "female" },
-            { id: cuid(), label: "Male", value: "male" }
-          ]} />
-        <PlaceInput
-          label="City"
-          value={city || ''}
-          options={{ typs: ['(cities)'] }}
-          handleChange={handleCityChange}
-          handleSelect={handleCitySelect}
-        />
-        <Button type="submit" variant="contained" color="primary" className={classes.button}>
-          Save
+      {state.loading ? <Spinner /> :
+        <form onSubmit={handleSubmit}>
+          <TextInput name="displayName" label="Display Name" value={values.displayName || ''} handleChange={handleChange} />
+          <DateInput dateType="date" label="Date of birth" selectedDate={date} handleDateChange={handleDateChange} />
+          <RadioInput
+            name="gender"
+            label="Gender"
+            value={values.gender || ''}
+            handleChange={handleChange}
+            optionsArray={[
+              { id: cuid(), label: "Female", value: "female" },
+              { id: cuid(), label: "Male", value: "male" }
+            ]} />
+          <PlaceInput
+            label="City"
+            value={city || ''}
+            options={{ typs: ['(cities)'] }}
+            handleChange={handleCityChange}
+            handleSelect={handleCitySelect}
+          />
+          <Button type="submit" variant="contained" color="primary" className={classes.button}>
+            Save
         </Button>
-      </form>
+        </form>}
     </Paper>
   )
 }

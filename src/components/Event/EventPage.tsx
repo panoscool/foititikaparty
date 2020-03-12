@@ -16,7 +16,6 @@ import RoomOutlined from '@material-ui/icons/RoomOutlined';
 import EventActivity from './EventActivity';
 import SearchField from '../Shared/SearchField';
 import Spinner from '../Shared/Spinner';
-import useFeedback from '../../hooks/useFeedback';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -39,23 +38,26 @@ const useStyles = makeStyles((theme: Theme) =>
 function EventPage() {
   const classes = useStyles();
   const history = useHistory();
-  const [snapshot, setSnapshot] = useState([] || null);
-  const { state, handleFeedback } = useFeedback({ loading: true, error: null })
+  const [snapshot, setSnapshot] = useState([]);
+  const [state, setState] = useState({
+    loading: true,
+    error: ''
+  })
 
   useEffect(() => {
-    let unsubscribe = firebase.firestore().collection('events').onSnapshot(snapshot => {
+    const unsubscribe = firebase.firestore().collection('events').onSnapshot(snapshot => {
       // @ts-ignore
       setSnapshot(snapshot);
-      handleFeedback(false)
+      setState({ loading: false, error: '' })
     }, (err) => {
       console.error(err.message);
-      handleFeedback(false, err.message)
+      setState({ loading: false, error: err.message })
     });
 
     return () => {
       unsubscribe();
     };
-  }, [handleFeedback]);
+  }, []);
 
   function renderList(doc: any) {
     const d = doc.data();

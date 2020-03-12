@@ -8,7 +8,6 @@ import EventDetailsInfo from './EventDetailsInfo';
 import EventDetailsSidebar from './EventDetailsSidebar';
 import Spinner from '../../Shared/Spinner';
 import firebase from '../../../config/firebase';
-import useFeedback from '../../../hooks/useFeedback';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -22,30 +21,32 @@ function EventDetailsPage() {
   const classes = useStyles();
   const { id } = useParams();
   const [data, setData] = useState();
-  const { state, handleFeedback } = useFeedback({ loading: true, error: null })
+  const [state, setState] = useState({
+    loading: true,
+    error: null
+  })
 
   useEffect(() => {
     async function fetchEvent() {
-      if (!id) return;
-
       try {
         const doc = await firebase.firestore().collection('events').doc(id).get();
 
         if (doc.exists) {
           setData(doc.data());
-          handleFeedback(false);
+          setState({ loading: false, error: null })
         } else {
           // doc.data() will be undefined in this case
-          handleFeedback(false, "No such document!");
+          setState({ loading: false, error: "No such document!" })
         }
       } catch (err) {
         console.error("Error getting document:", err.message);
-        handleFeedback(false, err.message);
+        setState({ loading: false, error: err.message })
       }
     }
+
     fetchEvent();
 
-  }, [handleFeedback, id]);
+  }, [id]);
 
   if (!data || state.loading) return <Spinner />
 

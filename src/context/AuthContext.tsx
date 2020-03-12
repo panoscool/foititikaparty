@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState, createContext, ReactNode } from 'react';
 
 export interface Props {
@@ -6,7 +7,7 @@ export interface Props {
 
 export const AuthContext = createContext({
   authenticated: null,
-  userId: null,
+  userId: '',
   setUserId: () => { },
   setProviderId: () => { },
   setAuthenticated: () => { }
@@ -14,20 +15,17 @@ export const AuthContext = createContext({
 
 export default ({ children }: Props) => {
   const [authenticated, setAuthenticated] = useState(null);
-  const [userId, setUserId] = useState(null);
+  const [userId, setUserId] = useState('');
   const [providerId, setProviderId] = useState(null);
 
   return (
     <AuthContext.Provider
       value={{
         authenticated: authenticated,
-        // @ts-ignore
         setAuthenticated: setAuthenticated,
         userId: userId,
-        // @ts-ignore
         setUserId: setUserId,
         providerId: providerId,
-        // @ts-ignore
         setProviderId: setProviderId
       }}
     >

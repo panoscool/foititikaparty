@@ -3,15 +3,13 @@ import { useHistory } from 'react-router-dom';
 import { Link, useParams } from 'react-router-dom';
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import { Button, Typography } from '@material-ui/core';
-import Paper from '@material-ui/core/Paper';
-import firebase from '../../config/firebase';
+import { Paper, Button, Typography } from '@material-ui/core';
 import TextInput from '../Shared/TextInput';
 import DateInput from '../Shared/DateInput';
 import SelectInput from '../Shared/SelectInput';
 import PlaceInput from '../Shared/PlaceInput'
 import Spinner from '../Shared/Spinner';
-import useFeedback from '../../hooks/useFeedback';
+import firebase from '../../config/firebase';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -49,7 +47,6 @@ function EventForm() {
   const classes = useStyles();
   const { id } = useParams();
   const history = useHistory();
-  const { state, handleFeedback } = useFeedback({ loading: true, error: null })
   const [date, setDate] = useState<Date | null>(new Date());
   const [cityLatLng, setCityLatLng] = useState({});
   const [venueLatLng, setVenueLatLng] = useState({});
@@ -61,6 +58,10 @@ function EventForm() {
     description: '',
     hostedBy: ''
   });
+  const [state, setState] = useState({
+    loading: false,
+    error: ''
+  })
 
   useEffect(() => {
     async function fetchEvent() {
@@ -75,18 +76,18 @@ function EventForm() {
           setVenue(d?.venue);
           setDate(d?.date.toDate());
           setValues({ title: d?.title, category: d?.category, description: d?.description, hostedBy: d?.hostedBy })
-          handleFeedback(false);
+          setState({ loading: false, error: '' });
         } else {
           // doc.data() will be undefined in this case
-          handleFeedback(false, "No such document!")
+          setState({ loading: false, error: "No such document!" })
         }
       } catch (err) {
-        console.error("Error getting document:", err);
-        handleFeedback(false, err.message);
+        console.error("Error getting document:", err.message);
+        setState({ loading: false, error: err.message });
       }
     }
     fetchEvent();
-  }, [handleFeedback, id]);
+  }, [id]);
 
   const handleDateChange = (date: Date | null) => {
     setDate(date);
