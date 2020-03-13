@@ -35,7 +35,7 @@ function AccountPage() {
     const user = firebase.auth().currentUser;
 
     try {
-      await user.updatePassword(values.newPassword1);
+      await user?.updatePassword(values.newPassword1);
       setValues({ newPassword1: '', newPassword2: '' });
       notification('Your [password has been updated', 'success');
     } catch (err) {
@@ -57,12 +57,14 @@ function AccountPage() {
       {providerId && providerId === 'password' && (
         <form onSubmit={handleSubmit}>
           <TextInput
+            type='password'
             name="newPassword1"
             label="New Password"
             value={values.newPassword1}
             handleChange={handleChange}
           />
           <TextInput
+            type='password'
             name="newPassword2"
             label="Confirm Password"
             value={values.newPassword2}

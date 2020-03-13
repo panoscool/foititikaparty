@@ -40,16 +40,7 @@ function SelectInput(props: Props) {
     setLabelWidth(inputLabel.current!.offsetWidth);
   }, []);
 
-  const {
-    name,
-    label,
-    value,
-    optionsArray,
-    multiple,
-    required,
-    disabled,
-    handleChange
-  } = props;
+  const { name, label, value, optionsArray, multiple, required, disabled, handleChange } = props;
 
   return (
     <FormControl
@@ -66,9 +57,6 @@ function SelectInput(props: Props) {
         value={value}
         multiple={multiple}
         onChange={handleChange}
-        renderValue={(value: any) =>
-          value.charAt(0).toUpperCase() + value.slice(1)
-        }
         input={<OutlinedInput labelWidth={labelWidth} name={name} />}
       >
         {optionsArray.map((option: any) => {

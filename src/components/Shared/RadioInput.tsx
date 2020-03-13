@@ -35,16 +35,7 @@ interface Props {
 function RadioInput(props: Props) {
   const classes = useStyles();
 
-  const {
-    name,
-    label,
-    value,
-    optionsArray,
-    required,
-    disabled,
-    vertical,
-    handleChange
-  } = props;
+  const { name, label, value, optionsArray, required, disabled, vertical, handleChange } = props;
 
   return (
     <div className={classes.root}>

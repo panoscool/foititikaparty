@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import format from 'date-fns/format';
@@ -109,8 +110,7 @@ function EventPage() {
       <Grid container spacing={2}>
         <Grid item xs={12} sm={8}>
           <SearchField />
-          {// @ts-ignore
-          snapshot.docs.map((doc: any) => {
+          {snapshot.docs.map((doc: any) => {
             return renderList(doc);
           })}
         </Grid>

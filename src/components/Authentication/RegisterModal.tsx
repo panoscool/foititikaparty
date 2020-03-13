@@ -46,7 +46,7 @@ function RegisterModal() {
       }
 
       await firebase.firestore().collection('users').doc(createdUser.user?.uid).set(newUser)
-      handleModal()
+      handleModal();
     } catch (err) {
       console.error(err.message)
     }

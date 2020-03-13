@@ -57,6 +57,8 @@ function AboutPage() {
           .get();
         const d = doc.data();
 
+        setCountry(d?.country)
+        setValues({ status: d?.status, about: d?.about, interests: d?.interests, ocupation: d?.ocupation })
         setState({ loading: false, error: '' });
       } catch (err) {
         console.error(err.message);
@@ -106,56 +108,58 @@ function AboutPage() {
       {state.loading ? (
         <Spinner />
       ) : (
-        <form onSubmit={handleSubmit}>
-          <RadioInput
-            name="status"
-            label="Your status"
-            value={values.status || ''}
-            handleChange={handleChange}
-            optionsArray={[
-              { label: 'Single', value: 'single' },
-              { label: 'Relationship', value: 'relationship' },
-              { label: 'Married', value: 'married' }
-            ]}
-          />
-          <TextInput
-            name="about"
-            label="About me"
-            multiline
-            rows="6"
-            value={values.about || ''}
-            handleChange={handleChange}
-          />
-          <SelectInput
-            name="interests"
-            label="Interests"
-            optionsArray={interests}
-            value={values.interests || ''}
-            handleChange={handleChange}
-          />
-          <TextInput
-            name="ocupation"
-            label="Ocupation"
-            value={values.ocupation || ''}
-            handleChange={handleChange}
-          />
-          <PlaceInput
-            label="Country"
-            value={country || ''}
-            options={{ typs: ['(regions)'] }}
-            handleChange={handleCityChange}
-            handleSelect={handleCitySelect}
-          />
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            className={classes.button}
-          >
-            Save
+          <form onSubmit={handleSubmit}>
+            <RadioInput
+              name="status"
+              label="Your status"
+              value={values.status || ''}
+              handleChange={handleChange}
+              optionsArray={[
+                { label: 'Single', value: 'single' },
+                { label: 'Relationship', value: 'relationship' },
+                { label: 'Married', value: 'married' }
+              ]}
+            />
+            <TextInput
+              name="about"
+              label="About me"
+              multiline
+              rows="6"
+              value={values.about || ''}
+              handleChange={handleChange}
+            />
+            <SelectInput
+              name="interests"
+              label="Interests"
+              multiple
+              optionsArray={interests}
+              // @ts-ignore
+              value={values.interests || ''}
+              handleChange={handleChange}
+            />
+            <TextInput
+              name="ocupation"
+              label="Ocupation"
+              value={values.ocupation || ''}
+              handleChange={handleChange}
+            />
+            <PlaceInput
+              label="Country"
+              value={country || ''}
+              options={{ typs: ['(regions)'] }}
+              handleChange={handleCityChange}
+              handleSelect={handleCitySelect}
+            />
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              className={classes.button}
+            >
+              Save
           </Button>
-        </form>
-      )}
+          </form>
+        )}
     </Paper>
   );
 }
