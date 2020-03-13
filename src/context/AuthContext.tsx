@@ -8,9 +8,10 @@ export interface Props {
 export const AuthContext = createContext({
   authenticated: null,
   userId: '',
-  setUserId: () => { },
-  setProviderId: () => { },
-  setAuthenticated: () => { }
+  providerId: null,
+  setUserId: () => {},
+  setProviderId: () => {},
+  setAuthenticated: () => {}
 });
 
 export default ({ children }: Props) => {

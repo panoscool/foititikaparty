@@ -35,7 +35,16 @@ interface Props {
 function RadioInput(props: Props) {
   const classes = useStyles();
 
-  const { name, label, value, optionsArray, required, disabled, vertical, handleChange } = props;
+  const {
+    name,
+    label,
+    value,
+    optionsArray,
+    required,
+    disabled,
+    vertical,
+    handleChange
+  } = props;
 
   return (
     <div className={classes.root}>
@@ -49,7 +58,7 @@ function RadioInput(props: Props) {
         >
           {optionsArray.map((option: any) => (
             <FormControlLabel
-              key={option.id}
+              key={option.value}
               disabled={disabled}
               label={option.label}
               value={option.value}

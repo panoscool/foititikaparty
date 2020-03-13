@@ -42,17 +42,23 @@ function EventPage() {
   const [state, setState] = useState({
     loading: true,
     error: ''
-  })
+  });
 
   useEffect(() => {
-    const unsubscribe = firebase.firestore().collection('events').onSnapshot(snapshot => {
-      // @ts-ignore
-      setSnapshot(snapshot);
-      setState({ loading: false, error: '' })
-    }, (err) => {
-      console.error(err.message);
-      setState({ loading: false, error: err.message })
-    });
+    const unsubscribe = firebase
+      .firestore()
+      .collection('events')
+      .onSnapshot(
+        snapshot => {
+          // @ts-ignore
+          setSnapshot(snapshot);
+          setState({ loading: false, error: '' });
+        },
+        err => {
+          console.error(err.message);
+          setState({ loading: false, error: err.message });
+        }
+      );
 
     return () => {
       unsubscribe();
@@ -65,7 +71,13 @@ function EventPage() {
       <Card key={doc.id} className={classes.card}>
         <CardActionArea>
           <CardHeader
-            avatar={<Avatar className={classes.avatar} alt="avatar" src={d.hostPhotoURL} />}
+            avatar={
+              <Avatar
+                className={classes.avatar}
+                alt="avatar"
+                src={d.hostPhotoURL}
+              />
+            }
             title={d.title}
             subheader={d.hostedBy}
             onClick={() => history.push(`/event/${doc.id}`)}
@@ -74,13 +86,17 @@ function EventPage() {
         <Divider />
         <CardContent>
           <Typography gutterBottom variant="body2" color="textPrimary">
-            <AccessTime className={classes.icon} /> {format(d.date.toDate(), 'do MMM yyyy')}{' '}
+            <AccessTime className={classes.icon} />{' '}
+            {format(d.date.toDate(), 'do MMM yyyy')}{' '}
+            {format(d.date.toDate(), 'h:mm a')}{' '}
             <RoomOutlined className={classes.icon} /> {d.venue}
           </Typography>
           <Typography gutterBottom variant="body2" color="textSecondary">
             {d.description}
           </Typography>
-          <Typography variant="body2" color="textSecondary">Attendees: 10</Typography>
+          <Typography variant="body2" color="textSecondary">
+            Attendees: 10
+          </Typography>
         </CardContent>
       </Card>
     );
@@ -93,11 +109,10 @@ function EventPage() {
       <Grid container spacing={2}>
         <Grid item xs={12} sm={8}>
           <SearchField />
-          {
-            // @ts-ignore
-            snapshot.docs.map((doc: any) => {
-              return renderList(doc);
-            })}
+          {// @ts-ignore
+          snapshot.docs.map((doc: any) => {
+            return renderList(doc);
+          })}
         </Grid>
         <Grid item xs={12} sm={4}>
           <EventActivity />

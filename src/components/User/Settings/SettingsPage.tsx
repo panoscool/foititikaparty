@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import SettingsNav from './SettingsNav';
 import AccountPage from './AccountPage';
 import BasicPage from './BasicPage';
+import AboutPage from './AboutPage';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -22,17 +23,19 @@ function SettingsPage() {
       <Grid container spacing={2}>
         <Grid item xs={12} sm={9}>
           <Switch>
-            <Redirect exact from='/settings' to='/settings/basic' />
-            <Route path='/settings/basic' component={BasicPage} />
-            <Route path='/settings/about' />
-            <Route path='/settings/photos' />
-            <Route path='/settings/account' component={AccountPage} />
+            <Redirect exact from="/settings" to="/settings/basic" />
+            <Route path="/settings/basic" component={BasicPage} />
+            <Route path="/settings/about" component={AboutPage} />
+            <Route path="/settings/photos" />
+            <Route path="/settings/account" component={AccountPage} />
           </Switch>
         </Grid>
-        <Grid item xs={12} sm={3}><SettingsNav /></Grid>
+        <Grid item xs={12} sm={3}>
+          <SettingsNav />
+        </Grid>
       </Grid>
     </div>
-  )
+  );
 }
 
 export default SettingsPage;

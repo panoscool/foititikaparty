@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react';
-import cuid from 'cuid';
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { Button, Paper, Divider, Typography } from '@material-ui/core';
@@ -105,8 +104,8 @@ function BasicPage() {
             value={values.gender || ''}
             handleChange={handleChange}
             optionsArray={[
-              { id: cuid(), label: "Female", value: "female" },
-              { id: cuid(), label: "Male", value: "male" }
+              { label: "Female", value: "female" },
+              { label: "Male", value: "male" }
             ]} />
           <PlaceInput
             label="City"

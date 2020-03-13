@@ -24,6 +24,7 @@ interface Props {
   label: string;
   value?: string;
   optionsArray: any;
+  multiple?: boolean;
   required?: boolean;
   disabled?: boolean;
   handleChange: (e?: any) => void;
@@ -39,7 +40,16 @@ function SelectInput(props: Props) {
     setLabelWidth(inputLabel.current!.offsetWidth);
   }, []);
 
-  const { name, label, value, optionsArray, required, disabled, handleChange } = props;
+  const {
+    name,
+    label,
+    value,
+    optionsArray,
+    multiple,
+    required,
+    disabled,
+    handleChange
+  } = props;
 
   return (
     <FormControl
@@ -54,6 +64,7 @@ function SelectInput(props: Props) {
       </InputLabel>
       <Select
         value={value}
+        multiple={multiple}
         onChange={handleChange}
         renderValue={(value: any) =>
           value.charAt(0).toUpperCase() + value.slice(1)
