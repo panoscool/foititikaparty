@@ -1,22 +1,22 @@
+// @ts-nocheck
 import React, { useRef } from 'react';
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
 
-function CropperInput({ imagePreview, setImage }: any) {
+function CropperInput({ imagePreview, setImage }) {
   const cropper = useRef(null);
-
   function cropImage() {
-    // @ts-ignore
-    if (typeof cropper.current.getCroppedCanvas() === 'undefined') return;
-    // @ts-ignore
+    if (typeof cropper.current.getCroppedCanvas() === 'undefined') {
+      return;
+    }
+
     cropper.current.getCroppedCanvas().toBlob(blob => {
       setImage(blob);
-    }, 'image/jpeg');
+    });
   }
 
   return (
     <Cropper
-      // @ts-ignore
       ref={cropper}
       src={imagePreview}
       style={{ height: 200, width: '100%' }}
@@ -26,7 +26,6 @@ function CropperInput({ imagePreview, setImage }: any) {
       dragMode="move"
       guides={false}
       scalable={true}
-      center={true}
       cropBoxMovable={true}
       cropBoxResizable={true}
       crop={cropImage}

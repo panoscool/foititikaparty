@@ -5,10 +5,11 @@ import { Button, Paper, Divider, Typography } from '@material-ui/core';
 import TextInput from '../../Shared/TextInput';
 import RadioInput from '../../Shared/RadioInput';
 import PlaceInput from '../../Shared/PlaceInput';
+import SelectInput from '../../Shared/SelectInput';
 import Spinner from '../../Shared/Spinner';
+import useNotifier from '../../../hooks/useNotifier';
 import { AuthContext } from '../../../context/AuthContext';
 import firebase from '../../../config/firebase';
-import SelectInput from '../../Shared/SelectInput';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -32,6 +33,7 @@ const interests = [
 
 function AboutPage() {
   const classes = useStyles();
+  const notification = useNotifier()
   const { userId } = useContext(AuthContext);
   const [country, setCountry] = useState('');
   const [values, setValues] = useState({
@@ -96,6 +98,7 @@ function AboutPage() {
         .collection('users')
         .doc(userId)
         .update(updatedProfile);
+        notification('Your profile has been updated', 'success')
     } catch (err) {
       console.error(err.message);
     }

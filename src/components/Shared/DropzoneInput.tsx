@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import CloudUpload from '@material-ui/icons/CloudUpload';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -47,6 +48,9 @@ function DropzoneInput({ setFiles }: any) {
     >
       <input {...getInputProps()} />
       <CloudUpload fontSize="large" />
+      <Typography variant="caption" display="block" gutterBottom>
+        Drop image here
+      </Typography>
     </div>
   );
 }

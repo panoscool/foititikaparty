@@ -7,6 +7,7 @@ import RadioInput from '../../Shared/RadioInput';
 import DateInput from '../../Shared/DateInput';
 import PlaceInput from '../../Shared/PlaceInput';
 import Spinner from '../../Shared/Spinner';
+import useNotifier from '../../../hooks/useNotifier';
 import { AuthContext } from '../../../context/AuthContext';
 import firebase from '../../../config/firebase';
 
@@ -23,6 +24,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 function BasicPage() {
   const classes = useStyles();
+  const notification = useNotifier()
   const { userId } = useContext(AuthContext);
   const [date, setDate] = useState<Date | null>(new Date());
   const [city, setCity] = useState('');
@@ -85,6 +87,7 @@ function BasicPage() {
 
     try {
       await firebase.firestore().collection('users').doc(userId).update(updatedProfile);
+      notification('Your profile has been updated', 'success')
     } catch (err) {
       console.error(err.message)
     }

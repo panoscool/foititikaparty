@@ -9,6 +9,7 @@ import DateInput from '../Shared/DateInput';
 import SelectInput from '../Shared/SelectInput';
 import PlaceInput from '../Shared/PlaceInput'
 import Spinner from '../Shared/Spinner';
+import useNotifier from '../../hooks/useNotifier'
 import firebase from '../../config/firebase';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -47,6 +48,7 @@ function EventForm() {
   const classes = useStyles();
   const { id } = useParams();
   const history = useHistory();
+  const notification = useNotifier()
   const [date, setDate] = useState<Date | null>(new Date());
   const [cityLatLng, setCityLatLng] = useState({});
   const [venueLatLng, setVenueLatLng] = useState({});
@@ -137,6 +139,7 @@ function EventForm() {
       } catch (err) {
 
       }
+      notification('The event has been created successfully', 'success')
     } else {
       const response = await firebase.firestore().collection('events').add(newEvent);
 
