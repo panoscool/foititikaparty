@@ -50,9 +50,9 @@ function EventPage() {
       .firestore()
       .collection('events')
       .onSnapshot(
-        snapshot => {
+        snap => {
           // @ts-ignore
-          setSnapshot(snapshot);
+          setSnapshot(snap);
           setState({ loading: false, error: '' });
         },
         err => {
