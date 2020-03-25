@@ -19,7 +19,7 @@ function AuthMenu() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const { handleModal } = useContext(ThemeContext);
-  const { authenticated } = useContext(AuthContext);
+  const { authenticated, userId } = useContext(AuthContext);
 
   const handleMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -49,7 +49,7 @@ function AuthMenu() {
     { to: '/event/create', icon: <Add />, label: 'Create Event' },
     { to: '/profile/events', icon: <Event />, label: 'My Events' },
     { to: '/profile/network', icon: <People />, label: 'My Network' },
-    { to: '/profile', icon: <Person />, label: 'My Profile' },
+    { to: `profile/${userId}`, icon: <Person />, label: 'My Profile' },
     { to: '/settings', icon: <Settings />, label: 'Settings' },
     { to: '/', icon: <ExitToApp />, label: 'Sign out' }
   ];

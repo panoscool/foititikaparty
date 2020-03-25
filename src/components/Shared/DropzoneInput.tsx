@@ -4,19 +4,18 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import CloudUpload from '@material-ui/icons/CloudUpload';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    dropzone: {
-      border: 'dashed 3px #eee',
-      borderRadius: 5,
-      paddingTop: 30,
-      textAlign: 'center',
-      cursor: 'pointer'
-    },
-    dropzoneActive: {
-      border: 'dashed 3px green'
-    }
-  })
+const useStyles = makeStyles((theme: Theme) => createStyles({
+  dropzone: {
+    border: 'dashed 3px #eee',
+    borderRadius: 5,
+    paddingTop: 30,
+    textAlign: 'center',
+    cursor: 'pointer'
+  },
+  dropzoneActive: {
+    border: 'dashed 3px green'
+  }
+})
 );
 
 function DropzoneInput({ setFiles }: any) {

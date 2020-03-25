@@ -1,7 +1,6 @@
 // @ts-nocheck
 import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import CardMedia from '@material-ui/core/CardMedia';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Button from '@material-ui/core/Button';
@@ -11,14 +10,21 @@ import Typography from '@material-ui/core/Typography';
 import Spinner from '../../Shared/Spinner';
 import firebase from '../../../config/firebase';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => createStyles({
   root: {
     display: 'inline-flex',
   },
-  paper: {
+  card: {
     width: 100,
     height: 100,
+    borderRadius: 10,
     marginRight: theme.spacing(1)
+  },
+  caption: {
+    color: 'white',
+    background: '#1b5e20',
+    textAlign: 'center',
+    padding: theme.spacing(0.8)
   },
   doneIcon: {
     color: 'green'
@@ -46,20 +52,14 @@ function UserPhotos({ userId, profile, deleteImage, setMainPhoto }: Props) {
   useEffect(() => {
     if (!userId) return;
 
-    const unsubscribe = firebase
-      .firestore()
-      .collection('users')
-      .doc(userId)
-      .collection('photos')
-      .onSnapshot(
-        snap => {
-          setSnapshot(snap);
-          setState({ loading: false, error: '' })
-        },
-        err => {
-          console.error(err.message);
-        }
-      );
+    const firestoreRef = firebase.firestore().collection('users').doc(userId)
+    const unsubscribe = firestoreRef.collection('photos').onSnapshot(snap => {
+      setSnapshot(snap);
+      setState({ loading: false, error: '' })
+    }, err => {
+      console.error(err.message);
+    }
+    );
 
     return () => {
       unsubscribe();
@@ -80,7 +80,7 @@ function UserPhotos({ userId, profile, deleteImage, setMainPhoto }: Props) {
     const d = doc.data();
     return (
       <div key={doc.id} className={classes.root}>
-        <Paper className={classes.paper}>
+        <div className={classes.card}>
           <CardMedia component="img" alt={d.name} image={d.url} />
           <ButtonGroup fullWidth size="small">
             <Button onClick={() => setMainPhoto(d)} className={classes.doneIcon}>
@@ -90,23 +90,24 @@ function UserPhotos({ userId, profile, deleteImage, setMainPhoto }: Props) {
               <Delete />
             </Button>
           </ButtonGroup>
-        </Paper>
+        </div>
       </div>
     )
   }
 
   return (
-    <>
+    <div style={{ marginTop: '16px' }}>
       <Typography gutterBottom variant='caption' color='primary' display="block">ALL PHOTOS</Typography>
       <div style={{ display: 'flex' }}>
-        <Paper className={classes.paper}>
-          <CardMedia component="img" alt={profile.name} image={profile.photoURL} />
-        </Paper>
+        <div className={classes.card}>
+          <CardMedia component="img" alt={profile.name} image={profile.photoURL || '/assets/images/user.png'} />
+          <Typography variant="caption" display="block" className={classes.caption}>MAIN PHOTO</Typography>
+        </div>
         {filteredPhotos.map((doc: any) => {
           return renderList(doc);
         })}
       </div>
-    </>
+    </div>
   )
 }
 

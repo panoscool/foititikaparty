@@ -7,16 +7,15 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    formControl: {
-      minWidth: 120,
-      width: '100%'
-    },
-    dense: {
-      marginTop: theme.spacing(2)
-    }
-  })
+const useStyles = makeStyles((theme: Theme) => createStyles({
+  formControl: {
+    minWidth: 120,
+    width: '100%'
+  },
+  dense: {
+    marginTop: theme.spacing(2)
+  }
+})
 );
 
 interface Props {

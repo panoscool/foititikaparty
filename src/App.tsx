@@ -10,6 +10,7 @@ import NotFoundPage from './components/NotFoundPage';
 import ModalManager from './components/ModalManager';
 import { AuthContext } from './context/AuthContext';
 import firebase from './config/firebase';
+import UserProfilePage from './components/User/UserProfilePage';
 
 function App() {
   const { setUserId, setProviderId, setAuthenticated } = useContext(
@@ -29,13 +30,10 @@ function App() {
     <Layout>
       <ModalManager />
       <Switch>
-        <Route
-          path={['/event/:id/edit', '/event/create']}
-          component={EventForm}
-        />
+        <Route path={['/event/:id/edit', '/event/create']} component={EventForm} />
         <Route path="/event/:id" component={EventDetailsPage} />
+        <Route path="/profile/:id" component={UserProfilePage} />
         <Route path="/settings" component={SettingsPage} />
-        <Route path="/profile/:id" component={SettingsPage} />
         <Route path="/people" component={SettingsPage} />
         <Route exact path="/" component={EventPage} />
         <Route component={NotFoundPage} />

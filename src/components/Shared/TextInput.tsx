@@ -3,16 +3,15 @@ import clsx from 'clsx';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    textField: {
-      minWidth: 120,
-      width: '100%'
-    },
-    dense: {
-      marginTop: theme.spacing(2)
-    }
-  })
+const useStyles = makeStyles((theme: Theme) => createStyles({
+  textField: {
+    minWidth: 120,
+    width: '100%'
+  },
+  dense: {
+    marginTop: theme.spacing(2)
+  }
+})
 );
 
 function TextInput(props: any) {

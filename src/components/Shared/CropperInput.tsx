@@ -19,7 +19,7 @@ function CropperInput({ imagePreview, setImage }) {
     <Cropper
       ref={cropper}
       src={imagePreview}
-      style={{ height: 200, width: '100%' }}
+      style={{ height: 200, width: 200 }}
       preview=".img-preview"
       aspectRatio={1}
       viewMode={1}

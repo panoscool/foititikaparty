@@ -2,14 +2,33 @@
 import React, { useState, useEffect, useContext } from 'react';
 import cuid from 'cuid';
 import Grid from '@material-ui/core/Grid';
-import { Typography, Button } from '@material-ui/core';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import { Typography, Button, Paper, ButtonGroup, Divider } from '@material-ui/core';
 import DropzoneInput from '../../Shared/DropzoneInput';
 import CropperInput from '../../Shared/CropperInput';
+import { Done, Clear } from '@material-ui/icons';
 import { AuthContext } from '../../../context/AuthContext';
-import firebase from '../../../config/firebase';
 import Progress from '../../Shared/Progress';
 import UserPhotos from './UserPhotos';
 import useNotifier from '../../../hooks/useNotifier';
+import firebase from '../../../config/firebase';
+
+const useStyles = makeStyles((theme: Theme) => createStyles({
+  paper: {
+    padding: theme.spacing(2, 2, 8, 2)
+  },
+  divider: {
+    margin: theme.spacing(2, 0)
+  },
+  doneIcon: {
+    color: 'green',
+    width: 100
+  },
+  deleteIcon: {
+    color: 'red',
+    width: 100
+  }
+}));
 
 const error_codes = [
   { code: 'storage/unauthorized', message: 'User doesnt have permission to access the object' },
@@ -18,35 +37,33 @@ const error_codes = [
 ]
 
 function PhotosPage() {
-  const { userId } = useContext(AuthContext);
+  const classes = useStyles();
   const notification = useNotifier();
+  const { userId } = useContext(AuthContext);
   const [files, setFiles] = useState([]);
   const [image, setImage] = useState(null);
   const [completed, setCompleted] = useState(0);
   const [snapshot, setSnapshot] = useState({});
-  const [error, setError] = useState('');
+  const [state, setState] = useState({
+    loading: false,
+    error: ''
+  });
 
   useEffect(() => {
     if (!userId) return;
 
-    async function fetchUserProfile() {
-      try {
-        const doc = await firebase.firestore().collection('users').doc(userId).get();
-
-        if (doc.exists) {
-          setSnapshot(doc.data());
-        } else {
-          // doc.data() will be undefined in this case
-          setState({ loading: false, error: "No such document!" })
-        }
-      } catch (err) {
-        console.error("Error getting document:", err.message);
-      }
+    const firestoreRef = firebase.firestore().collection('users').doc(userId)
+    const unsubscribe = firestoreRef.onSnapshot(snap => {
+      // @ts-ignore
+      setSnapshot(snap.data());
+    }, err => {
+      console.error(err.message);
     }
+    );
 
-    fetchUserProfile();
     return () => {
       files.forEach(file => URL.revokeObjectURL(file?.preview));
+      unsubscribe();
     };
   }, [files, userId]);
 
@@ -105,9 +122,10 @@ function PhotosPage() {
       function (snapshot) {
         // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
         let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setState({ loading: true, error: '' })
         setCompleted(progress)
       }, function (error) {
-        setError(error_codes[error.code]);
+        setState({ loading: false, error: error_codes[error.code] });
       }, function () {
         // Upload completed successfully, now we can get the download URL
         uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
@@ -119,6 +137,7 @@ function PhotosPage() {
           }
           // Add image to firestore
           firestoreRef.collection('photos').add({ name: imageName, url: downloadURL })
+          setState({ loading: false, error: '' });
         }).then(function () {
           handleCancelPhoto();
         });
@@ -126,9 +145,9 @@ function PhotosPage() {
   }
 
   return (
-    <div>
+    <Paper className={classes.paper}>
       <Grid container spacing={2}>
-        <Grid item xs={12} sm={3}>
+        <Grid item xs={12} sm={4}>
           <Typography
             variant="caption"
             color="primary"
@@ -139,7 +158,7 @@ function PhotosPage() {
           </Typography>
           <DropzoneInput setFiles={setFiles} />
         </Grid>
-        <Grid item xs={12} sm={3}>
+        <Grid item xs={12} sm={4}>
           <Typography
             variant="caption"
             color="primary"
@@ -151,7 +170,7 @@ function PhotosPage() {
           {files.length > 0 &&
             <CropperInput setImage={setImage} imagePreview={files[0].preview} />}
         </Grid>
-        <Grid item xs={12} sm={3}>
+        <Grid item xs={12} sm={4}>
           <Typography
             variant="caption"
             color="primary"
@@ -160,13 +179,25 @@ function PhotosPage() {
           >
             STEP 3 - PREVIEW & UPLOAD
           </Typography>
-          {files.length > 0 && <div className='img-preview' style={{ minHeight: '200px', minWidth: '200px', overflow: 'hidden' }} />}
+          {files.length > 0 && <>
+            <div className='img-preview' style={{ minHeight: '200px', minWidth: '200px', overflow: 'hidden' }} />
+            <ButtonGroup size="small" >
+              <Button disabled={state.loading} onClick={handleUploadImage} className={classes.doneIcon}>
+                <Done />
+              </Button>
+              <Button disabled={state.loading} onClick={handleCancelPhoto} className={classes.deleteIcon}>
+                <Clear />
+              </Button>
+            </ButtonGroup>
+          </>}
         </Grid>
       </Grid>
-      <Progress completed={completed} />
-      <Button onClick={handleUploadImage}>add photo</Button>
+      <Typography variant='caption' color='error'>{state.error}</Typography>
+      <div className={classes.divider}>
+        {!state.loading ? <Divider variant="fullWidth" /> : <Progress completed={completed} />}
+      </div>
       <UserPhotos userId={userId} profile={snapshot} deleteImage={handleDeleteImage} setMainPhoto={handleMainPhoto} />
-    </div>
+    </Paper>
   );
 }
 

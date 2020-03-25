@@ -46,20 +46,16 @@ function EventPage() {
   });
 
   useEffect(() => {
-    const unsubscribe = firebase
-      .firestore()
-      .collection('events')
-      .onSnapshot(
-        snap => {
-          // @ts-ignore
-          setSnapshot(snap);
-          setState({ loading: false, error: '' });
-        },
-        err => {
-          console.error(err.message);
-          setState({ loading: false, error: err.message });
-        }
-      );
+    const firestoreRef = firebase.firestore().collection('events')
+    const unsubscribe = firestoreRef.onSnapshot(snap => {
+      // @ts-ignore
+      setSnapshot(snap);
+      setState({ loading: false, error: '' });
+    }, err => {
+      console.error(err.message);
+      setState({ loading: false, error: err.message });
+    }
+    );
 
     return () => {
       unsubscribe();
