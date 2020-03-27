@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import { Button, Paper, Divider, Typography } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import TextInput from '../../Shared/TextInput';
 import SelectInput from '../../Shared/SelectInput';
 import RadioInput from '../../Shared/RadioInput';

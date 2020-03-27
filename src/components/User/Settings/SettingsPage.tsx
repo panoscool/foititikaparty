@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -8,31 +8,30 @@ import AccountPage from './AccountPage';
 import AboutPage from './AboutPage';
 import PhotosPage from './PhotosPage';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      margin: theme.spacing(2)
-    },
-    panelDetails: {
-      margin: theme.spacing(0, 3)
-    },
-    heading: {
-      fontSize: theme.typography.pxToRem(15),
-      flexBasis: '33.33%',
-      flexShrink: 0
-    },
-    secondaryHeading: {
-      fontSize: theme.typography.pxToRem(15),
-      color: theme.palette.text.secondary
-    }
-  })
+const useStyles = makeStyles((theme: Theme) => createStyles({
+  root: {
+    margin: theme.spacing(2)
+  },
+  panelDetails: {
+    margin: theme.spacing(0, 3)
+  },
+  heading: {
+    fontSize: theme.typography.pxToRem(15),
+    flexBasis: '33.33%',
+    flexShrink: 0
+  },
+  secondaryHeading: {
+    fontSize: theme.typography.pxToRem(15),
+    color: theme.palette.text.secondary
+  }
+})
 );
 
 function SettingsPage() {
   const classes = useStyles();
-  const [expanded, setExpanded] = React.useState<string | false>('panel3');
+  const [expanded, setExpanded] = useState<string | false>('panel3');
 
-  const handleChange = (panel: string) => (event: React.ChangeEvent<{}>, isExpanded: boolean) => {
+  const handleChange = (panel: string) => (event: ChangeEvent<{}>, isExpanded: boolean) => {
     setExpanded(isExpanded ? panel : false);
   };
 
@@ -61,6 +60,7 @@ function SettingsPage() {
     <div className={classes.root}>
       {components.map(cmp => (
         <ExpansionPanel
+          key={cmp.panel}
           expanded={expanded === cmp.panel}
           onChange={handleChange(cmp.panel)}
           TransitionProps={{ unmountOnExit: true }}

@@ -1,6 +1,7 @@
 import React, { useState, useContext, Fragment } from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import { Button, Typography } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 import TextInput from '../../Shared/TextInput';
 import firebase from '../../../config/firebase';
 import useNotifier from '../../../hooks/useNotifier';
