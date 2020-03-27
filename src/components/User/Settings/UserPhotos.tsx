@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Fragment } from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import CardMedia from '@material-ui/core/CardMedia';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
@@ -12,7 +12,7 @@ import firebase from '../../../config/firebase';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   root: {
-    display: 'inline-flex',
+    display: 'inline-flex'
   },
   card: {
     width: 100,
@@ -25,6 +25,9 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     background: '#1b5e20',
     textAlign: 'center',
     padding: theme.spacing(0.8)
+  },
+  button: {
+    marginBottom: theme.spacing(2)
   },
   doneIcon: {
     color: 'green'
@@ -83,11 +86,11 @@ function UserPhotos({ userId, profile, deleteImage, setMainPhoto }: Props) {
         <div className={classes.card}>
           <CardMedia component="img" alt={d.name} image={d.url} />
           <ButtonGroup fullWidth size="small">
-            <Button onClick={() => setMainPhoto(d)} className={classes.doneIcon}>
-              <Done />
+            <Button onClick={() => setMainPhoto(d)}>
+              <Done className={classes.doneIcon} />
             </Button>
-            <Button onClick={() => deleteImage(doc)} className={classes.deleteIcon}>
-              <Delete />
+            <Button onClick={() => deleteImage(doc)}>
+              <Delete className={classes.deleteIcon} />
             </Button>
           </ButtonGroup>
         </div>
@@ -96,7 +99,7 @@ function UserPhotos({ userId, profile, deleteImage, setMainPhoto }: Props) {
   }
 
   return (
-    <div style={{ marginTop: '16px' }}>
+    <Fragment>
       <Typography gutterBottom variant='caption' color='primary' display="block">ALL PHOTOS</Typography>
       <div style={{ display: 'flex' }}>
         <div className={classes.card}>
@@ -107,7 +110,7 @@ function UserPhotos({ userId, profile, deleteImage, setMainPhoto }: Props) {
           return renderList(doc);
         })}
       </div>
-    </div>
+    </Fragment>
   )
 }
 

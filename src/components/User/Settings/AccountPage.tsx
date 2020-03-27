@@ -1,26 +1,23 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, Fragment } from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import { Button, Typography, Paper, Divider } from '@material-ui/core';
+import { Button, Typography } from '@material-ui/core';
 import TextInput from '../../Shared/TextInput';
 import firebase from '../../../config/firebase';
 import useNotifier from '../../../hooks/useNotifier';
 import { AuthContext } from '../../../context/AuthContext';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    paper: {
-      padding: theme.spacing(2)
-    },
-    button: {
-      marginTop: theme.spacing(1)
-    }
-  })
+const useStyles = makeStyles((theme: Theme) => createStyles({
+  button: {
+    margin: theme.spacing(2, 0)
+  }
+})
 );
 
 function AccountPage() {
   const classes = useStyles();
   const notification = useNotifier();
   const { providerId } = useContext(AuthContext);
+  const [error, setError] = useState('');
   const [values, setValues] = useState({
     newPassword1: '',
     newPassword2: ''
@@ -40,20 +37,17 @@ function AccountPage() {
       notification('Your [password has been updated', 'success');
     } catch (err) {
       console.error(err.message);
+      setError(err.message);
     }
   }
 
-  const disabledBtn =
-    !values.newPassword1.trim() || !values.newPassword2.trim();
+  const disabledBtn = !values.newPassword1.trim() || !values.newPassword2.trim();
 
   return (
-    <Paper className={classes.paper}>
-      <Typography variant="h5">Account</Typography>
-      <Divider />
+    <Fragment>
       <Typography color="secondary">CHANGE PASSWORD</Typography>
-      <Typography variant="body2">
-        Use the form to change your account password.
-      </Typography>
+      <Typography variant="body2">Use the form to change your account password.</Typography>
+      <Typography color="error" variant="subtitle2">{error && error}</Typography>
       {providerId && providerId === 'password' && (
         <form onSubmit={handleSubmit}>
           <TextInput
@@ -83,17 +77,17 @@ function AccountPage() {
       )}
 
       {providerId && providerId === 'facebook.com' && (
-        <Button color="primary" variant="contained">
+        <Button color="primary" variant="contained" className={classes.button}>
           Go to Facebook
         </Button>
       )}
 
       {providerId && providerId === 'google.com' && (
-        <Button color="primary" variant="contained">
+        <Button color="primary" variant="contained" className={classes.button}>
           Go to Google
         </Button>
       )}
-    </Paper>
+    </Fragment>
   );
 }
 

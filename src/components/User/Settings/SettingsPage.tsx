@@ -1,10 +1,10 @@
 import React from 'react';
-import { Route, Redirect, Switch } from 'react-router-dom';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import SettingsNav from './SettingsNav';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import Typography from '@material-ui/core/Typography';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import AccountPage from './AccountPage';
-import BasicPage from './BasicPage';
 import AboutPage from './AboutPage';
 import PhotosPage from './PhotosPage';
 
@@ -12,29 +12,70 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       margin: theme.spacing(2)
+    },
+    panelDetails: {
+      margin: theme.spacing(0, 3)
+    },
+    heading: {
+      fontSize: theme.typography.pxToRem(15),
+      flexBasis: '33.33%',
+      flexShrink: 0
+    },
+    secondaryHeading: {
+      fontSize: theme.typography.pxToRem(15),
+      color: theme.palette.text.secondary
     }
   })
 );
 
 function SettingsPage() {
   const classes = useStyles();
+  const [expanded, setExpanded] = React.useState<string | false>('panel3');
+
+  const handleChange = (panel: string) => (event: React.ChangeEvent<{}>, isExpanded: boolean) => {
+    setExpanded(isExpanded ? panel : false);
+  };
+
+  const components = [
+    {
+      panel: 'panel1',
+      heading: 'About me',
+      secondaryHeading: 'Let us know more about you',
+      component: <AboutPage />
+    },
+    {
+      panel: 'panel2',
+      heading: 'My photos',
+      secondaryHeading: 'Upload and manage your photos',
+      component: <PhotosPage />
+    },
+    {
+      panel: 'panel3',
+      heading: 'My account',
+      secondaryHeading: 'Update your account info',
+      component: <AccountPage />
+    }
+  ];
 
   return (
     <div className={classes.root}>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={9}>
-          <Switch>
-            <Redirect exact from="/settings" to="/settings/basic" />
-            <Route path="/settings/basic" component={BasicPage} />
-            <Route path="/settings/about" component={AboutPage} />
-            <Route path="/settings/photos" component={PhotosPage} />
-            <Route path="/settings/account" component={AccountPage} />
-          </Switch>
-        </Grid>
-        <Grid item xs={12} sm={3}>
-          <SettingsNav />
-        </Grid>
-      </Grid>
+      {components.map(cmp => (
+        <ExpansionPanel
+          expanded={expanded === cmp.panel}
+          onChange={handleChange(cmp.panel)}
+          TransitionProps={{ unmountOnExit: true }}
+        >
+          <ExpansionPanelSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls={`${cmp.panel}bh-content`}
+            id={`${cmp.panel}bh-header`}
+          >
+            <Typography className={classes.heading}>{cmp.heading}</Typography>
+            <Typography className={classes.secondaryHeading}>{cmp.secondaryHeading}</Typography>
+          </ExpansionPanelSummary>
+          <div className={classes.panelDetails}>{cmp.component}</div>
+        </ExpansionPanel>
+      ))}
     </div>
   );
 }

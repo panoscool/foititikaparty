@@ -1,9 +1,9 @@
 // @ts-nocheck
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, Fragment } from 'react';
 import cuid from 'cuid';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import { Typography, Button, Paper, ButtonGroup, Divider } from '@material-ui/core';
+import { Typography, Button, ButtonGroup, Divider } from '@material-ui/core';
 import DropzoneInput from '../../Shared/DropzoneInput';
 import CropperInput from '../../Shared/CropperInput';
 import { Done, Clear } from '@material-ui/icons';
@@ -14,8 +14,8 @@ import useNotifier from '../../../hooks/useNotifier';
 import firebase from '../../../config/firebase';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
-  paper: {
-    padding: theme.spacing(2, 2, 8, 2)
+  root: {
+    margin: theme.spacing(2)
   },
   divider: {
     margin: theme.spacing(2, 0)
@@ -145,7 +145,7 @@ function PhotosPage() {
   }
 
   return (
-    <Paper className={classes.paper}>
+    <Fragment>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={4}>
           <Typography
@@ -197,7 +197,7 @@ function PhotosPage() {
         {!state.loading ? <Divider variant="fullWidth" /> : <Progress completed={completed} />}
       </div>
       <UserPhotos userId={userId} profile={snapshot} deleteImage={handleDeleteImage} setMainPhoto={handleMainPhoto} />
-    </Paper>
+    </Fragment>
   );
 }
 

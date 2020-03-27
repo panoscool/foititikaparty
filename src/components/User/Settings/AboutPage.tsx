@@ -3,23 +3,20 @@ import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { Button, Paper, Divider, Typography } from '@material-ui/core';
 import TextInput from '../../Shared/TextInput';
-import RadioInput from '../../Shared/RadioInput';
-import PlaceInput from '../../Shared/PlaceInput';
 import SelectInput from '../../Shared/SelectInput';
+import RadioInput from '../../Shared/RadioInput';
+import DateInput from '../../Shared/DateInput';
+import PlaceInput from '../../Shared/PlaceInput';
 import Spinner from '../../Shared/Spinner';
 import useNotifier from '../../../hooks/useNotifier';
 import { AuthContext } from '../../../context/AuthContext';
 import firebase from '../../../config/firebase';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    paper: {
-      padding: theme.spacing(2)
-    },
-    button: {
-      marginTop: theme.spacing(1)
-    }
-  })
+const useStyles = makeStyles((theme: Theme) => createStyles({
+  button: {
+    margin: theme.spacing(2, 0)
+  }
+})
 );
 
 const interests = [
@@ -35,8 +32,12 @@ function AboutPage() {
   const classes = useStyles();
   const notification = useNotifier()
   const { userId } = useContext(AuthContext);
+  const [date, setDate] = useState<Date | null>(new Date());
+  const [city, setCity] = useState('');
   const [country, setCountry] = useState('');
   const [values, setValues] = useState({
+    displayName: '',
+    gender: '',
     status: '',
     about: '',
     interests: [],
@@ -52,15 +53,20 @@ function AboutPage() {
       try {
         if (!userId) return;
 
-        const doc = await firebase
-          .firestore()
-          .collection('users')
-          .doc(userId)
-          .get();
-        const d = doc.data();
+        const doc = await firebase.firestore().collection('users').doc(userId).get();
 
-        setCountry(d?.country)
-        setValues({ status: d?.status, about: d?.about, interests: d?.interests, ocupation: d?.ocupation })
+        const d = doc.data();
+        setCity(d?.city);
+        setCountry(d?.country);
+        setDate(d?.date.toDate());
+        setValues({
+          displayName: d?.displayName,
+          gender: d?.gender,
+          status: d?.status,
+          about: d?.about,
+          interests: d?.interests,
+          ocupation: d?.ocupation
+        })
         setState({ loading: false, error: '' });
       } catch (err) {
         console.error(err.message);
@@ -71,15 +77,29 @@ function AboutPage() {
     fetchProfile();
   }, [userId]);
 
-  function handleCityChange(country: string) {
-    setCountry(country);
-  }
-
   function handleChange(event?: any) {
     setValues({ ...values, [event.target.name]: event.target.value });
   }
 
-  function handleCitySelect(selectedCountry: any) {
+  const handleDateChange = (date: Date | null) => {
+    setDate(date);
+  };
+
+  function handleCityChange(city: string) {
+    setCity(city);
+  }
+
+  function handleCitySelect(selectedCity: any) {
+    geocodeByAddress(selectedCity)
+      .then(results => getLatLng(results[0]))
+      .then(() => setCity(selectedCity))
+  }
+
+  function handleCountryChange(country: string) {
+    setCountry(country);
+  }
+
+  function handleCountrySelect(selectedCountry: any) {
     geocodeByAddress(selectedCountry)
       .then(results => getLatLng(results[0]))
       .then(() => setCountry(selectedCountry));
@@ -89,81 +109,100 @@ function AboutPage() {
     event.preventDefault();
     const updatedProfile = {
       ...values,
+      date,
+      city,
       country
     };
 
     try {
-      await firebase
-        .firestore()
-        .collection('users')
-        .doc(userId)
-        .update(updatedProfile);
-        notification('Your profile has been updated', 'success')
+      await firebase.firestore().collection('users').doc(userId).update(updatedProfile);
+      notification('Your profile has been updated', 'success')
     } catch (err) {
       console.error(err.message);
+      setState({ loading: false, error: err.message });
     }
   }
 
+  if (state.loading) return <Spinner />
+
   return (
-    <Paper className={classes.paper}>
-      <Typography variant="h5">About me</Typography>
-      <Divider />
-      {state.loading ? (
-        <Spinner />
-      ) : (
-          <form onSubmit={handleSubmit}>
-            <RadioInput
-              name="status"
-              label="Your status"
-              value={values.status || ''}
-              handleChange={handleChange}
-              optionsArray={[
-                { label: 'Single', value: 'single' },
-                { label: 'Relationship', value: 'relationship' },
-                { label: 'Married', value: 'married' }
-              ]}
-            />
-            <TextInput
-              name="about"
-              label="About me"
-              multiline
-              rows="6"
-              value={values.about || ''}
-              handleChange={handleChange}
-            />
-            <SelectInput
-              name="interests"
-              label="Interests"
-              multiple
-              optionsArray={interests}
-              // @ts-ignore
-              value={values.interests || ''}
-              handleChange={handleChange}
-            />
-            <TextInput
-              name="ocupation"
-              label="Ocupation"
-              value={values.ocupation || ''}
-              handleChange={handleChange}
-            />
-            <PlaceInput
-              label="Country"
-              value={country || ''}
-              options={{ typs: ['(regions)'] }}
-              handleChange={handleCityChange}
-              handleSelect={handleCitySelect}
-            />
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              className={classes.button}
-            >
-              Save
-          </Button>
-          </form>
-        )}
-    </Paper>
+    <form onSubmit={handleSubmit}>
+      <TextInput
+        name="displayName"
+        label="Display Name"
+        value={values.displayName || ''}
+        handleChange={handleChange} />
+      <DateInput
+        dateType="date"
+        label="Date of birth"
+        selectedDate={date}
+        handleDateChange={handleDateChange} />
+      <RadioInput
+        name="gender"
+        label="Gender"
+        value={values.gender || ''}
+        handleChange={handleChange}
+        optionsArray={[
+          { label: "Female", value: "female" },
+          { label: "Male", value: "male" }
+        ]} />
+      <PlaceInput
+        label="City"
+        value={city || ''}
+        options={{ typs: ['(cities)'] }}
+        handleChange={handleCityChange}
+        handleSelect={handleCitySelect}
+      />
+      <RadioInput
+        name="status"
+        label="Your status"
+        value={values.status || ''}
+        handleChange={handleChange}
+        optionsArray={[
+          { label: 'Single', value: 'single' },
+          { label: 'Relationship', value: 'relationship' },
+          { label: 'Married', value: 'married' }
+        ]}
+      />
+      <TextInput
+        name="about"
+        label="About me"
+        multiline
+        rows="6"
+        value={values.about || ''}
+        handleChange={handleChange}
+      />
+      <SelectInput
+        name="interests"
+        label="Interests"
+        multiple
+        optionsArray={interests}
+        // @ts-ignore
+        value={values.interests || ''}
+        handleChange={handleChange}
+      />
+      <TextInput
+        name="ocupation"
+        label="Ocupation"
+        value={values.ocupation || ''}
+        handleChange={handleChange}
+      />
+      <PlaceInput
+        label="Country"
+        value={country || ''}
+        options={{ typs: ['(regions)'] }}
+        handleChange={handleCountryChange}
+        handleSelect={handleCountrySelect}
+      />
+      <Button
+        type="submit"
+        variant="contained"
+        color="primary"
+        className={classes.button}
+      >
+        Update Profile
+      </Button>
+    </form>
   );
 }
 

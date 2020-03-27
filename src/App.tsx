@@ -5,12 +5,12 @@ import Layout from './components/Layout';
 import EventPage from './components/Event/EventPage';
 import EventDetailsPage from './components/Event/EventDetails/EventDetailsPage';
 import EventForm from './components/Event/EventForm';
-import SettingsPage from './components/User/Settings/SettingsPage';
+import Settings from './components/User/Settings/SettingsPage';
+import UserProfilePage from './components/User/UserProfilePage';
 import NotFoundPage from './components/NotFoundPage';
 import ModalManager from './components/ModalManager';
 import { AuthContext } from './context/AuthContext';
 import firebase from './config/firebase';
-import UserProfilePage from './components/User/UserProfilePage';
 
 function App() {
   const { setUserId, setProviderId, setAuthenticated } = useContext(
@@ -33,8 +33,8 @@ function App() {
         <Route path={['/event/:id/edit', '/event/create']} component={EventForm} />
         <Route path="/event/:id" component={EventDetailsPage} />
         <Route path="/profile/:id" component={UserProfilePage} />
-        <Route path="/settings" component={SettingsPage} />
-        <Route path="/people" component={SettingsPage} />
+        <Route path="/settings" component={Settings} />
+        <Route path="/people" component={Settings} />
         <Route exact path="/" component={EventPage} />
         <Route component={NotFoundPage} />
       </Switch>
