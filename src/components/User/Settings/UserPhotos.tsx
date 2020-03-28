@@ -18,7 +18,6 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   card: {
     width: 100,
     height: 100,
-    borderRadius: 10,
     margin: theme.spacing(0, 1, 6, 0)
   },
   caption: {

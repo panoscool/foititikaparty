@@ -4,9 +4,9 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import AccountPage from './AccountPage';
-import AboutPage from './AboutPage';
-import PhotosPage from './PhotosPage';
+import AboutSection from './AboutSection';
+import PhotosSection from './PhotosSection';
+import AccountSection from './AccountSection';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   root: {
@@ -40,19 +40,19 @@ function SettingsPage() {
       panel: 'panel1',
       heading: 'About me',
       secondaryHeading: 'Let us know more about you',
-      component: <AboutPage />
+      component: <AboutSection />
     },
     {
       panel: 'panel2',
       heading: 'My photos',
       secondaryHeading: 'Upload and manage your photos',
-      component: <PhotosPage />
+      component: <PhotosSection />
     },
     {
       panel: 'panel3',
       heading: 'My account',
       secondaryHeading: 'Update your account info',
-      component: <AccountPage />
+      component: <AccountSection />
     }
   ];
 

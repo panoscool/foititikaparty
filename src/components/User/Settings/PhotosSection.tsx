@@ -37,7 +37,7 @@ const error_codes = [
   { code: 'storage/unknown', message: 'Unknown error occurred' },
 ]
 
-function PhotosPage() {
+function PhotosSection() {
   const classes = useStyles();
   const notification = useNotifier();
   const { userId } = useContext(AuthContext);
@@ -202,4 +202,4 @@ function PhotosPage() {
   );
 }
 
-export default PhotosPage;
+export default PhotosSection;

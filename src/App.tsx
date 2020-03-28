@@ -6,7 +6,7 @@ import EventPage from './components/Event/EventPage';
 import EventDetailsPage from './components/Event/EventDetails/EventDetailsPage';
 import EventForm from './components/Event/EventForm';
 import Settings from './components/User/Settings/SettingsPage';
-import UserProfilePage from './components/User/UserProfilePage';
+import UserProfilePage from './components/User/Profile/UserProfilePage';
 import NotFoundPage from './components/NotFoundPage';
 import ModalManager from './components/ModalManager';
 import { AuthContext } from './context/AuthContext';

@@ -28,7 +28,7 @@ const interests = [
   { label: 'Travel', value: 'travel' }
 ];
 
-function AboutPage() {
+function AboutSection() {
   const classes = useStyles();
   const notification = useNotifier()
   const { userId } = useContext(AuthContext);
@@ -146,13 +146,6 @@ function AboutPage() {
           { label: "Female", value: "female" },
           { label: "Male", value: "male" }
         ]} />
-      <PlaceInput
-        label="City"
-        value={city || ''}
-        options={{ typs: ['(cities)'] }}
-        handleChange={handleCityChange}
-        handleSelect={handleCitySelect}
-      />
       <RadioInput
         name="status"
         label="Your status"
@@ -188,6 +181,13 @@ function AboutPage() {
         handleChange={handleChange}
       />
       <PlaceInput
+        label="City"
+        value={city || ''}
+        options={{ typs: ['(cities)'] }}
+        handleChange={handleCityChange}
+        handleSelect={handleCitySelect}
+      />
+      <PlaceInput
         label="Country"
         value={country || ''}
         options={{ typs: ['(regions)'] }}
@@ -206,4 +206,4 @@ function AboutPage() {
   );
 }
 
-export default AboutPage;
+export default AboutSection;

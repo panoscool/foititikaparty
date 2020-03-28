@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 })
 );
 
-function AccountPage() {
+function AccountSection() {
   const classes = useStyles();
   const notification = useNotifier();
   const { providerId } = useContext(AuthContext);
@@ -92,4 +92,4 @@ function AccountPage() {
   );
 }
 
-export default AccountPage;
+export default AccountSection;
