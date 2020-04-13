@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export interface Props {
+interface Props {
   children: ReactNode;
 }
 

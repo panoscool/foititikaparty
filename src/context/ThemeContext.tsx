@@ -5,7 +5,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import { SnackbarProvider } from 'notistack';
 import { teal, amber } from '@material-ui/core/colors';
 
-export interface Props {
+interface Props {
   children: ReactNode;
 }
 

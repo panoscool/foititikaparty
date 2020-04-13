@@ -101,7 +101,7 @@ function UserPhotos({ userId, profile, deleteImage, setMainPhoto }: Props) {
       <Typography gutterBottom variant='caption' color='primary' display="block">ALL PHOTOS</Typography>
       <div className={classes.root}>
         <div className={classes.card}>
-          <CardMedia component="img" alt={profile.name} image={profile.photoURL || '/assets/images/user.png'} />
+          <CardMedia component="img" alt={profile.displayName} image={profile.photoURL || '/assets/images/user.png'} />
           <Typography variant="caption" display="block" className={classes.caption}>MAIN PHOTO</Typography>
         </div>
         {filteredPhotos.map((doc: any) => {

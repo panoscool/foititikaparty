@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React, { useState, createContext, ReactNode } from 'react';
 
-export interface Props {
+interface Props {
   children: ReactNode;
 }
 
@@ -9,9 +9,9 @@ export const AuthContext = createContext({
   authenticated: null,
   userId: '',
   providerId: null,
-  setUserId: () => {},
-  setProviderId: () => {},
-  setAuthenticated: () => {}
+  setUserId: () => { },
+  setProviderId: () => { },
+  setAuthenticated: () => { }
 });
 
 export default ({ children }: Props) => {

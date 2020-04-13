@@ -10,18 +10,17 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Paper from '@material-ui/core/Paper';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    paper: {
-      margin: theme.spacing(2, 0),
-    },
-    button: {
-      margin: theme.spacing(0, 1, 1, 1)
-    },
-    btnPosition: {
-      textAlign: 'right'
-    }
-  })
+const useStyles = makeStyles((theme: Theme) => createStyles({
+  paper: {
+    margin: theme.spacing(2, 0),
+  },
+  button: {
+    margin: theme.spacing(0, 1, 1, 1)
+  },
+  btnPosition: {
+    textAlign: 'right'
+  }
+})
 );
 
 interface DataObject {

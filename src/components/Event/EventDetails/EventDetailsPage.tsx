@@ -48,7 +48,7 @@ function EventDetailsPage() {
 
   }, [id]);
 
-  if (!data || state.loading) return <Spinner />
+  if (!data || state.loading) return <Spinner />;
 
   return (
     <div className={classes.root}>
