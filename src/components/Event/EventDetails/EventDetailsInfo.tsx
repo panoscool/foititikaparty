@@ -23,16 +23,14 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 })
 );
 
-interface DataObject {
+interface Props {
   description: string;
   date: any;
+  isGoing: boolean;
+  isHost: boolean
 }
 
-interface Props {
-  data: DataObject;
-}
-
-function EventDetailsInfo({ data }: Props) {
+function EventDetailsInfo({ description, date, isGoing, isHost }: Props) {
   const classes = useStyles();
 
   return (
@@ -42,24 +40,25 @@ function EventDetailsInfo({ data }: Props) {
           <ListItemIcon>
             <CalendarTodayOutlined color="primary" />
           </ListItemIcon>
-          <ListItemText primary={format(data.date.toDate(), 'dd MMMM yyyy')} />
+          <ListItemText primary={format(date.toDate(), 'dd MMMM yyyy')} />
         </ListItem>
         <ListItem divider>
           <ListItemIcon>
             <InfoOutlined color="primary" />
           </ListItemIcon>
-          <ListItemText primary={data.description} />
+          <ListItemText primary={description} />
         </ListItem>
       </List>
-      <div className={classes.btnPosition}>
-        <Button
-          color="secondary"
-          variant="contained"
-          className={classes.button}
-        >
-          Join this event
-        </Button>
-      </div>
+      {!isHost &&
+        <div className={classes.btnPosition}>
+          <Button
+            color="secondary"
+            variant="contained"
+            className={classes.button}
+          >
+            {isGoing ? 'Cancel my place' : 'Join this event'}
+          </Button>
+        </div>}
     </Paper>
   );
 }

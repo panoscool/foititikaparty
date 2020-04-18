@@ -7,10 +7,11 @@ import { Paper, Button, Typography } from '@material-ui/core';
 import TextInput from '../Shared/TextInput';
 import DateInput from '../Shared/DateInput';
 import SelectInput from '../Shared/SelectInput';
-import PlaceInput from '../Shared/PlaceInput'
+import PlaceInput from '../Shared/PlaceInput';
 import Spinner from '../Shared/Spinner';
-import useNotifier from '../../hooks/useNotifier'
+import useNotifier from '../../hooks/useNotifier';
 import firebase from '../../config/firebase';
+import { createNewEvent } from '../../utils/helpers';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -27,7 +28,8 @@ const useStyles = makeStyles((theme: Theme) =>
       margin: theme.spacing(1, 0, 1, 1)
     },
     btnAlignment: {
-      textAlign: 'right'
+      display: 'flex',
+      justifyContent: 'flex-end'
     },
     sectionLabel: {
       paddingTop: 16
@@ -48,7 +50,7 @@ function EventForm() {
   const classes = useStyles();
   const { id } = useParams();
   const history = useHistory();
-  const notification = useNotifier()
+  const notification = useNotifier();
   const [date, setDate] = useState<Date | null>(new Date());
   const [cityLatLng, setCityLatLng] = useState({});
   const [venueLatLng, setVenueLatLng] = useState({});
@@ -74,10 +76,17 @@ function EventForm() {
 
         if (doc.exists) {
           const d: firebase.firestore.DocumentData | undefined = doc.data();
+          setValues({
+            title: d?.title,
+            category: d?.category,
+            description: d?.description,
+            hostedBy: d?.hostedBy
+          });
           setCity(d?.city);
           setVenue(d?.venue);
+          setVenueLatLng(d?.venueLatLng)
           setDate(d?.date.toDate());
-          setValues({ title: d?.title, category: d?.category, description: d?.description, hostedBy: d?.hostedBy })
+
           setState({ loading: false, error: '' });
         } else {
           // doc.data() will be undefined in this case
@@ -88,6 +97,7 @@ function EventForm() {
         setState({ loading: false, error: err.message });
       }
     }
+
     fetchEvent();
   }, [id]);
 
@@ -124,14 +134,17 @@ function EventForm() {
   async function handleSubmit(event?: any) {
     event.preventDefault();
 
-    const newEvent = {
+    const formValues = {
       ...values,
       city: city,
       venue: venue,
       date: date,
       venueLatLng: venueLatLng,
-      hostPhotoURL: 'https://randomuser.me/api/portraits/women/18.jpg'
     }
+
+    const user = firebase.auth().currentUser;
+    const newEvent = createNewEvent(user, formValues);
+
     if (id) {
       try {
         await firebase.firestore().collection('events').doc(id).update(newEvent);
@@ -141,10 +154,17 @@ function EventForm() {
       }
       notification('The event has been created successfully', 'success')
     } else {
-      const response = await firebase.firestore().collection('events').add(newEvent);
+      const createdEvent = await firebase.firestore().collection('events').add(newEvent);
+      await firebase.firestore().collection('event_queries').doc(`${createdEvent.id}_${user?.uid}`).set({
+        eventId: createdEvent.id,
+        userId: user?.uid,
+        category: values.category,
+        date: date,
+        city: city,
+        host: true
+      });
 
-      history.push(`/event/${response.id}`);
-
+      history.push(`/event/${createdEvent.id}`);
     }
   }
 

@@ -40,6 +40,8 @@ function RegisterModal() {
     try {
       const createdUser = await firebase.auth().createUserWithEmailAndPassword(email, password);
 
+      await createdUser.user?.updateProfile({ displayName });
+
       const newUser = {
         displayName: displayName,
         createdAt: firebase.firestore.FieldValue.serverTimestamp()

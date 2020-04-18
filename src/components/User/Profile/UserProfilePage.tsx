@@ -57,8 +57,6 @@ function UserProfilePage() {
 
   if (!data.userInfo || state.loading) return <Spinner />;
 
-  console.log(data.userInfo, data.userPhotos);
-
   return (
     <div className={classes.root}>
       <UserProfileHeader displayName={data.userInfo.displayName} photoURL={data.userInfo.photoURL} ocupation={data.userInfo.ocupation} />

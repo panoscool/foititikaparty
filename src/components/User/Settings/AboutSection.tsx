@@ -56,17 +56,19 @@ function AboutSection() {
         const doc = await firebase.firestore().collection('users').doc(userId).get();
 
         const d = doc.data();
-        setCity(d?.city);
-        setCountry(d?.country);
-        setDate(d?.date.toDate());
+
         setValues({
           displayName: d?.displayName,
           gender: d?.gender,
           status: d?.status,
           about: d?.about,
-          interests: d?.interests,
+          interests: d?.interests || [],
           ocupation: d?.ocupation
-        })
+        });
+        setCity(d?.city);
+        setCountry(d?.country);
+        setDate(d?.date && d?.date.toDate());
+
         setState({ loading: false, error: '' });
       } catch (err) {
         console.error(err.message);
@@ -115,6 +117,9 @@ function AboutSection() {
     };
 
     try {
+      const user = firebase.auth().currentUser;
+
+      await user?.updateProfile({ displayName: values.displayName });
       await firebase.firestore().collection('users').doc(userId).update(updatedProfile);
       notification('Your profile has been updated', 'success')
     } catch (err) {

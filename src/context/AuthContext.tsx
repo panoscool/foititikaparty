@@ -6,28 +6,31 @@ interface Props {
 }
 
 export const AuthContext = createContext({
-  authenticated: null,
+  user: null,
   userId: '',
   providerId: null,
-  setUserId: () => { },
-  setProviderId: () => { },
+  authenticated: null,
+  setUser: () => { },
   setAuthenticated: () => { }
 });
 
 export default ({ children }: Props) => {
+  const [user, setUser] = useState(null);
   const [authenticated, setAuthenticated] = useState(null);
-  const [userId, setUserId] = useState('');
-  const [providerId, setProviderId] = useState(null);
+
+  const { uid, photoURL, displayName, providerData } = user || {};
 
   return (
     <AuthContext.Provider
       value={{
+        user: user,
         authenticated: authenticated,
-        setAuthenticated: setAuthenticated,
-        userId: userId,
-        setUserId: setUserId,
-        providerId: providerId,
-        setProviderId: setProviderId
+        userId: uid,
+        photoURL: photoURL,
+        displayName: displayName,
+        providerId: user && providerData[0].providerId,
+        setUser: setUser,
+        setAuthenticated: setAuthenticated
       }}
     >
       {children}

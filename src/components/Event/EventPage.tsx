@@ -17,6 +17,7 @@ import RoomOutlined from '@material-ui/icons/RoomOutlined';
 import EventActivity from './EventActivity';
 import SearchField from '../Shared/SearchField';
 import Spinner from '../Shared/Spinner';
+import { objectToArray } from '../../utils/helpers';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -32,6 +33,15 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     icon: {
       verticalAlign: 'text-bottom'
+    },
+    infoBlock: {
+      display: 'flex',
+      justifyContent: 'space-between'
+    },
+    cancelledText: {
+      color: 'white',
+      background: 'red',
+      padding: theme.spacing(0, 0.5)
     }
   })
 );
@@ -64,6 +74,7 @@ function EventPage() {
 
   function renderList(doc: any) {
     const d = doc.data();
+    const attendees = objectToArray(d.attendees);
     return (
       <Card key={doc.id} className={classes.card}>
         <CardActionArea>
@@ -91,9 +102,10 @@ function EventPage() {
           <Typography gutterBottom variant="body2" color="textSecondary">
             {d.description}
           </Typography>
-          <Typography variant="body2" color="textSecondary">
-            Attendees: 10
-          </Typography>
+          <div className={classes.infoBlock}>
+            <Typography variant='caption' color="textSecondary">Attendees: {attendees.length}</Typography>
+            {d.cancelled && <Typography variant='caption' className={classes.cancelledText}>This event has been cancelled</Typography>}
+          </div>
         </CardContent>
       </Card>
     );

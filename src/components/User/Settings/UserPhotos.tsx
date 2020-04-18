@@ -71,13 +71,10 @@ function UserPhotos({ userId, profile, deleteImage, setMainPhoto }: Props) {
 
   if (!snapshot || state.loading) return <Spinner />;
 
-  let filteredPhotos;
-  if (snapshot) {
-    filteredPhotos = snapshot.docs.filter(doc => {
-      const photo = doc.data();
-      return photo.url !== profile.photoURL
-    })
-  }
+  const filteredPhotos = snapshot && snapshot.docs.filter(doc => {
+    const photo = doc.data();
+    return photo.url !== profile.photoURL
+  })
 
   function renderList(doc: any) {
     const d = doc.data();

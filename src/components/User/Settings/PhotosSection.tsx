@@ -75,10 +75,12 @@ function PhotosSection() {
 
   async function handleMainPhoto(photo) {
     if (!userId) return;
+    const user = firebase.auth().currentUser;
 
     const firestoreRef = firebase.firestore().collection('users').doc(userId);
 
     try {
+      await user?.updateProfile({ photoURL: photo.url });
       await firestoreRef.update({ photoURL: photo.url });
       notification('Your profile has been updated', 'success');
     } catch (err) {
@@ -104,13 +106,14 @@ function PhotosSection() {
       notification('Image has been deleted', 'success');
     } catch (err) {
       // Uh-oh, an error occurred!
-      console.log(err.message)
+      console.error(err.message);
     }
   }
 
   async function handleUploadImage() {
     const imageName = cuid();
     const path = `${userId}/user_images/`
+    const currentUser = firebase.auth().currentUser;
     const userDoc = await firebase.firestore().collection('users').doc(userId).get();
     const storageRef = firebase.storage().ref(path + imageName);
     const firestoreRef = firebase.firestore().collection('users').doc(userId);
@@ -135,7 +138,11 @@ function PhotosSection() {
             firestoreRef.update({
               photoURL: downloadURL
             });
+
+            // Update user photo in the auth section
+            currentUser?.updateProfile({ photoURL: downloadURL });
           }
+
           // Add image to firestore
           firestoreRef.collection('photos').add({ name: imageName, url: downloadURL })
           setState({ loading: false, error: '' });

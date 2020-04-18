@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React, { useContext } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, useLocation } from 'react-router-dom';
 import Layout from './components/Layout';
 import EventPage from './components/Event/EventPage';
 import EventDetailsPage from './components/Event/EventDetails/EventDetailsPage';
@@ -13,14 +13,12 @@ import { AuthContext } from './context/AuthContext';
 import firebase from './config/firebase';
 
 function App() {
-  const { setUserId, setProviderId, setAuthenticated } = useContext(
-    AuthContext
-  );
+  const { key } = useLocation();
+  const { setUser, setAuthenticated } = useContext(AuthContext);
   firebase.auth().onAuthStateChanged(user => {
     if (user) {
-      setUserId(user.uid);
+      setUser(user);
       setAuthenticated(true);
-      setProviderId(user.providerData[0].providerId);
     } else {
       setAuthenticated(false);
     }
@@ -29,8 +27,8 @@ function App() {
   return (
     <Layout>
       <ModalManager />
-      <Switch>
-        <Route path={['/event/:id/edit', '/event/create']} component={EventForm} />
+      <Switch key={key}>
+        <Route path={['/event/edit/:id', '/event/create']} component={EventForm} />
         <Route path="/event/:id" component={EventDetailsPage} />
         <Route path="/profile/:id" component={UserProfilePage} />
         <Route path="/settings" component={Settings} />

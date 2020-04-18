@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1
     },
     appBar: {
-      zIndex: 1,
+      zIndex: 99,
       boxShadow: 'none'
     },
     link: {

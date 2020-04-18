@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Typography from '@material-ui/core/Typography';
@@ -9,15 +9,14 @@ import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Collapse from '@material-ui/core/Collapse';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import MoreVert from '@material-ui/icons/MoreVert';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import RoomOutlined from '@material-ui/icons/RoomOutlined';
 import GoogleMap from '../../Shared/GoogleMap';
-import firebase from '../../../config/firebase';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -53,9 +52,13 @@ interface DataObject {
 
 interface Props {
   data: DataObject;
+  isHost: boolean;
+  cancelled: boolean;
+  handleDelete: (e: any) => void;
+  cancelToggle: (e: any) => void;
 }
 
-function EventDetailsHeader({ data }: Props) {
+function EventDetailsHeader({ data, isHost, cancelled, handleDelete, cancelToggle }: Props) {
   const classes = useStyles();
   const history = useHistory();
   const { id } = useParams();
@@ -74,22 +77,12 @@ function EventDetailsHeader({ data }: Props) {
     setExpanded(!expanded);
   };
 
-  async function handleDelete(id: any) {
-    try {
-      await firebase.firestore().collection('events').doc(id).delete();
-
-      history.push('/');
-    } catch (err) {
-      console.error(err.message);
-    }
-
-  }
-
   return (
     <Card>
       <CardHeader
         avatar={<Avatar alt="avatar" src={data.hostPhotoURL} />}
         action={
+          isHost &&
           <IconButton aria-label="settings" aria-haspopup="true" onClick={handleClick}>
             <MoreVert />
           </IconButton>
@@ -103,16 +96,11 @@ function EventDetailsHeader({ data }: Props) {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => history.push(`/event/${id}/edit`)}>
-          Edit event
-        </MenuItem>
-        <MenuItem onClick={() => handleDelete(id)}>Delete event</MenuItem>
-        <MenuItem onClick={handleClose}>Cancel event</MenuItem>
+        <MenuItem onClick={() => history.push(`/event/edit/${id}`)}>Edit event</MenuItem>
+        <MenuItem onClick={handleDelete}>Delete event</MenuItem>
+        <MenuItem onClick={cancelToggle}>{cancelled ? 'Reactivate event' : 'Cancel Event'}</MenuItem>
       </Menu>
-      <CardMedia
-        className={classes.media}
-        image={`/assets/categories/${data.category}.jpg`}
-      />
+      <CardMedia className={classes.media} image={`/assets/categories/${data.category}.jpg`} />
       <CardActions disableSpacing>
         <RoomOutlined className={classes.icon} color="primary" />
         <Typography variant="body1">{data.venue}</Typography>

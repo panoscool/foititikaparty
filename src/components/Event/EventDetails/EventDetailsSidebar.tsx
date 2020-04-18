@@ -24,17 +24,17 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-interface DataObject {
+interface Props {
   hostedBy: string;
   hostPhotoURL: string;
+  attendees: any
 }
 
-interface Props {
-  data: DataObject;
-}
-
-function EventDetailsSidebar({ data }: Props) {
+function EventDetailsSidebar({ hostedBy, hostPhotoURL, attendees }: Props) {
   const classes = useStyles();
+
+
+  const filteredAttendees = attendees?.filter((a: any) => hostedBy !== a.displayName);
 
   return (
     <Paper>
@@ -46,10 +46,18 @@ function EventDetailsSidebar({ data }: Props) {
       <List>
         <ListItem>
           <ListItemAvatar>
-            <Avatar alt="avatar" src={data.hostPhotoURL} />
+            <Avatar alt="avatar" src={hostPhotoURL} />
           </ListItemAvatar>
-          <ListItemText className={classes.text} primary={data.hostedBy} />
+          <ListItemText className={classes.text} primary={hostedBy} />
         </ListItem>
+        {filteredAttendees?.map((a: any) => (
+          <ListItem>
+            <ListItemAvatar>
+              <Avatar alt="avatar" src={a.photoURL} />
+            </ListItemAvatar>
+            <ListItemText primary={a.displayName} />
+          </ListItem>
+        ))}
       </List>
     </Paper>
   );

@@ -36,7 +36,7 @@ function UserProfileDescription({ data }: Props) {
       <Grid container spacing={2}>
         <Grid item xs={12} sm={7}>
           <Typography gutterBottom variant='h6'><InfoOutlined className={classes.icon} /> About {displayName.substr(0, displayName.indexOf(' '))}</Typography>
-          <Typography variant='body2'>Date of Birth: <strong>{format(date.toDate(), 'dd MMMM yyyy')}, ({differenceInYears(Date.now(), date.toDate())})</strong></Typography>
+          <Typography variant='body2'>Date of Birth: {date ? <strong>{format(date.toDate(), 'dd MMMM yyyy')}, ({differenceInYears(Date.now(), date.toDate())})</strong> : null}</Typography>
           <Typography variant='body2'>Currently in: <strong>{city}</strong></Typography>
           <Typography variant='body2'>Originally from: <strong>{country}</strong></Typography>
           <Typography gutterBottom variant='body2'>Member since: <strong>{format(createdAt.toDate(), 'dd MMMM yyyy')}</strong></Typography>
