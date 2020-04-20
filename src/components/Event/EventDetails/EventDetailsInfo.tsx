@@ -27,10 +27,12 @@ interface Props {
   description: string;
   date: any;
   isGoing: boolean;
-  isHost: boolean
+  isHost: boolean;
+  goingToEvent: (e: any) => void;
+  cancelGoigToEvent: (e: any) => void;
 }
 
-function EventDetailsInfo({ description, date, isGoing, isHost }: Props) {
+function EventDetailsInfo({ description, date, isGoing, isHost, goingToEvent, cancelGoigToEvent }: Props) {
   const classes = useStyles();
 
   return (
@@ -55,6 +57,7 @@ function EventDetailsInfo({ description, date, isGoing, isHost }: Props) {
             color="secondary"
             variant="contained"
             className={classes.button}
+            onClick={isGoing ? cancelGoigToEvent : goingToEvent}
           >
             {isGoing ? 'Cancel my place' : 'Join this event'}
           </Button>

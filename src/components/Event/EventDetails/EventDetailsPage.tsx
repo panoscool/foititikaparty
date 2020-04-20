@@ -54,15 +54,60 @@ function EventDetailsPage() {
     fetchEvent();
   }, [id]);
 
+  async function goingToEvent() {
+    const user = firebase.auth().currentUser;
+    const attendee = {
+      going: true,
+      joingDate: firebase.firestore.FieldValue.serverTimestamp(),
+      photoURL: user?.photoURL || '/assets/images/user.png',
+      displayName: user?.displayName,
+      host: false
+    }
+
+    try {
+      await firebase.firestore().collection('events').doc(id).update({
+        [`attendees.${user.uid}`]: attendee
+      });
+
+      await firebase.firestore().collection('event_queries').doc(`${id}_${user?.uid}`).set({
+        eventId: id,
+        userId: user?.uid,
+        category: data.category,
+        date: data.date,
+        city: data.city,
+        host: false
+      });
+
+      notification('You have signed up to the event', 'success')
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function cancelGoigToEvent() {
+    const user = firebase.auth().currentUser;
+    try {
+      await firebase.firestore().collection('events').doc(id).update({
+        [`attendees.${user.uid}`]: firebase.firestore.FieldValue.delete()
+      });
+
+      await firebase.firestore().collection('event_queries').doc(`${id}_${user?.uid}`).delete();
+
+      notification('You have removed yourself from the event', 'success')
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   async function cancelToggle() {
     try {
       setCancelled(!cancelled);
       await firebase.firestore().collection('events').doc(id).update({
         cancelled: !cancelled
       });
-      notification('The event has been created successfully', 'success')
-    } catch (err) {
-      console.error(err.message)
+      notification('The event has been created successfully', 'success');
+    } catch (error) {
+      console.error(error);
     }
   }
 
@@ -88,7 +133,7 @@ function EventDetailsPage() {
         <Grid container spacing={2}>
           <Grid item xs={12} sm={8}>
             <EventDetailsHeader data={data} isHost={isHost} cancelled={cancelled} handleDelete={handleDelete} cancelToggle={cancelToggle} />
-            <EventDetailsInfo date={data.date} description={data.description} isHost={isHost} isGoing={isGoing} />
+            <EventDetailsInfo date={data.date} description={data.description} isHost={isHost} isGoing={isGoing} goingToEvent={goingToEvent} cancelGoigToEvent={cancelGoigToEvent} />
           </Grid>
           <Grid item xs={12} sm={4}>
             <EventDetailsSidebar hostedBy={data.hostedBy} hostPhotoURL={data.hostPhotoURL} attendees={attendees} />

@@ -113,7 +113,7 @@ function PhotosSection() {
   async function handleUploadImage() {
     const imageName = cuid();
     const path = `${userId}/user_images/`
-    const currentUser = firebase.auth().currentUser;
+    const user = firebase.auth().currentUser;
     const userDoc = await firebase.firestore().collection('users').doc(userId).get();
     const storageRef = firebase.storage().ref(path + imageName);
     const firestoreRef = firebase.firestore().collection('users').doc(userId);
@@ -140,7 +140,7 @@ function PhotosSection() {
             });
 
             // Update user photo in the auth section
-            currentUser?.updateProfile({ photoURL: downloadURL });
+            user?.updateProfile({ photoURL: downloadURL });
           }
 
           // Add image to firestore

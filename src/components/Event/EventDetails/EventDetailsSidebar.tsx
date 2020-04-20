@@ -51,7 +51,7 @@ function EventDetailsSidebar({ hostedBy, hostPhotoURL, attendees }: Props) {
           <ListItemText className={classes.text} primary={hostedBy} />
         </ListItem>
         {filteredAttendees?.map((a: any) => (
-          <ListItem>
+          <ListItem key={a.id}>
             <ListItemAvatar>
               <Avatar alt="avatar" src={a.photoURL} />
             </ListItemAvatar>
