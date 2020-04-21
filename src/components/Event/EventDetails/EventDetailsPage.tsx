@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useCallback } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { Grid, Typography } from '@material-ui/core';
@@ -25,7 +25,7 @@ function EventDetailsPage() {
   const { id } = useParams();
   const history = useHistory();
   const notification = useNotifier();
-  const { userId } = useContext(AuthContext);
+  const { authenticated, userId } = useContext(AuthContext);
   const [cancelled, setCancelled] = useState<boolean | undefined>();
   const [data, setData] = useState();
   const [state, setState] = useState({
@@ -33,26 +33,26 @@ function EventDetailsPage() {
     error: null
   });
 
-  useEffect(() => {
-    async function fetchEvent() {
-      try {
-        const doc = await firebase.firestore().collection('events').doc(id).get();
-        if (doc.exists) {
-          setData(doc.data());
-          setCancelled(doc.data().cancelled);
-          setState({ loading: false, error: null })
-        } else {
-          // doc.data() will be undefined in this case
-          setState({ loading: false, error: "No such document!" })
-        }
-      } catch (err) {
-        console.error("Error getting document:", err.message);
-        setState({ loading: false, error: err.message })
+  const fetchEvent = useCallback(async () => {
+    try {
+      const doc = await firebase.firestore().collection('events').doc(id).get();
+      if (doc.exists) {
+        setData(doc.data());
+        setCancelled(doc.data().cancelled);
+        setState({ loading: false, error: null })
+      } else {
+        // doc.data() will be undefined in this case
+        setState({ loading: false, error: "No such document!" })
       }
+    } catch (err) {
+      console.error("Error getting document:", err.message);
+      setState({ loading: false, error: err.message })
     }
-
-    fetchEvent();
   }, [id]);
+
+  useEffect(() => {
+    fetchEvent();
+  }, [fetchEvent]);
 
   async function goingToEvent() {
     const user = firebase.auth().currentUser;
@@ -78,6 +78,8 @@ function EventDetailsPage() {
         host: false
       });
 
+      fetchEvent();
+
       notification('You have signed up to the event', 'success')
     } catch (error) {
       console.error(error);
@@ -93,6 +95,8 @@ function EventDetailsPage() {
 
       await firebase.firestore().collection('event_queries').doc(`${id}_${user?.uid}`).delete();
 
+      fetchEvent();
+
       notification('You have removed yourself from the event', 'success')
     } catch (error) {
       console.error(error);
@@ -105,7 +109,7 @@ function EventDetailsPage() {
       await firebase.firestore().collection('events').doc(id).update({
         cancelled: !cancelled
       });
-      notification('The event has been created successfully', 'success');
+      notification(!cancelled ? 'The event has been cancelled' : 'The event has been reactivated', 'success');
     } catch (error) {
       console.error(error);
     }
@@ -132,11 +136,29 @@ function EventDetailsPage() {
       {state.error ? <Typography variant='h6' color='error'>{state.error}</Typography> :
         <Grid container spacing={2}>
           <Grid item xs={12} sm={8}>
-            <EventDetailsHeader data={data} isHost={isHost} cancelled={cancelled} handleDelete={handleDelete} cancelToggle={cancelToggle} />
-            <EventDetailsInfo date={data.date} description={data.description} isHost={isHost} isGoing={isGoing} goingToEvent={goingToEvent} cancelGoigToEvent={cancelGoigToEvent} />
+            <EventDetailsHeader
+              authenticated={authenticated}
+              data={data}
+              isHost={isHost}
+              cancelled={cancelled}
+              handleDelete={handleDelete}
+              cancelToggle={cancelToggle} />
+            <EventDetailsInfo
+              authenticated={authenticated}
+              date={data.date}
+              description={data.description}
+              isHost={isHost}
+              isGoing={isGoing}
+              cancelled={cancelled}
+              goingToEvent={goingToEvent}
+              cancelGoigToEvent={cancelGoigToEvent} />
           </Grid>
           <Grid item xs={12} sm={4}>
-            <EventDetailsSidebar hostedBy={data.hostedBy} hostPhotoURL={data.hostPhotoURL} attendees={attendees} />
+            <EventDetailsSidebar
+              hostUid={data.hostUid}
+              hostedBy={data.hostedBy}
+              hostPhotoURL={data.hostPhotoURL}
+              attendees={attendees} />
           </Grid>
         </Grid>}
     </div>

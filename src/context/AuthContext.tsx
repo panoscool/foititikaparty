@@ -8,6 +8,8 @@ interface Props {
 export const AuthContext = createContext({
   user: null,
   userId: '',
+  photoURL: '',
+  displayName: '',
   providerId: null,
   authenticated: null,
   setUser: () => { },

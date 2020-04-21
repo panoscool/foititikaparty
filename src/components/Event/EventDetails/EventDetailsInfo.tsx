@@ -26,13 +26,15 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 interface Props {
   description: string;
   date: any;
+  cancelled: boolean;
   isGoing: boolean;
   isHost: boolean;
+  authenticated: boolean;
   goingToEvent: (e: any) => void;
   cancelGoigToEvent: (e: any) => void;
 }
 
-function EventDetailsInfo({ description, date, isGoing, isHost, goingToEvent, cancelGoigToEvent }: Props) {
+function EventDetailsInfo({ authenticated, description, cancelled, date, isGoing, isHost, goingToEvent, cancelGoigToEvent }: Props) {
   const classes = useStyles();
 
   return (
@@ -42,7 +44,7 @@ function EventDetailsInfo({ description, date, isGoing, isHost, goingToEvent, ca
           <ListItemIcon>
             <CalendarTodayOutlined color="primary" />
           </ListItemIcon>
-          <ListItemText primary={format(date.toDate(), 'dd MMMM yyyy')} />
+          <ListItemText primary={`${format(date.toDate(), 'dd MMMM yyyy')} at ${format(date.toDate(), 'h:mm a')}`} />
         </ListItem>
         <ListItem divider>
           <ListItemIcon>
@@ -51,12 +53,13 @@ function EventDetailsInfo({ description, date, isGoing, isHost, goingToEvent, ca
           <ListItemText primary={description} />
         </ListItem>
       </List>
-      {!isHost &&
+      {authenticated && !isHost &&
         <div className={classes.btnPosition}>
           <Button
-            color="secondary"
             variant="contained"
             className={classes.button}
+            disabled={cancelled}
+            color={isGoing ? 'default' : "secondary"}
             onClick={isGoing ? cancelGoigToEvent : goingToEvent}
           >
             {isGoing ? 'Cancel my place' : 'Join this event'}

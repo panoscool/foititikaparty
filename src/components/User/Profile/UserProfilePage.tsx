@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import UserProfileHeader from './UserProfileHeader';
@@ -8,6 +8,7 @@ import UserProfilePhotos from './UserProfilePhotos';
 import UserProfileEvents from './UserProfileEvents';
 import Spinner from '../../Shared/Spinner';
 import firebase from '../../../config/firebase';
+import { AuthContext } from '../../../context/AuthContext';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   root: {
@@ -19,6 +20,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 function UserProfilePage() {
   const classes = useStyles();
   const { id } = useParams();
+  const { userId } = useContext(AuthContext);
   const [data, setData] = useState({
     userInfo: null,
     userPhotos: null,
@@ -57,9 +59,15 @@ function UserProfilePage() {
 
   if (!data.userInfo || state.loading) return <Spinner />;
 
+  const isCurrentUser = userId === id
+
   return (
     <div className={classes.root}>
-      <UserProfileHeader displayName={data.userInfo.displayName} photoURL={data.userInfo.photoURL} ocupation={data.userInfo.ocupation} />
+      <UserProfileHeader
+        isCurrentUser={isCurrentUser}
+        displayName={data.userInfo.displayName}
+        photoURL={data.userInfo.photoURL}
+        ocupation={data.userInfo.ocupation} />
       <UserProfileDescription data={data.userInfo} />
       <UserProfilePhotos />
       <UserProfileEvents />

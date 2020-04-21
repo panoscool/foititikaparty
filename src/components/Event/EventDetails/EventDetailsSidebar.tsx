@@ -7,6 +7,8 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import Paper from '@material-ui/core/Paper';
+import { Link } from 'react-router-dom';
+import { ListItemSecondaryAction } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -20,19 +22,22 @@ const useStyles = makeStyles((theme: Theme) =>
     text: {
       color: 'red',
       fontWeight: 'bold'
+    },
+    link: {
+      textDecoration: 'none'
     }
   })
 );
 
 interface Props {
   hostedBy: string;
+  hostUid: string;
   hostPhotoURL: string;
   attendees: any
 }
 
-function EventDetailsSidebar({ hostedBy, hostPhotoURL, attendees }: Props) {
+function EventDetailsSidebar({ hostedBy, hostUid, hostPhotoURL, attendees }: Props) {
   const classes = useStyles();
-
 
   const filteredAttendees = attendees?.filter((a: any) => hostedBy !== a.displayName);
 
@@ -48,14 +53,19 @@ function EventDetailsSidebar({ hostedBy, hostPhotoURL, attendees }: Props) {
           <ListItemAvatar>
             <Avatar alt="avatar" src={hostPhotoURL} />
           </ListItemAvatar>
-          <ListItemText className={classes.text} primary={hostedBy} />
+          <Link to={`/profile/${hostUid}`} className={classes.link}>
+            <ListItemText className={classes.text} primary={hostedBy} />
+          </Link>
+          <ListItemSecondaryAction>Host</ListItemSecondaryAction>
         </ListItem>
         {filteredAttendees?.map((a: any) => (
           <ListItem key={a.id}>
             <ListItemAvatar>
               <Avatar alt="avatar" src={a.photoURL} />
             </ListItemAvatar>
-            <ListItemText primary={a.displayName} />
+            <Link to={`/profile/${a.id}`} className={classes.link}>
+              <ListItemText primary={a.displayName} />
+            </Link>
           </ListItem>
         ))}
       </List>

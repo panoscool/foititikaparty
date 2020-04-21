@@ -87,7 +87,7 @@ function EventPage() {
               />
             }
             title={d.title}
-            subheader={d.hostedBy}
+            subheader={`Hosted by: ${d.hostedBy}`}
             onClick={() => history.push(`/event/${doc.id}`)}
           />
         </CardActionArea>

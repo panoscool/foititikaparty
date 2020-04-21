@@ -1,10 +1,12 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
+import Avatar from '@material-ui/core/Avatar';
 import Add from '@material-ui/icons/Add';
 import Event from '@material-ui/icons/Event';
 import People from '@material-ui/icons/People';
@@ -15,11 +17,19 @@ import { ThemeContext } from '../../context/ThemeContext';
 import { AuthContext } from '../../context/AuthContext';
 import firebase from '../../config/firebase';
 
+const useStyles = makeStyles(theme => ({
+  small: {
+    width: theme.spacing(3),
+    height: theme.spacing(3),
+  }
+}));
+
 function AuthMenu() {
+  const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const { handleModal } = useContext(ThemeContext);
-  const { authenticated, userId } = useContext(AuthContext);
+  const { authenticated, userId, photoURL, displayName } = useContext(AuthContext);
 
   const handleMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -38,6 +48,16 @@ function AuthMenu() {
     setAnchorEl(null);
     // @ts-ignore
     handleModal(modal);
+  }
+
+  function renderAvatar() {
+    if (authenticated && photoURL) {
+      return <Avatar className={classes.small} alt={displayName} src={photoURL} />;
+    } else if (authenticated && !photoURL) {
+      return <Avatar className={classes.small} alt={displayName} src='/assets/images/user.png' />;
+    } else {
+      return <AccountCircle />;
+    }
   }
 
   const navigationGuest = [
@@ -63,7 +83,7 @@ function AuthMenu() {
         onClick={handleMenu}
         color="inherit"
       >
-        <AccountCircle />
+        {renderAvatar()}
       </IconButton>
       <Menu
         id="menu-appbar"

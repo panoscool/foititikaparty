@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useHistory, Link } from 'react-router-dom';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Typography from '@material-ui/core/Typography';
@@ -36,6 +36,10 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     icon: {
       margin: theme.spacing(1)
+    },
+    link: {
+      textDecoration: 'none',
+      color: theme.palette.text.hint
     }
   })
 );
@@ -46,6 +50,7 @@ interface DataObject {
   venue: string;
   category: string;
   hostedBy: string;
+  hostUid: string;
   hostPhotoURL: string;
   venueLatLng: any
 }
@@ -54,11 +59,12 @@ interface Props {
   data: DataObject;
   isHost: boolean;
   cancelled: boolean;
-  handleDelete: (e: any) => void;
-  cancelToggle: (e: any) => void;
+  authenticated: boolean;
+  handleDelete: (e?: any) => void;
+  cancelToggle: (e?: any) => void;
 }
 
-function EventDetailsHeader({ data, isHost, cancelled, handleDelete, cancelToggle }: Props) {
+function EventDetailsHeader({ authenticated, data, isHost, cancelled, handleDelete, cancelToggle }: Props) {
   const classes = useStyles();
   const history = useHistory();
   const { id } = useParams();
@@ -77,18 +83,23 @@ function EventDetailsHeader({ data, isHost, cancelled, handleDelete, cancelToggl
     setExpanded(!expanded);
   };
 
+  function handleCancelEvent() {
+    handleClose();
+    cancelToggle();
+  }
+
   return (
     <Card>
       <CardHeader
         avatar={<Avatar alt="avatar" src={data.hostPhotoURL} />}
         action={
-          isHost &&
+          authenticated && isHost &&
           <IconButton aria-label="settings" aria-haspopup="true" onClick={handleClick}>
             <MoreVert />
           </IconButton>
         }
         title={data.title}
-        subheader={data.hostedBy}
+        subheader={<Link to={`/profile/${data.hostUid}`} className={classes.link}>{data.hostedBy}</Link>}
       />
       <Menu
         id="settings"
@@ -98,7 +109,7 @@ function EventDetailsHeader({ data, isHost, cancelled, handleDelete, cancelToggl
       >
         <MenuItem onClick={() => history.push(`/event/edit/${id}`)}>Edit event</MenuItem>
         <MenuItem onClick={handleDelete}>Delete event</MenuItem>
-        <MenuItem onClick={cancelToggle}>{cancelled ? 'Reactivate event' : 'Cancel Event'}</MenuItem>
+        <MenuItem onClick={handleCancelEvent}>{cancelled ? 'Reactivate event' : 'Cancel Event'}</MenuItem>
       </Menu>
       <CardMedia className={classes.media} image={`/assets/categories/${data.category}.jpg`} />
       <CardActions disableSpacing>
