@@ -71,8 +71,10 @@ function EventForm() {
     async function fetchEvent() {
       if (!id) return;
 
+      const firestore = firebase.firestore();
+
       try {
-        const doc = await firebase.firestore().collection('events').doc(id).get();
+        const doc = await firestore.collection('events').doc(id).get();
 
         if (doc.exists) {
           const d: firebase.firestore.DocumentData | undefined = doc.data();
@@ -143,19 +145,20 @@ function EventForm() {
     }
 
     const user = firebase.auth().currentUser;
+    const firestore = firebase.firestore();
     const newEvent = createNewEvent(user, formValues);
 
     if (id) {
       try {
-        await firebase.firestore().collection('events').doc(id).update(newEvent);
+        await firestore.collection('events').doc(id).update(newEvent);
         history.push(`/event/${id}`);
       } catch (err) {
 
       }
       notification('The event has been created successfully', 'success')
     } else {
-      const createdEvent = await firebase.firestore().collection('events').add(newEvent);
-      await firebase.firestore().collection('event_queries').doc(`${createdEvent.id}_${user?.uid}`).set({
+      const createdEvent = await firestore.collection('events').add(newEvent);
+      await firestore.collection('event_queries').doc(`${createdEvent.id}_${user?.uid}`).set({
         eventId: createdEvent.id,
         userId: user?.uid,
         category: values.category,

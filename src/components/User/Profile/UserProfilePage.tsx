@@ -33,8 +33,10 @@ function UserProfilePage() {
 
   useEffect(() => {
     async function fetchProfile() {
+      const firestore = firebase.firestore();
+
       try {
-        const usersRef = firebase.firestore().collection('users').doc(id);
+        const usersRef = firestore.collection('users').doc(id);
         const photosRef = usersRef.collection('photos');
         const doc = await usersRef.get();
         const imgs = await photosRef.get();
@@ -69,7 +71,7 @@ function UserProfilePage() {
         photoURL={data.userInfo.photoURL}
         ocupation={data.userInfo.ocupation} />
       <UserProfileDescription data={data.userInfo} />
-      <UserProfilePhotos />
+      <UserProfilePhotos photos={data.userPhotos} />
       <UserProfileEvents />
     </div>
   )

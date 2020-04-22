@@ -11,6 +11,7 @@ import Spinner from '../../Shared/Spinner';
 import useNotifier from '../../../hooks/useNotifier';
 import { AuthContext } from '../../../context/AuthContext';
 import firebase from '../../../config/firebase';
+import { clearUndefined } from '../../../utils/helpers';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   button: {
@@ -44,32 +45,34 @@ function AboutSection() {
     ocupation: ''
   });
   const [state, setState] = useState({
-    loading: true,
-    error: ''
+    loading: false,
+    error: null
   });
 
   useEffect(() => {
     async function fetchProfile() {
+      if (!userId) return;
+
+      setState({ loading: true, error: null });
+      const firestore = firebase.firestore();
+
       try {
-        if (!userId) return;
-
-        const doc = await firebase.firestore().collection('users').doc(userId).get();
-
+        const doc = await firestore.collection('users').doc(userId).get();
         const d = doc.data();
 
         setValues({
-          displayName: d?.displayName,
-          gender: d?.gender,
-          status: d?.status,
-          about: d?.about,
+          displayName: d?.displayName || '',
+          gender: d?.gender || '',
+          status: d?.status || '',
+          about: d?.about || '',
           interests: d?.interests || [],
-          ocupation: d?.ocupation
+          ocupation: d?.ocupation || ''
         });
         setCity(d?.city);
         setCountry(d?.country);
         setDate(d?.date && d?.date.toDate());
 
-        setState({ loading: false, error: '' });
+        setState({ loading: false, error: null });
       } catch (err) {
         console.error(err.message);
         setState({ loading: false, error: err.message });
@@ -109,18 +112,22 @@ function AboutSection() {
 
   async function handleSubmit(event?: any) {
     event.preventDefault();
-    const updatedProfile = {
+    const formValues = {
       ...values,
       date,
       city,
       country
     };
 
+    clearUndefined(formValues);
+
+    const firestore = firebase.firestore();
+
     try {
       const user = firebase.auth().currentUser;
 
       await user?.updateProfile({ displayName: values.displayName });
-      await firebase.firestore().collection('users').doc(userId).update(updatedProfile);
+      await firestore.collection('users').doc(userId).update(formValues);
       notification('Your profile has been updated', 'success')
     } catch (err) {
       console.error(err.message);
@@ -128,7 +135,7 @@ function AboutSection() {
     }
   }
 
-  if (state.loading) return <Spinner />
+  if (state.loading) return <Spinner />;
 
   return (
     <form onSubmit={handleSubmit}>

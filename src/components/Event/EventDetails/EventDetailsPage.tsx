@@ -29,24 +29,28 @@ function EventDetailsPage() {
   const [cancelled, setCancelled] = useState<boolean | undefined>();
   const [data, setData] = useState();
   const [state, setState] = useState({
-    loading: true,
+    loading: false,
     error: null
   });
 
   const fetchEvent = useCallback(async () => {
+    const firestore = firebase.firestore();
+
     try {
-      const doc = await firebase.firestore().collection('events').doc(id).get();
+      setState({ loading: true, error: null });
+
+      const doc = await firestore.collection('events').doc(id).get();
       if (doc.exists) {
         setData(doc.data());
         setCancelled(doc.data().cancelled);
-        setState({ loading: false, error: null })
+        setState({ loading: false, error: null });
       } else {
         // doc.data() will be undefined in this case
         setState({ loading: false, error: "No such document!" })
       }
-    } catch (err) {
-      console.error("Error getting document:", err.message);
-      setState({ loading: false, error: err.message })
+    } catch (error) {
+      console.error("Error getting document:", error.message);
+      setState({ loading: false, error: error.message });
     }
   }, [id]);
 
@@ -56,6 +60,8 @@ function EventDetailsPage() {
 
   async function goingToEvent() {
     const user = firebase.auth().currentUser;
+    const firestore = firebase.firestore();
+
     const attendee = {
       going: true,
       joingDate: firebase.firestore.FieldValue.serverTimestamp(),
@@ -65,11 +71,11 @@ function EventDetailsPage() {
     }
 
     try {
-      await firebase.firestore().collection('events').doc(id).update({
+      await firestore.collection('events').doc(id).update({
         [`attendees.${user.uid}`]: attendee
       });
 
-      await firebase.firestore().collection('event_queries').doc(`${id}_${user?.uid}`).set({
+      await firestore.collection('event_queries').doc(`${id}_${user?.uid}`).set({
         eventId: id,
         userId: user?.uid,
         category: data.category,
@@ -88,12 +94,14 @@ function EventDetailsPage() {
 
   async function cancelGoigToEvent() {
     const user = firebase.auth().currentUser;
+    const firestore = firebase.firestore();
+
     try {
-      await firebase.firestore().collection('events').doc(id).update({
+      await firestore.collection('events').doc(id).update({
         [`attendees.${user.uid}`]: firebase.firestore.FieldValue.delete()
       });
 
-      await firebase.firestore().collection('event_queries').doc(`${id}_${user?.uid}`).delete();
+      await firestore.collection('event_queries').doc(`${id}_${user?.uid}`).delete();
 
       fetchEvent();
 
@@ -104,9 +112,11 @@ function EventDetailsPage() {
   }
 
   async function cancelToggle() {
+    const firestore = firebase.firestore();
+
     try {
       setCancelled(!cancelled);
-      await firebase.firestore().collection('events').doc(id).update({
+      await firestore.collection('events').doc(id).update({
         cancelled: !cancelled
       });
       notification(!cancelled ? 'The event has been cancelled' : 'The event has been reactivated', 'success');
@@ -116,8 +126,10 @@ function EventDetailsPage() {
   }
 
   async function handleDelete() {
+    const firestore = firebase.firestore();
+
     try {
-      await firebase.firestore().collection('events').doc(id).delete();
+      await firestore.collection('events').doc(id).delete();
 
       history.push('/');
     } catch (err) {

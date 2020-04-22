@@ -34,9 +34,10 @@ function LoginModal({ ...other }) {
 
   async function handleSubmit(event: { preventDefault: () => void; }) {
     event.preventDefault();
+    const auth = firebase.auth();
 
     try {
-      await firebase.auth().signInWithEmailAndPassword(values.email, values.password);
+      await auth.signInWithEmailAndPassword(values.email, values.password);
       handleModal();
     } catch (err) {
       console.error(err.message);

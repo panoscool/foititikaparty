@@ -35,10 +35,12 @@ function RegisterModal() {
 
   async function handleSubmit(event: { preventDefault: () => void; }) {
     event.preventDefault();
+    const auth = firebase.auth();
+    const firestore = firebase.firestore();
     const { displayName, email, password } = values;
 
     try {
-      const createdUser = await firebase.auth().createUserWithEmailAndPassword(email, password);
+      const createdUser = await auth.createUserWithEmailAndPassword(email, password);
 
       await createdUser.user?.updateProfile({ displayName });
 
@@ -47,7 +49,7 @@ function RegisterModal() {
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       }
 
-      await firebase.firestore().collection('users').doc(createdUser.user?.uid).set(newUser)
+      await firestore.collection('users').doc(createdUser.user?.uid).set(newUser)
       handleModal();
     } catch (err) {
       console.error(err.message)
@@ -63,7 +65,7 @@ function RegisterModal() {
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} autoComplete='off'>
           <TextInput
             required
             type="text"

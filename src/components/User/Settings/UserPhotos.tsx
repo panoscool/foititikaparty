@@ -46,21 +46,30 @@ interface Props {
 
 function UserPhotos({ userId, profile, deleteImage, setMainPhoto }: Props) {
   const classes = useStyles();
-  const [snapshot, setSnapshot] = useState([]);
+  const [photos, setPhotos] = useState([]);
   const [state, setState] = useState({
     loading: true,
-    error: ''
+    error: null
   });
 
   useEffect(() => {
     if (!userId) return;
 
-    const firestoreRef = firebase.firestore().collection('users').doc(userId)
-    const unsubscribe = firestoreRef.collection('photos').onSnapshot(snap => {
-      setSnapshot(snap);
-      setState({ loading: false, error: '' })
-    }, err => {
-      console.error(err.message);
+    const firestore = firebase.firestore();
+    const userDocRef = firestore.collection('users').doc(userId);
+
+    const unsubscribe = userDocRef.collection('photos').onSnapshot(snap => {
+      const photos = snap.docs.map(doc => {
+        return {
+          ...doc.data(),
+          id: doc.id
+        }
+      });
+      setPhotos(photos);
+      setState({ loading: false, error: null });
+    }, error => {
+      console.error(error.message);
+      setState({ loading: false, error: error });
     }
     );
 
@@ -69,23 +78,21 @@ function UserPhotos({ userId, profile, deleteImage, setMainPhoto }: Props) {
     };
   }, [userId]);
 
-  if (!snapshot || state.loading) return <Spinner />;
+  if (!photos || state.loading) return <Spinner />;
 
-  const filteredPhotos = snapshot && snapshot.docs.filter(doc => {
-    const photo = doc.data();
+  const filteredPhotos = photos && photos.filter(photo => {
     return photo.url !== profile.photoURL
   })
 
-  function renderList(doc: any) {
-    const d = doc.data();
+  function renderList(d: any) {
     return (
-      <div key={doc.id} className={classes.card}>
+      <div key={d.id} className={classes.card}>
         <CardMedia component="img" alt={d.name} image={d.url} />
         <ButtonGroup fullWidth size="small">
           <Button onClick={() => setMainPhoto(d)}>
             <Done className={classes.doneIcon} />
           </Button>
-          <Button onClick={() => deleteImage(doc)}>
+          <Button onClick={() => deleteImage(d)}>
             <Delete className={classes.deleteIcon} />
           </Button>
         </ButtonGroup>

@@ -19,6 +19,7 @@ function SocialAuthPage() {
   const { handleModal } = useContext(ThemeContext);
 
   async function handleSocialAuth(selectedProvider: string) {
+    const auth = firebase.auth();
     const provider = {
       facebook: new firebase.auth.FacebookAuthProvider(),
       google: new firebase.auth.GoogleAuthProvider()
@@ -26,7 +27,7 @@ function SocialAuthPage() {
 
     handleModal();
     // @ts-ignore
-    await firebase.auth().signInWithPopup(provider[selectedProvider]);
+    await auth.signInWithPopup(provider[selectedProvider]);
   }
 
   return (

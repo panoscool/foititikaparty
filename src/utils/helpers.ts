@@ -4,6 +4,10 @@ export const objectToArray = (object: object) => {
   }
 }
 
+export const clearUndefined = (obj: any) => {
+  return Object.keys(obj).forEach(key => obj[key] === undefined && delete obj[key]);
+}
+
 export const createNewEvent = (user: any, event: any) => {
   return {
     ...event,

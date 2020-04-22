@@ -47,16 +47,18 @@ function PhotosSection() {
   const [snapshot, setSnapshot] = useState({});
   const [state, setState] = useState({
     loading: false,
-    error: ''
+    error: null
   });
 
   useEffect(() => {
     if (!userId) return;
 
-    const firestoreRef = firebase.firestore().collection('users').doc(userId)
-    const unsubscribe = firestoreRef.onSnapshot(snap => {
-      // @ts-ignore
-      setSnapshot(snap.data());
+    const firestore = firebase.firestore();
+    const userDocRef = firestore.collection('users').doc(userId);
+    const unsubscribe = userDocRef.onSnapshot(snap => {
+      const profile = snap.data();
+
+      setSnapshot(profile);
     }, err => {
       console.error(err.message);
     }
@@ -76,12 +78,13 @@ function PhotosSection() {
   async function handleMainPhoto(photo) {
     if (!userId) return;
     const user = firebase.auth().currentUser;
+    const firestore = firebase.firestore();
 
-    const firestoreRef = firebase.firestore().collection('users').doc(userId);
+    const userDoc = firestore.collection('users').doc(userId);
 
     try {
       await user?.updateProfile({ photoURL: photo.url });
-      await firestoreRef.update({ photoURL: photo.url });
+      await userDoc.update({ photoURL: photo.url });
       notification('Your profile has been updated', 'success');
     } catch (err) {
       console.error(err.message);
@@ -92,17 +95,19 @@ function PhotosSection() {
     if (!userId) return;
 
     const imageId = photo.id
-    const imageName = photo.data().name
+    const imageName = photo.name
+    const storage = firebase.storage();
+    const firestore = firebase.firestore();
 
     // Create a reference to the file to delete
-    const storageRef = firebase.storage().ref(`${userId}/user_images/${imageName}`);
-    const firestoreRef = firebase.firestore().collection('users').doc(userId);
+    const fileRef = storage.ref(`${userId}/user_images/${imageName}`);
+    const userDocRef = firestore.collection('users').doc(userId);
 
     try {
       // Delete the file from storage
-      await storageRef.delete();
+      await fileRef.delete();
       // Delete the file from firestore
-      await firestoreRef.collection('photos').doc(imageId).delete();
+      await userDocRef.collection('photos').doc(imageId).delete();
       notification('Image has been deleted', 'success');
     } catch (err) {
       // Uh-oh, an error occurred!
@@ -114,9 +119,11 @@ function PhotosSection() {
     const imageName = cuid();
     const path = `${userId}/user_images/`
     const user = firebase.auth().currentUser;
-    const userDoc = await firebase.firestore().collection('users').doc(userId).get();
-    const storageRef = firebase.storage().ref(path + imageName);
-    const firestoreRef = firebase.firestore().collection('users').doc(userId);
+    const storage = firebase.storage();
+    const firestore = firebase.firestore();
+    const storageRef = storage.ref(path + imageName);
+    const userDocRef = firestore.collection('users').doc(userId);
+    const userDoc = await userDocRef.get();
 
     // Upload file and metadata to the object 'user_images/file_name.jpg'
     const uploadTask = storageRef.put(image);
@@ -126,7 +133,7 @@ function PhotosSection() {
       function (snapshot) {
         // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
         let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        setState({ loading: true, error: '' })
+        setState({ loading: true, error: null })
         setCompleted(progress)
       }, function (error) {
         setState({ loading: false, error: error_codes[error.code] });
@@ -135,7 +142,7 @@ function PhotosSection() {
         uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
           // Check if user has photo, if not update profile
           if (!userDoc.data().photoURL) {
-            firestoreRef.update({
+            userDocRef.update({
               photoURL: downloadURL
             });
 
@@ -144,8 +151,8 @@ function PhotosSection() {
           }
 
           // Add image to firestore
-          firestoreRef.collection('photos').add({ name: imageName, url: downloadURL })
-          setState({ loading: false, error: '' });
+          userDocRef.collection('photos').add({ name: imageName, url: downloadURL })
+          setState({ loading: false, error: null });
         }).then(function () {
           handleCancelPhoto();
         });
