@@ -42,8 +42,7 @@ function DropzoneInput({ setFiles }: any) {
   return (
     <div
       {...getRootProps()}
-      className={`${classes.dropzone} ${isDragActive &&
-        classes.dropzoneActive}`}
+      className={`${classes.dropzone} ${isDragActive && classes.dropzoneActive}`}
     >
       <input {...getInputProps()} />
       <CloudUpload fontSize="large" />
