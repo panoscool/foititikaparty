@@ -5,6 +5,7 @@ import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { Grid, Typography } from '@material-ui/core';
 import EventDetailsHeader from './EventDetailsHeader';
 import EventDetailsInfo from './EventDetailsInfo';
+import EventDetailsChat from './EventDetailsChat';
 import EventDetailsSidebar from './EventDetailsSidebar';
 import Spinner from '../../Shared/Spinner';
 import { objectToArray } from '../../../utils/helpers';
@@ -164,6 +165,7 @@ function EventDetailsPage() {
               cancelled={cancelled}
               goingToEvent={goingToEvent}
               cancelGoigToEvent={cancelGoigToEvent} />
+            <EventDetailsChat />
           </Grid>
           <Grid item xs={12} sm={4}>
             <EventDetailsSidebar

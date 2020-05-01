@@ -91,6 +91,7 @@ function UserProfileEvents() {
         setState({ loading: false, error: error });
       }
     }
+
     getUserEvents();
   }, [activeTab, id]);
 
@@ -111,7 +112,7 @@ function UserProfileEvents() {
         <Tab label="Hosted Events" />
       </Tabs>
       <Divider variant='fullWidth' />
-      {state.loading ? <Skeleton variant="rect" width={130} height={210} /> :
+      {state.loading ? <Skeleton variant="rect" width={310} height={210} /> :
         <div className={classes.root}>
           {events && events.map(evt => (
             <Card key={evt.id} className={classes.card}>

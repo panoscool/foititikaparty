@@ -4,6 +4,17 @@ export const objectToArray = (object: object) => {
   }
 }
 
+export const createDataTree = (dataset: any[]) => {
+  let hashTable = Object.create(null);
+  dataset.forEach(a => hashTable[a.id] = { ...a, childNodes: [] });
+  let dataTree: any[] = [];
+  dataset.forEach(a => {
+    if (a.parentId) hashTable[a.parentId].childNodes.push(hashTable[a.id]);
+    else dataTree.push(hashTable[a.id]);
+  });
+  return dataTree;
+}
+
 export const clearUndefined = (obj: any) => {
   return Object.keys(obj).forEach(key => obj[key] === undefined && delete obj[key]);
 }
