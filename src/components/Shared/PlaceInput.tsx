@@ -30,7 +30,7 @@ function PlaceInput({ label, value, options, handleChange, handleSelect }: Props
     <PlacesAutocomplete value={value} searchOptions={options} onChange={handleChange} onSelect={handleSelect}>
       {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
         <div>
-          <TextField fullWidth margin="dense" variant="outlined" label={label} {...getInputProps({ label })} />
+          <TextField fullWidth margin="dense" variant="outlined" {...getInputProps({ label })} />
           {suggestions.length > 0 && (
             <div className={classes.autocompleteList}>
               {loading && <div>Loading...</div>}

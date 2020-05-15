@@ -28,21 +28,19 @@ const activity = [
 
 function EventActivity() {
   return (
-    <Paper>
-      <List subheader={<ListSubheader>Recent Activity</ListSubheader>}>
-        <Divider variant="fullWidth" />
-        {activity.map((a, index) => (
-          <ListItem key={index}>
-            <ListItemAvatar>
-              <Avatar>
-                <img src={a.userImg} width="45px" height="auto" alt="user" />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText primary={a.primary} secondary={a.secondary} />
-          </ListItem>
-        ))}
-      </List>
-    </Paper>
+    <List component={Paper} subheader={<ListSubheader>Recent Activity</ListSubheader>}>
+      <Divider variant="fullWidth" />
+      {activity.map((a, index) => (
+        <ListItem key={index}>
+          <ListItemAvatar>
+            <Avatar>
+              <img src={a.userImg} width="45px" height="auto" alt="user" />
+            </Avatar>
+          </ListItemAvatar>
+          <ListItemText primary={a.primary} secondary={a.secondary} />
+        </ListItem>
+      ))}
+    </List>
   );
 }
 

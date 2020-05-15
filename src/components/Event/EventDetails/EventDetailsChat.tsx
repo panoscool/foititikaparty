@@ -12,22 +12,12 @@ import ListItemText from '@material-ui/core/ListItemText';
 import EventChatForm from './EventChatForm';
 import firebase from '../../../config/firebase';
 import { objectToArray, createDataTree } from '../../../utils/helpers';
+import { ListSubheader, Divider } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      width: '100%',
-      backgroundColor: theme.palette.background.paper,
-    },
     paper: {
       margin: theme.spacing(2, 0)
-    },
-    listLabel: {
-      color: 'white',
-      backgroundColor: '#212121',
-      padding: 4,
-      borderRadius: 4,
-      margin: theme.spacing(0)
     },
     nested: {
       paddingLeft: theme.spacing(8),
@@ -92,15 +82,11 @@ function EventDetailsChat() {
   }
 
   const chatTree = comments && createDataTree(comments);
-  console.log(chatTree)
+
   return (
     <Paper className={classes.paper}>
-      <div className={classes.listLabel}>
-        <Typography variant="h6" align="center">
-          Comments
-        </Typography>
-      </div>
-      <List dense className={classes.root}>
+      <List dense subheader={<ListSubheader>Event Comments</ListSubheader>}>
+        <Divider variant="fullWidth" />
         {chatTree?.map(comment => (
           <Fragment key={comment.id}>
             <ListItem>

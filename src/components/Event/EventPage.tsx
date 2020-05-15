@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
 import EventList from './EventList';
 import EventActivity from './EventActivity';
 import SearchField from '../Shared/SearchField';
@@ -12,7 +11,17 @@ import firebase from '../../config/firebase';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   root: {
+    display: 'flex',
+    justifyContent: 'space-between',
     margin: theme.spacing(2)
+  },
+  main: {
+    width: '70%'
+  },
+  sticky: {
+    width: '30%',
+    position: 'sticky',
+    marginLeft: theme.spacing(2)
   }
 })
 );
@@ -92,27 +101,25 @@ function EventPage() {
 
   return (
     <div className={classes.root}>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={8}>
-          <SearchField />
-          {events && events.length !== 0 &&
-            <InfiniteScroll
-              pageStart={0}
-              loadMore={getNextEvents}
-              hasMore={!state.loading && state.moreEvents}
-              initialLoad={false}
-            >
-              {events.map((doc: any) => {
-                return <EventList key={doc.id} doc={doc} />;
-              })}
-            </InfiniteScroll>
-          }
-          {state.loadMore && <Spinner />}
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <EventActivity />
-        </Grid>
-      </Grid>
+      <div className={classes.main}>
+        <SearchField />
+        {events && events.length !== 0 &&
+          <InfiniteScroll
+            pageStart={0}
+            loadMore={getNextEvents}
+            hasMore={!state.loading && state.moreEvents}
+            initialLoad={false}
+          >
+            {events.map((doc: any) => {
+              return <EventList key={doc.id} doc={doc} />;
+            })}
+          </InfiniteScroll>
+        }
+        {state.loadMore && <Spinner />}
+      </div>
+      <div className={classes.sticky}>
+        <EventActivity />
+      </div>
     </div>
   );
 }
